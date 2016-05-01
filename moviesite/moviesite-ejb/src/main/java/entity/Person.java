@@ -1,26 +1,28 @@
-package entity;
+package csapat1.codingmentor.entity;
 
-import enums.Sex;
-import java.util.Date;
+import java.io.Serializable;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-/**
- *
- * @author David Kovacsvolgyi <kovacsvolgyi.david@gmail.com>
- */
 @MappedSuperclass
-public class Person {
-    @Id@GeneratedValue
+public class Person implements Serializable {
+
+    @Id
+    @GeneratedValue
     private Long id;
+
     private String name;
-    private Date birthDay;
-    private String imageURL;
-    private Sex sex;
+
+    private String sex;
+
+    private Integer yearOfBirth;
+    
+    private String pathOfPhoto;
 
     public Person() {
-        //FOR MAPPING REASONS
+        //it is bean
     }
 
     public Long getId() {
@@ -39,28 +41,30 @@ public class Person {
         this.name = name;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public Sex getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
+
+    public Integer getYearOfBirth() {
+        return yearOfBirth;
+    }
+
+    public void setYearOfBirth(Integer yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
+    }
+
+    public String getPathOfPhoto() {
+        return pathOfPhoto;
+    }
+
+    public void setPathOfPhoto(String pathOfPhoto) {
+        this.pathOfPhoto = pathOfPhoto;
+    }
     
+    
+
 }

@@ -9,20 +9,19 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Episode implements Serializable {
+public class Film implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
-
+    
     private String title;
-    private String idOfSeason;
-    private String serialNumber;
+    private Directory directory;
     
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
 
-    public Episode() {
+    public Film() {
         //it is bean
     }
 
@@ -42,20 +41,12 @@ public class Episode implements Serializable {
         this.title = title;
     }
 
-    public String getIdOfSeason() {
-        return idOfSeason;
+    public Directory getDirectory() {
+        return directory;
     }
 
-    public void setIdOfSeason(String idOfSeason) {
-        this.idOfSeason = idOfSeason;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setDirectory(Directory directory) {
+        this.directory = directory;
     }
 
     public Date getYearOfRelease() {
@@ -65,5 +56,8 @@ public class Episode implements Serializable {
     public void setYearOfRelease(Date yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
     }
+
+    
+   
 
 }
