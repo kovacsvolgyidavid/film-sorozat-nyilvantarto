@@ -1,0 +1,31 @@
+Sun May 01 12:52:37 CEST 2016 : Apache Derby Hálózati kiszolgáló - 10.10.2.0 - (1582446) elindult és kész a kapcsolatok fogadására a(z) {3} 1527 portján 
+----------------------------------------------------------------
+Sun May 01 12:52:38 CEST 2016:
+ Derby The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446) változat betöltése: a816c00e-0154-6bf2-d809-fffff6fed87e példány
+a(z) C:\Users\keni\projectjavaee\film-sorozat-nyilvantarto\MovieDB adatbázis-könyvtáron: sun.misc.Launcher$AppClassLoader@5e2de80c 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_73-b02
+user.dir=C:\Program Files\glassfish-4.1.1\javadb
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=C:\Users\keni\projectjavaee\film-sorozat-nyilvantarto
+Az adatbázis-osztálybetöltõ elindult - derby.database.classpath=''
+----------------------------------------------------------------
+Sun May 01 12:52:49 CEST 2016:
+a816c00e-0154-6bf2-d809-fffff6fed87e példány leállítása
+Sun May 01 12:52:49 CEST 2016 Thread[DRDAConnThread_3,5,main] (DATABASE = MovieDB), (DRDAID = {2}), A(z) 'MovieDB' adatbázis leáll.
+----------------------------------------------------------------
+Sun May 01 12:52:55 CEST 2016:
+ Derby The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446) változat betöltése: 560740aa-0154-6bf2-d809-fffff6fed87e példány
+a(z) C:\Users\keni\projectjavaee\film-sorozat-nyilvantarto\MovieDB adatbázis-könyvtáron: sun.misc.Launcher$AppClassLoader@5e2de80c 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_73-b02
+user.dir=C:\Program Files\glassfish-4.1.1\javadb
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=C:\Users\keni\projectjavaee\film-sorozat-nyilvantarto
+Az adatbázis-osztálybetöltõ elindult - derby.database.classpath=''
