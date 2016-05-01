@@ -1,0 +1,34 @@
+login.html
+	-> login (username, password, login btn, registration btn)
+
+registration.html
+	-> új user felvétele
+
+profile.html
+	-> user saját adatait jeleníti meg és szerkeszteni
+	-> Person osztály változói
+
+admin.html
+	->admin szerkesztget más user-eket
+	->userek csoportokba rendelése (rang adás) (jogokat)
+
+home.html
+	->ide a login btn dob át
+	->ahol lehet bongészni a filmek között
+	->logout btn and profile kép, ami átdob a profile.html-re
+	-> itt van egy delete gomb : felugró ablak
+	-> edit gomb: átdob a dataedit.html-re
+	-> filter mező
+	-> film képre/link-te kattintva lenyillik a tartalom
+	-> edit gombra filmedit.html ugrunk
+	-> megjelenítendő elemek száma
+
+filmediter.html
+	-> fejlcébe jön a szerkesztendő id
+	-> új filmeket hozhatunk létre
+
+
+comprafilms.html
+	-> home.html-en lenne minden film mellett egy checkbox
+
+MINENHOVA Back btn
