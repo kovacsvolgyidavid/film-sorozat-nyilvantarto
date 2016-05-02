@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class User implements Serializable {
@@ -12,7 +14,10 @@ public class User implements Serializable {
     @GeneratedValue
     private Long id;
     
+    @NotNull
     private String username;
+    
+    @Pattern(regexp = "....")
     private String password;
 
     public User() {
