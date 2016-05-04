@@ -12,11 +12,11 @@ public class Directory extends Person implements Serializable {
 
     private String originalName;
     
-    @OneToMany
-    @JoinTable (name = "directory_and_film",
-    joinColumns = @JoinColumn(name = "directory_fk"), 
-    inverseJoinColumns = @JoinColumn(name = "film_fk") )
-    private List<Film> films;
+//    @OneToMany
+//    @JoinTable (name = "directory_and_film",
+//    joinColumns = @JoinColumn(name = "directory_fk"), 
+//    inverseJoinColumns = @JoinColumn(name = "film_fk") )
+//   private List<Film> films;
 
     public Directory() {
         //it is bean

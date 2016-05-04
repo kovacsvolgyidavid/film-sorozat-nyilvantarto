@@ -17,8 +17,10 @@ public class User implements Serializable {
     @NotNull
     private String username;
     
+    @NotNull
     @Pattern(regexp = "....")
     private String password;
+    
 
     public User() {
         //it is bean

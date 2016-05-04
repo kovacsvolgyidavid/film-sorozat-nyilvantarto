@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Episode implements Serializable {
@@ -18,6 +19,7 @@ public class Episode implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     private String title;
     
     @OneToOne (fetch = FetchType.LAZY)

@@ -21,12 +21,15 @@ public class Comment implements Serializable {
     @OneToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "user_fk", nullable = false)
     private User user;
+    
     private String content;
 
     @Temporal(TemporalType.DATE)
     private Date dateOfComment;
     
-    private Long idOfSeries;
+    @OneToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "series_fk", nullable = false)
+    private Series series;
     
     @OneToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "film_fk", nullable = false)

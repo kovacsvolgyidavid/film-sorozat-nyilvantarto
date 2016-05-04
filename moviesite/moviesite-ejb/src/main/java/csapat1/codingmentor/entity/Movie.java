@@ -13,10 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Movie extends Film implements Serializable {
     
+    @NotNull
     private String title;
     
     @Temporal(TemporalType.DATE)

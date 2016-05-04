@@ -3,8 +3,11 @@ package csapat1.codingmentor.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -16,7 +19,11 @@ public class Season implements Serializable {
     private Long id;
 
     private String title;
-    private String idOfSeries;
+    
+    @OneToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "series_fk", nullable = false)
+    private Series series;
+    
     private String serialNumber;
     
     @Temporal(TemporalType.DATE)
@@ -44,13 +51,7 @@ public class Season implements Serializable {
         this.title = title;
     }
 
-    public String getIdOfSeries() {
-        return idOfSeries;
-    }
-
-    public void setIdOfSeries(String idOfSeries) {
-        this.idOfSeries = idOfSeries;
-    }
+   
 
     public String getSerialNumber() {
         return serialNumber;
