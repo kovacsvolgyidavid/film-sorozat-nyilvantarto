@@ -30,4 +30,27 @@ public class Series extends Film implements Serializable {
         //it is bean
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPathOfPhoto() {
+        return pathOfPhoto;
+    }
+
+    public void setPathOfPhoto(String pathOfPhoto) {
+        this.pathOfPhoto = pathOfPhoto;
+    }
+
+    public List<Season> getSeasons() {
+        return seasons;
+    }
+
+    public void setSeasons(List<Season> seasons) {
+        this.seasons = seasons;
+    }
 }

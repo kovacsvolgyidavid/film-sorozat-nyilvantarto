@@ -35,4 +35,43 @@ public class Episode implements Serializable {
         //it is bean
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Season getSeason() {
+        return season;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public Date getYearOfRelease() {
+        return yearOfRelease;
+    }
+
+    public void setYearOfRelease(Date yearOfRelease) {
+        this.yearOfRelease = yearOfRelease;
+    }
 }

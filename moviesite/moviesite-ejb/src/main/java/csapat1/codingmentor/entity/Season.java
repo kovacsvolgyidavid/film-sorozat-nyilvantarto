@@ -77,6 +77,11 @@ public class Season implements Serializable {
         this.linkOfPromoVideo = linkOfPromoVideo;
     }
 
+    public Series getSeries() {
+        return series;
+    }
 
-
+    public void setSeries(Series series) {
+        this.series = series;
+    }
 }

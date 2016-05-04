@@ -28,7 +28,19 @@ public class Movie extends Film implements Serializable {
         //it is bean
     }
 
+    public String getTitle() {
+        return title;
+    }
 
-   
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public Date getYearOfRelease() {
+        return yearOfRelease;
+    }
+
+    public void setYearOfRelease(Date yearOfRelease) {
+        this.yearOfRelease = yearOfRelease;
+    }
 }

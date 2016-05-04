@@ -64,7 +64,4 @@ public class Person implements Serializable {
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
-    
-    
-
 }

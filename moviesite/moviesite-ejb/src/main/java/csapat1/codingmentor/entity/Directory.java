@@ -29,7 +29,4 @@ public class Directory extends Person implements Serializable {
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
-
-    
-
 }
