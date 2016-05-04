@@ -1,18 +1,22 @@
-login.html
+1)login.html
+	-> kezdőooldal
 	-> login (username, password, login btn, registration btn)
 
-registration.html
+2)registration.html
 	-> új user felvétele
+	-> may go to: login.html
 
-profile.html
+3)profile.html
 	-> user saját adatait jeleníti meg és szerkeszteni
 	-> Person osztály változói
+	-> may go to: admin.html
 
-admin.html
-	->admin szerkesztget más user-eket
-	->userek csoportokba rendelése (rang adás) (jogokat)
+4)admin.html
+	-> admin szerkesztget más user-eket
+	-> userek csoportokba rendelése (rang adás) (jogokat)
+	-> may go to: home.html
 
-home.html
+5)home.html
 	->ide a login btn dob át
 	->ahol lehet bongészni a filmek között
 	->logout btn and profile kép, ami átdob a profile.html-re
@@ -23,12 +27,14 @@ home.html
 	-> edit gombra filmedit.html ugrunk
 	-> megjelenítendő elemek száma
 
-filmediter.html
+6)filmediter.html
 	-> fejlcébe jön a szerkesztendő id
 	-> új filmeket hozhatunk létre
+	-> may go to: home.html
 
 
-comprafilms.html
+7)comprafilms.html
 	-> home.html-en lenne minden film mellett egy checkbox
+	-> may go to: home.html
 
 MINENHOVA Back btn
