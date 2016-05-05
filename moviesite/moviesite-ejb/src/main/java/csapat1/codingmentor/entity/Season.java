@@ -3,7 +3,7 @@ package csapat1.codingmentor.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +29,7 @@ public class Season implements Serializable {
     private Series series;
     
     @OneToMany (mappedBy = "season")
-    private Set<Episode> episodes;
+    private List<Episode> episodes;
     
     @Column(name = "SERIAL_NUMBER")
     private String serialNumber;
@@ -69,11 +69,11 @@ public class Season implements Serializable {
         this.series = series;
     }
 
-    public Set<Episode> getEpisodes() {
+    public List<Episode> getEpisodes() {
         return episodes;
     }
 
-    public void setEpisodes(Set<Episode> episodes) {
+    public void setEpisodes(List<Episode> episodes) {
         this.episodes = episodes;
     }
 

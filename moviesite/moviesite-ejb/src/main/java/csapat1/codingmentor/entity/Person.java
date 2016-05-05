@@ -1,7 +1,10 @@
 package csapat1.codingmentor.entity;
 
+import csapat1.codingmentor.enums.Sex;
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -14,8 +17,9 @@ public class Person implements Serializable {
     private Long id;
 
     private String name;
-
-    private String sex;
+    
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
     
     @Column(name="YEAR_OF_BIRTH")
     private Integer yearOfBirth;
@@ -43,11 +47,11 @@ public class Person implements Serializable {
         this.name = name;
     }
 
-    public String getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 

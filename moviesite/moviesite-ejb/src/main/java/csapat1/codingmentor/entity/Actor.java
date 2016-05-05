@@ -1,7 +1,7 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -16,7 +16,7 @@ public class Actor extends Person implements Serializable {
     private String officialWebsite;
 
     @ManyToMany(mappedBy = "actors")
-    private Set<Movie> movies;
+    private List<Movie> movies;
     
     public Actor() {
         //it is bean
@@ -38,11 +38,11 @@ public class Actor extends Person implements Serializable {
         this.officialWebsite = officialWebsite;
     }
 
-    public Set<Movie> getMovies() {
+    public List<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(Set<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
-    }   
+    }
 }

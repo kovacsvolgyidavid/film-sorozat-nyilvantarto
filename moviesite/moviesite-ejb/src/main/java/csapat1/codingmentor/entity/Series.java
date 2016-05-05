@@ -1,7 +1,7 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -9,17 +9,17 @@ import javax.persistence.OneToMany;
 public class Series extends Movie implements Serializable {
     
     @OneToMany (mappedBy = "series")
-    private Set<Season> seasons;
+    private List<Season> seasons;
     
     public Series() {
         //it is bean
     }
 
-    public Set<Season> getSeasons() {
+    public List<Season> getSeasons() {
         return seasons;
     }
 
-    public void setSeasons(Set<Season> seasons) {
+    public void setSeasons(List<Season> seasons) {
         this.seasons = seasons;
-    }  
+    }    
 }

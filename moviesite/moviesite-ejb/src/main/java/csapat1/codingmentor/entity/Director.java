@@ -13,7 +13,6 @@ public class Director extends Person implements Serializable {
     private String originalName;
     
     @ManyToMany(mappedBy = "directors")
-    //private Set<Movie> movies;
     private List<Movie> movies;
 
     public Director() {
@@ -27,14 +26,6 @@ public class Director extends Person implements Serializable {
     public void setOriginalName(String originalName) {
         this.originalName = originalName;
     }
-
-//    public Set<Movie> getMovies() {
-//        return movies;
-//    }
-//
-//    public void setMovies(Set<Movie> movies) {
-//        this.movies = movies;
-//    }
 
     public List<Movie> getMovies() {
         return movies;

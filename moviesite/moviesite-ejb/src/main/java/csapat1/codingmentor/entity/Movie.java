@@ -3,7 +3,7 @@ package csapat1.codingmentor.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,16 +40,16 @@ public class Movie implements Serializable {
     @JoinTable (name = "MOVIE_DIRECTOR",
     joinColumns = @JoinColumn(name = "MOVIE_ID"), 
     inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
-    public Set<Director> directors;
+    public List<Director> directors;
     
     @ManyToMany
     @JoinTable (name = "MOVIE_ACTOR",
     joinColumns = @JoinColumn(name = "MOVIE_ID"), 
     inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
-    public Set<Actor> actors;
+    public List<Actor> actors;
     
     @OneToMany (mappedBy = "shows")
-    private Set<Comment> comments;
+    private List<Comment> comments;
 
     public Movie() {
         //it is bean
@@ -79,29 +79,29 @@ public class Movie implements Serializable {
         this.pathOfPhoto = pathOfPhoto;
     }
 
-    public Set<Director> getDirectors() {
+    public List<Director> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(Set<Director> directors) {
+    public void setDirectors(List<Director> directors) {
         this.directors = directors;
     }
 
-    public Set<Actor> getActors() {
+    public List<Actor> getActors() {
         return actors;
     }
 
-    public void setActors(Set<Actor> actors) {
+    public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
 
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }  
+    }
 
     public String getYearOfRelease() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
