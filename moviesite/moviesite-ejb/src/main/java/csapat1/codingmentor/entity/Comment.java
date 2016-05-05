@@ -23,7 +23,7 @@ public class Comment implements Serializable {
     private String content;
 
     @Column(name = "DATE_OF_COMMENT")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar dateOfComment;
     
     @ManyToOne (fetch = FetchType.LAZY)
@@ -55,7 +55,7 @@ public class Comment implements Serializable {
     }
 
     public String getDateOfComment() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(dateOfComment.getTime());
     }
 
