@@ -1,6 +1,7 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "USER_")
-public class User implements Serializable {
+public class User extends Person implements Serializable {
 
     @Id
     @GeneratedValue
@@ -26,18 +27,11 @@ public class User implements Serializable {
     private String password;
     
     @OneToMany (mappedBy = "users")
-    private Set<Comment> comments;
+    //private Set<Comment> comments;
+    private List<Comment> comments;
     
     public User() {
         //it is bean
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -56,11 +50,29 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Set<Comment> getComments() {
+//    public Set<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(Set<Comment> comments) {
+//        this.comments = comments;
+//    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }   
+    }
+    
+    
 }
