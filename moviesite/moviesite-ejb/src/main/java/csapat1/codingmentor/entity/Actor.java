@@ -1,20 +1,22 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
 @Entity
 public class Actor extends Person implements Serializable {
-
+    
+    @Column(name="PLACE_OF_BIRTH")
     private String placeOfBirth;
-
+    
+    @Column(name="OFFICIAL_WEBSITE")
     private String officialWebsite;
 
-    //ez így nem megy Film-re nem hivatkozhat mivel nem entitás
-    /*@ManyToMany(mappedBy = "appearsOnFilms")
-    private List<Film> films;*/
+    @ManyToMany(mappedBy = "actors")
+    private Set<Movie> movies;
     
     public Actor() {
         //it is bean
@@ -36,11 +38,11 @@ public class Actor extends Person implements Serializable {
         this.officialWebsite = officialWebsite;
     }
 
-    /*public List<Film> getFilms() {
-        return films;
+    public Set<Movie> getMovies() {
+        return movies;
     }
 
-    public void setFilms(List<Film> films) {
-        this.films = films;
-    }*/ 
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
+    }   
 }

@@ -1,13 +1,15 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -22,14 +24,16 @@ public class Episode implements Serializable {
     @NotNull
     private String title;
     
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "season_fk", nullable = false)
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "SEASON_ID", nullable = false)
     private Season season;
     
+    @Column(name = "SERIAL_NUMBER")
     private String serialNumber;
     
+    @Column(name = "YEAR_OF_RELEASE")
     @Temporal(TemporalType.DATE)
-    private Date yearOfRelease;
+    private Calendar yearOfRelease;
 
     public Episode() {
         //it is bean
@@ -67,11 +71,12 @@ public class Episode implements Serializable {
         this.serialNumber = serialNumber;
     }
 
-    public Date getYearOfRelease() {
-        return yearOfRelease;
+    public String getYearOfRelease() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(yearOfRelease.getTime());
     }
 
-    public void setYearOfRelease(Date yearOfRelease) {
+    public void setYearOfRelease(Calendar yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
-    }
+    }  
 }

@@ -1,13 +1,17 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
+@Table(name = "USER_")
 public class User implements Serializable {
 
     @Id
@@ -21,9 +25,19 @@ public class User implements Serializable {
     @Pattern(regexp = "....")
     private String password;
     
-
+    @OneToMany (mappedBy = "users")
+    private Set<Comment> comments;
+    
     public User() {
         //it is bean
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -42,11 +56,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public Set<Comment> getComments() {
+        return comments;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }  
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }   
 }

@@ -1,13 +1,15 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -18,25 +20,20 @@ public class Comment implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_fk", nullable = false)
-    private User user;
-    
     private String content;
 
+    @Column(name = "DATE_OF_COMMENT")
     @Temporal(TemporalType.DATE)
-    private Date dateOfComment;
+    private Calendar dateOfComment;
     
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "series_fk", nullable = false)
-    private Series series;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "SHOW_ID", nullable = false)
+    private Movie shows;
     
-    //ez így nem megy Film-re nem hivatkozhat mivel nem entitás
-    /*@OneToOne (fetch = FetchType.LAZY)    
-    @JoinColumn(name = "film_fk", nullable = false)
-    private Film film;*/
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User users;
    
-
     public Comment() {
         //it is bean
     }
@@ -49,14 +46,6 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getContent() {
         return content;
     }
@@ -65,27 +54,28 @@ public class Comment implements Serializable {
         this.content = content;
     }
 
-    public Date getDateOfComment() {
-        return dateOfComment;
+    public String getDateOfComment() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(dateOfComment.getTime());
     }
 
-    public void setDateOfComment(Date dateOfComment) {
+    public void setDateOfComment(Calendar dateOfComment) {
         this.dateOfComment = dateOfComment;
     }
 
-    public Series getSeries() {
-        return series;
+    public Movie getShows() {
+        return shows;
     }
 
-    public void setSeries(Series series) {
-        this.series = series;
+    public void setShows(Movie shows) {
+        this.shows = shows;
     }
 
-    /*public Film getFilm() {
-        return film;
+    public User getUsers() {
+        return users;
     }
 
-    public void setFilm(Film film) {
-        this.film = film;
-    }*/  
+    public void setUsers(User users) {
+        this.users = users;
+    }  
 }

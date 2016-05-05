@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" pkg="csapat1.codingmentor.entity" v="1.5.4" xs="false" id="_14624668464561452" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:mapped-superclass xre="false" sm="false" abs="false" class="Person" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465491479">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="name" id="_14624668465491481"/>
+            <basic attribute-type="String" visibile="true" name="sex" id="_14624668465491482"/>
+            <basic attribute-type="Integer" visibile="true" name="yearOfBirth" id="_14624668465491483">
+                <jpa:column name="YEAR_OF_BIRTH" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="pathOfPhoto" id="_14624668465491484">
+                <jpa:column name="PATH_OF_PHOTO" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14624668465491480">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:mapped-superclass>
+    <jpa:entity xre="false" sm="false" abs="false" class="Movie" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668464871455">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="title" id="_14624668464871457">
+                <an n="@javax.validation.constraints.NotNull"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="pathOfPhoto" id="_14624668464871458">
+                <jpa:column name="PATH_OF_PHOTO" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="yearOfRelease" id="_14624668464871462">
+                <jpa:column name="YEAR_OF_RELEASE" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <one-to-many own="false" collection-type="java.util.Set" connected-entity-id="_14624668465021463" connected-attribute-id="_14624668465021467" visibile="true" name="comments" id="_14624668464871461"/>
+            <many-to-many own="true" collection-type="java.util.Set" connected-entity-id="_14624668465801493" connected-attribute-id="_14624668465801495" visibile="true" name="directors" id="_14624668464871459">
+                <join-table name="MOVIE_DIRECTOR">
+                    <jpa:join-column name="MOVIE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+                    <jpa:inverse-join-column name="DIRECTOR_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+                </join-table>
+            </many-to-many>
+            <many-to-many own="true" collection-type="java.util.Set" connected-entity-id="_14624668465491475" connected-attribute-id="_14624668465491478" visibile="true" name="actors" id="_14624668464871460">
+                <join-table name="MOVIE_ACTOR">
+                    <jpa:join-column name="MOVIE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+                    <jpa:inverse-join-column name="ACTOR_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+                </join-table>
+            </many-to-many>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14624668464871456">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:inheritance strategy="TABLE_PER_CLASS"/>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Series" superclassId="_14624668464871455" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668464711453">
+        <jpa:attributes>
+            <one-to-many own="false" collection-type="java.util.Set" connected-entity-id="_14624668465651485" connected-attribute-id="_14624668465651488" visibile="true" name="seasons" id="_14624668464711454"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Comment" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465021463">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="content" id="_14624668465021465"/>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="dateOfComment" id="_14624668465021466">
+                <jpa:column name="DATE_OF_COMMENT" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <many-to-one primaryKey="false" connected-entity-id="_14624668464871455" connected-attribute-id="_14624668464871461" fetch="LAZY" visibile="true" name="shows" id="_14624668465021467">
+                <join-column name="SHOW_ID" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </many-to-one>
+            <many-to-one primaryKey="false" connected-entity-id="_14624668465961496" connected-attribute-id="_14624668465961500" fetch="LAZY" visibile="true" name="users" id="_14624668465021468">
+                <join-column name="USER_ID" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </many-to-one>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14624668465021464">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Episode" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465181469">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="title" id="_14624668465181471">
+                <an n="@javax.validation.constraints.NotNull"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="serialNumber" id="_14624668465181473">
+                <jpa:column name="SERIAL_NUMBER" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="yearOfRelease" id="_14624668465181474">
+                <jpa:column name="YEAR_OF_RELEASE" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <many-to-one primaryKey="false" connected-entity-id="_14624668465651485" connected-attribute-id="_14624668465651489" fetch="LAZY" visibile="true" name="season" id="_14624668465181472">
+                <join-column name="SEASON_ID" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </many-to-one>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14624668465181470">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Actor" superclassId="_14624668465491479" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465491475">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="placeOfBirth" id="_14624668465491476">
+                <jpa:column name="PLACE_OF_BIRTH" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="officialWebsite" id="_14624668465491477">
+                <jpa:column name="OFFICIAL_WEBSITE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-many own="false" collection-type="java.util.Set" connected-entity-id="_14624668464871455" connected-attribute-id="_14624668464871460" visibile="true" name="movies" id="_14624668465491478"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Season" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465651485">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="title" id="_14624668465651487"/>
+            <basic attribute-type="String" visibile="true" name="serialNumber" id="_14624668465651490">
+                <jpa:column name="SERIAL_NUMBER" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="yearOfRelease" id="_14624668465651491">
+                <jpa:column name="YEAR_OF_RELEASE" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="linkOfPromoVideo" id="_14624668465651492">
+                <jpa:column name="LINK_OF_PROMO_VIDEO" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-one primaryKey="false" connected-entity-id="_14624668464711453" connected-attribute-id="_14624668464711454" fetch="LAZY" visibile="true" name="series" id="_14624668465651488">
+                <join-column name="SERIES_ID" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </many-to-one>
+            <one-to-many own="false" collection-type="java.util.Set" connected-entity-id="_14624668465181469" connected-attribute-id="_14624668465181472" visibile="true" name="episodes" id="_14624668465651489"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14624668465651486">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Director" superclassId="_14624668465491479" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465801493">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="originalName" id="_14624668465801494">
+                <jpa:column name="ORIGINAL_NAME" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-many own="false" collection-type="java.util.Set" connected-entity-id="_14624668464871455" connected-attribute-id="_14624668464871459" visibile="true" name="movies" id="_14624668465801495"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="User" visibile="true" minimized="false" rootElement="_14624668464561452" id="_14624668465961496">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="username" id="_14624668465961498">
+                <an n="@javax.validation.constraints.NotNull"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="password" id="_14624668465961499">
+                <an n="@javax.validation.constraints.NotNull"/>
+                <an n="@javax.validation.constraints.Pattern(regexp=&quot;....&quot;)"/>
+            </basic>
+            <one-to-many own="false" collection-type="java.util.Set" connected-entity-id="_14624668465021463" connected-attribute-id="_14624668465021468" visibile="true" name="comments" id="_14624668465961500"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14624668465961497">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="USER_"/>
+    </jpa:entity>
+    <jpa:c/>
+    <jpa:diagram>
+        <plane elementRef="_14624668464561452">
+            <shape elementRef="_14624668464871455">
+                <Bounds x="368.0" y="305.0" width="132.0" height="210.0"/>
+            </shape>
+            <shape elementRef="_14624668464711453">
+                <Bounds x="125.0" y="612.0" width="133.0" height="58.0"/>
+            </shape>
+            <shape elementRef="_14624668465021463">
+                <Bounds x="53.0" y="268.0" width="151.0" height="168.0"/>
+            </shape>
+            <shape elementRef="_14624668465181469">
+                <Bounds x="699.0" y="532.0" width="141.0" height="168.0"/>
+            </shape>
+            <shape elementRef="_14624668465491475">
+                <Bounds x="655.0" y="32.0" width="130.0" height="113.0"/>
+            </shape>
+            <shape elementRef="_14624668465651485">
+                <Bounds x="406.0" y="612.0" width="149.0" height="210.0"/>
+            </shape>
+            <shape elementRef="_14624668465801493">
+                <Bounds x="655.0" y="344.0" width="142.0" height="92.0"/>
+            </shape>
+            <shape elementRef="_14624668465961496">
+                <Bounds x="258.0" y="43.0" width="128.0" height="147.0"/>
+            </shape>
+            <shape elementRef="_14624668465491479">
+                <Bounds x="957.0" y="175.0" width="137.0" height="155.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>

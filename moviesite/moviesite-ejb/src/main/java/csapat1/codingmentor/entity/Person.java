@@ -1,7 +1,7 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -16,9 +16,11 @@ public class Person implements Serializable {
     private String name;
 
     private String sex;
-
+    
+    @Column(name="YEAR_OF_BIRTH")
     private Integer yearOfBirth;
     
+    @Column(name="PATH_OF_PHOTO")
     private String pathOfPhoto;
 
     public Person() {
@@ -63,5 +65,5 @@ public class Person implements Serializable {
 
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
-    }
+    }   
 }

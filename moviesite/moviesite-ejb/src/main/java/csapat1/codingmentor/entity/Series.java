@@ -1,56 +1,25 @@
 package csapat1.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
-public class Series extends Film implements Serializable {
+public class Series extends Movie implements Serializable {
     
-    private String title;
-
-    private String pathOfPhoto;
+    @OneToMany (mappedBy = "series")
+    private Set<Season> seasons;
     
-    @OneToMany
-    @JoinTable (name = "series_and_season",
-    joinColumns = @JoinColumn(name = "series_fk"), 
-    inverseJoinColumns = @JoinColumn(name = "season_fk ") )
-    private List<Season> seasons;
-
-
-
     public Series() {
         //it is bean
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getPathOfPhoto() {
-        return pathOfPhoto;
-    }
-
-    public void setPathOfPhoto(String pathOfPhoto) {
-        this.pathOfPhoto = pathOfPhoto;
-    }
-
-    public List<Season> getSeasons() {
+    public Set<Season> getSeasons() {
         return seasons;
     }
 
-    public void setSeasons(List<Season> seasons) {
+    public void setSeasons(Set<Season> seasons) {
         this.seasons = seasons;
-    }
+    }  
 }
