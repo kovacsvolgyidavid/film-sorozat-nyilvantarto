@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
     <artifactId>moviesite</artifactId>
-    <groupId>csapat1.codingmentor</groupId>
-    <version>1.0.0</version>
+    <groupId>hu.codingmentor</groupId>
+    <version>1.0-SNAPSHOT</version>
   </parent>
 
-    <groupId>csapat1.codingmentor</groupId>
+    <groupId>hu.codingmentor</groupId>
     <artifactId>moviesite-web</artifactId>
-    <version>1.0.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>moviesite-web</name>
@@ -21,15 +21,14 @@
     
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>moviesite-ejb</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

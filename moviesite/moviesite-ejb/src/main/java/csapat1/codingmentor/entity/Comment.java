@@ -27,11 +27,11 @@ public class Comment implements Serializable {
     private Calendar dateOfComment;
     
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "SHOW_ID", nullable = false)
+    @JoinColumn(name = "SHOW_ID"/*, nullable = false*/)
     private Movie shows;
     
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "USER_ID"/*, nullable = false*/)
     private User users;
    
     public Comment() {
