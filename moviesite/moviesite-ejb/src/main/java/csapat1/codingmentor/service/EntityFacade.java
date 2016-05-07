@@ -8,10 +8,15 @@ import javax.persistence.criteria.CriteriaQuery;
 
 @Stateless
 public class EntityFacade {
+    
     @PersistenceContext (unitName = "MoviePU")
     private EntityManager em;
 
-    public <T> void create(T entity) {
+    public EntityFacade() {
+        //it is bean
+    }
+    
+        public <T> void create(T entity) {
         em.persist(entity);
     }
 

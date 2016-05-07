@@ -8,10 +8,16 @@
     <h:body>
         <h:form>
             Hello from Facelets
-            
+
             <h:inputText value="#{databaseTest.movie.yearOfRelease}"/>
-            
+
         </h:form>
+
+
+        <h:form id="form">
+            <h:commandButton id="button" value="POST button" action="#{databaseTest.createMovie()}" />
+        </h:form>
+
     </h:body>
 </html>
 

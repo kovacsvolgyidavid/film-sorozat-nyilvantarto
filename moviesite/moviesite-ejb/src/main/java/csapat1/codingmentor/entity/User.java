@@ -13,11 +13,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "USER_")
 public class User extends Person implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-    
+  
     @NotNull
     private String username;
     
@@ -25,8 +21,8 @@ public class User extends Person implements Serializable {
     @Pattern(regexp = "....")
     private String password;
     
-    @OneToMany (mappedBy = "users")
-    private List<Comment> comments;
+//    @OneToMany (mappedBy = "users")
+//    private List<Comment> comments;
     
     public User() {
         //it is bean
@@ -48,11 +44,11 @@ public class User extends Person implements Serializable {
         this.password = password;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }   
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(List<Comment> comments) {
+//        this.comments = comments;
+//    }   
 }
