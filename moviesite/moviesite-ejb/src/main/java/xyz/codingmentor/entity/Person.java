@@ -33,8 +33,6 @@ public class Person implements Serializable {
     @Column(name="PATH_OF_PHOTO")
     private String pathOfPhoto;
     
-    private String rank;
-    
     public Person() {
         //it is bean
     }
@@ -63,14 +61,6 @@ public class Person implements Serializable {
         this.sex = sex;
     }
 
-//    public Sex getSex() {
-//        return sex;
-//    }
-//
-//    public void setSex(Sex sex) {
-//        this.sex = sex;
-//    }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -78,28 +68,12 @@ public class Person implements Serializable {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-//    public Integer getYearOfBirth() {
-//        return yearOfBirth;
-//    }
-//
-//    public void setYearOfBirth(Integer yearOfBirth) {
-//        this.yearOfBirth = yearOfBirth;
-//    }
-
+    
     public String getPathOfPhoto() {
         return pathOfPhoto;
     }
 
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }  
+    } 
 }

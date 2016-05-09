@@ -34,6 +34,8 @@ public class User extends Person implements Serializable {
     @Column(name="MOVIE_PER_PAGE")
     private Integer moviePerPage;
     
+    private String rank;
+    
     @OneToMany (mappedBy = "users")
     private List<Comment> comments;
     
@@ -71,5 +73,13 @@ public class User extends Person implements Serializable {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }   
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }  
 }
