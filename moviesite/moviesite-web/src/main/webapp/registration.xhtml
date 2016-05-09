@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <h:head>
+        <title>Registration</title>
+    </h:head>
+    <h:body>
+        <h:form id="form" enctype="multipart/form-data">
+            <p:growl id="grow" showDetail="false" sticky="false" />  
+
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="3" cellspacing="0">
+                        <h:panelGroup/>
+                        <h1>Registration</h1>
+                        <h:panelGroup/>
+
+                        <p:outputLabel value="Name: "/>
+                        <p:inputText id="name" value="#{registration.user.name}"
+                                     title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy">
+                        </p:inputText>
+                        <p:message for="name" />
+
+                        <p:outputLabel value="Username: " />
+                        <p:inputText id="username" value="#{registration.user.username}" 
+                                     title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters.">
+                        </p:inputText>
+                        <p:message for="username" />
+
+                        
+                        <p:outputLabel value="Password: " />
+                        <p:password id="password2" value="#{registration.user.password}" match="password1" 
+                                    title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters."
+                                    validatorMessage="The two passwords have to be the same!"/>
+                        <p:message for="password2" />
+
+                        <p:outputLabel value="Confirm Password: " />
+                        <p:password id="password1" value="#{registration.user.password}"/>
+                        <p:message for="password1" />
+
+                        <p:outputLabel value="Date of Birth: " />
+                        <p:calendar id="date" value="#{registration.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                    navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                    title="Format: dd/MM/yyyy" />
+                        <p:message for="date" />
+
+                        <p:outputLabel value="Sex:" />
+                        <p:selectOneRadio id="sex" value="#{registration.user.sex}">
+                            <f:selectItem itemLabel="Male" itemValue="Male" />
+                            <f:selectItem itemLabel="Female" itemValue="Female" />
+                        </p:selectOneRadio>
+                        <p:message for="sex" />
+                        
+                        <p:fileUpload id="fileupload" value="#{registration.uploadedFile}" mode="simple" skinSimple="true" label="Picture"/>
+                        
+                        <h:panelGroup/>
+                        <h:panelGroup/>
+                        <h:panelGroup/>
+                        <p:commandButton value="Sign In" action="#{registration.signIn()}" ajax="false"/>
+                    </h:panelGrid>
+                    <p:link value="Login" outcome="login"/>
+                </h:panelGrid>
+        </h:form> 
+        
+        <style type="text/css">
+            .ui-fileupload-buttonbar .ui-fileupload-upload {
+                display: none;
+            }
+            .ui-fileupload-buttonbar .ui-fileupload-cancel {
+                display: none;
+            }
+            .ui-fileupload-content .ui-progressbar {
+                display: none;
+            }
+
+
+        </style>
+    </h:body>
+</html>
