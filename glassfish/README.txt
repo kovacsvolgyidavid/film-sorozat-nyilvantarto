@@ -1,1 +1,1 @@
-Please put the Glassifh folder here.
+Please put the Glassfish 4.1 folder here.
