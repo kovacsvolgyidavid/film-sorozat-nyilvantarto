@@ -32,7 +32,7 @@
 #################################################
 
 #Create JDBCRealm
-../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-auth-realm --classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm --property="jaas-context=jdbcRealm:datasource-jndi=jdbc\\/movie:user-table=user:user-name-column=username:password-column=password:group-table=groups:group-name-column=groupname:digestrealm-password-enc-algorithm=AES:charset=UTF-8:digest-algorithm=SHA-256" SecurityJDBCRealm
+../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-auth-realm --classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm --property="jaas-context=jdbcRealm:datasource-jndi=jdbc\\/movie:user-table=users:user-name-column=username:password-column=password:group-table=groups:group-name-column=groupname:digestrealm-password-enc-algorithm=AES:charset=UTF-8:digest-algorithm=SHA-256" SecurityJDBCRealm
 
 #################################################
 
