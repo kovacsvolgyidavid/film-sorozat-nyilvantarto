@@ -2,9 +2,10 @@
 # start the GlassFish Server
 ../glassfish/glassfish4/bin/asadmin start-domain
 
+#################################################
+
 # create JDBC connection pool
 ../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jdbc-connection-pool --datasourceclassname org.apache.derby.jdbc.ClientDataSource40 --restype javax.sql.DataSource --property portNumber=1527:password=csoport1:user=csoport1:serverName=localhost:databaseName=moviesite moviePool
-
 
 #create JDBC resource
 ../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jdbc-resource --connectionpoolid moviePool jdbc/movie
@@ -29,6 +30,12 @@
 ../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jms-resource --restype javax.jms.Topic jms/MovieTopic
 
 #################################################
+
+#Create JDBCRealm
+../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-auth-realm --classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm --property="jaas-context=jdbcRealm:datasource-jndi=jdbc\\/movie:user-table=user:user-name-column=username:password-column=password:group-table=groups:group-name-column=groupname:digestrealm-password-enc-algorithm=AES:charset=UTF-8:digest-algorithm=SHA-256" SecurityJDBCRealm
+
+#################################################
+
 # stop the GlassFish Server
 ../glassfish/glassfish4/bin/asadmin stop-domain
 
