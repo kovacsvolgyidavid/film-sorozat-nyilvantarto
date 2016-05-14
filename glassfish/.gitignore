@@ -1,5 +1,4 @@
 # Ignore
-glassfish/
-
+glassfish4/
 
 # But not these files...
