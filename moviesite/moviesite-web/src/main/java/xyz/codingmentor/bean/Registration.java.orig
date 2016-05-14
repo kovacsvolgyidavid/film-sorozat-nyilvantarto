@@ -1,4 +1,3 @@
-
 package xyz.codingmentor.bean;
 
 import java.io.File;
@@ -23,8 +22,12 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+<<<<<<< HEAD
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.query.DatabaseQuery;
+=======
+import xyz.codingmentor.entity.Users;
+>>>>>>> feature/security
 import xyz.codingmentor.service.EntityFacade;
 
 @Named
@@ -39,22 +42,41 @@ public class Registration implements Serializable {
     
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
+<<<<<<< HEAD
     private StreamedContent image;
     private User user;
 
     @PostConstruct
     public void init() {
         user = new User();
+=======
+    private Users user;
+
+    public Registration() {
+    }
+    
+    @PostConstruct
+    private void init(){
+        user = new Users();
+>>>>>>> feature/security
     }
 
     public void signIn() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
+<<<<<<< HEAD
 //        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
 //        username.setParameter("username", user.getUsername());
 
 //        try {
 //            username.getSingleResult();
         if (databaseQuery.findUserByUsername(user.getUsername()) != null) {
+=======
+        TypedQuery<Users> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", Users.class);
+        username.setParameter("username", user.getUsername());
+        
+        try {
+            username.getSingleResult();
+>>>>>>> feature/security
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
             if (uploadedFile == null) {
@@ -126,6 +148,7 @@ public class Registration implements Serializable {
     public void setUploadedFile(UploadedFile uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
+<<<<<<< HEAD
 
     public StreamedContent getImage() {
         try {
@@ -146,10 +169,14 @@ public class Registration implements Serializable {
     }
 
     public User getUser() {
+=======
+    
+    public Users getUser() {
+>>>>>>> feature/security
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

@@ -2,8 +2,6 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,9 +29,15 @@ public class Comment implements Serializable {
     @JoinColumn(name = "SHOW_ID")
     private Movie show;
     
+<<<<<<< HEAD
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
+=======
+//    @ManyToOne (fetch = FetchType.LAZY)
+//    @JoinColumn(name = "USER_ID"/*, nullable = false*/)
+//    private Users users;
+>>>>>>> feature/security
    
     public Comment() {
         //it is bean
@@ -71,6 +75,7 @@ public class Comment implements Serializable {
         this.show = show;
     }
 
+<<<<<<< HEAD
     public User getUser() {
         return user;
     }
@@ -79,7 +84,14 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    
-
      
+=======
+//    public Users getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Users users) {
+//        this.users = users;
+//    }  
+>>>>>>> feature/security
 }
