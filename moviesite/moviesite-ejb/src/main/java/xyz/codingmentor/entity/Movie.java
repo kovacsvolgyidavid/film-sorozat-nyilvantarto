@@ -47,7 +47,7 @@ public class Movie implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     public List<Actor> actors;
     
-    @OneToMany (mappedBy = "shows")
+    @OneToMany (mappedBy = "show")
     private List<Comment> comments;
 
     public Movie() {

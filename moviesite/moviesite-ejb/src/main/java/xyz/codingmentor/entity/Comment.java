@@ -27,11 +27,11 @@ public class Comment implements Serializable {
     
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "SHOW_ID")
-    private Movie shows;
+    private Movie show;
     
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
-    private User users;
+    private User user;
    
     public Comment() {
         //it is bean
@@ -61,19 +61,21 @@ public class Comment implements Serializable {
         this.dateOfComment = dateOfComment;
     }
 
-    public Movie getShows() {
-        return shows;
+    public Movie getShow() {
+        return show;
     }
 
-    public void setShows(Movie shows) {
-        this.shows = shows;
+    public void setShow(Movie show) {
+        this.show = show;
     }
 
-    public User getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(User users) {
-        this.users = users;
-    }  
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+     
 }

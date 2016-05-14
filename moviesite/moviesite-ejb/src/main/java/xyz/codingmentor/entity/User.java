@@ -18,10 +18,7 @@ import xyz.codingmentor.constraint.UsernameConstraint;
 @NamedQuery(name = "findUserByUsername", 
         query = "SELECT u FROM User u WHERE u.username = :username")
 public class User extends Person implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+    //private static final Long serialVersionUID = -4723388127417782962L;
     
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
@@ -36,7 +33,7 @@ public class User extends Person implements Serializable {
     
     private String rank;
     
-    @OneToMany (mappedBy = "users")
+    @OneToMany (mappedBy = "user")
     private List<Comment> comments;
     
     public User() {
