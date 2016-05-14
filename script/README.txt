@@ -1,3 +1,5 @@
+0)Download please Glassfish 4.1
+
 1)The GlassFish bin folder must copy the ../glassfish folder
 Example:  film-sorozat-nyilvantarto/glassfish/glassfish4/bin
 
