@@ -8,7 +8,7 @@
     <class>xyz.codingmentor.entity.Director</class>
     <class>xyz.codingmentor.entity.Episode</class>
     <class>xyz.codingmentor.entity.Groups</class>
-    <class>xyz.codingmentor.entity.Movie</class>
+    <class>xyz.codingmentor.entity.Movie</class
     <class>xyz.codingmentor.entity.Season</class>
     <class>xyz.codingmentor.entity.Series</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
