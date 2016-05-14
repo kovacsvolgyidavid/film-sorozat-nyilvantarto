@@ -1,9 +1,10 @@
-
 package xyz.codingmentor.bean;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,42 +12,52 @@ import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.entity.User;
+import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
 @Named
-@RequestScoped
-public class Registration {
-    
+@SessionScoped
+public class Registration implements Serializable {
+
     @Inject
     private EntityFacade entityFacade;
-    private UploadedFile uploadedFile;
-    private User user;
+
+    @Inject
+    private DatabaseQuery databaseQuery;
     
+    private static final String PATH = "/path/resources/";
+    private UploadedFile uploadedFile;
+    private StreamedContent image;
+    private User user;
+
     @PostConstruct
-    private void init(){
+    public void init() {
         user = new User();
     }
-    
-    public void signIn(){
+
+    public void signIn() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
-        username.setParameter("username", user.getUsername());
-        
-        try {
-            username.getSingleResult();
+//        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
+//        username.setParameter("username", user.getUsername());
+
+//        try {
+//            username.getSingleResult();
+        if (databaseQuery.findUserByUsername(user.getUsername()) != null) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
-        } catch (NoResultException noResultException) {
-            if (uploadedFile.getFileName().equals("")) {
-                user.setPathOfPhoto("\\path\\resources\\user.jpg");
+        } else {
+            if (uploadedFile == null) {
+                user.setPathOfPhoto(PATH + "user.jpg");
             } else {
                 uploadPicture();
             }
@@ -54,29 +65,35 @@ public class Registration {
             user.setRank("User");
             user.setMoviePerPage(50);
             entityFacade.create(user);
+            user = new User();
+            uploadedFile = null;
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
         }
+
+//        } catch (NoResultException noResultException) {
+        //}
     }
-    
+
     public void uploadPicture() {
         createDirectory();
 
-        FacesMessage message = new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-
-        InputStream input;
         try {
-            input = uploadedFile.getInputstream();
-            Path file = Paths.get("\\path\\resources\\" + uploadedFile.getFileName());
-            Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+            InputStream inputstream = uploadedFile.getInputstream();
+            String fullFileName = uploadedFile.getFileName();
+
+            Path file = Paths.get(PATH + fullFileName);
+            Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
             user.setPathOfPhoto(file.toString());
         } catch (IOException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
     }
-    
+
     public void createDirectory() {
-        File directory = new File("\\path\\resources");
+        File directory = new File(PATH);
 
         if (!directory.exists()) {
             try {
@@ -86,7 +103,21 @@ public class Registration {
             }
         }
     }
-    
+
+    public void handleFileUpload(FileUploadEvent event) {
+        uploadedFile = event.getFile();
+
+        try {
+            image = new DefaultStreamedContent(uploadedFile.getInputstream());
+        } catch (IOException ex) {
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void resetPicture(AjaxBehaviorEvent event) {
+        uploadedFile = null;
+    }
+
     public UploadedFile getUploadedFile() {
         return uploadedFile;
     }
@@ -94,12 +125,35 @@ public class Registration {
     public void setUploadedFile(UploadedFile uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
-    
+
+    public StreamedContent getImage() {
+        try {
+            if (uploadedFile == null) {
+                image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
+            } else {
+                image = new DefaultStreamedContent(uploadedFile.getInputstream());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return image;
+    }
+
+    public void setImage(StreamedContent image) {
+        this.image = image;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }   
+    }
+
+    public String ujOldal() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "login?faces-redirect=true";
+    }
 }

@@ -2,7 +2,6 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -16,7 +15,7 @@ public class Actor extends Person implements Serializable {
     @Column(name="OFFICIAL_WEBSITE")
     private String officialWebsite;
 
-    @ManyToMany(mappedBy = "actors", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "actors")
     private List<Movie> movies;
     
     public Actor() {

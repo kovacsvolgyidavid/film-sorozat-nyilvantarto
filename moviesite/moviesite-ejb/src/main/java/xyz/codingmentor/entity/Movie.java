@@ -1,8 +1,7 @@
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +31,9 @@ public class Movie implements Serializable {
     @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
     
-    @Column(name = "YEAR_OF_RELEASE")
+    @Column(name = "DATE_OF_RELEASE")
     @Temporal(TemporalType.DATE)
-    private Calendar yearOfRelease;
+    private Date yearOfRelease;
     
     @ManyToMany
     @JoinTable (name = "MOVIE_DIRECTOR",
@@ -103,12 +102,11 @@ public class Movie implements Serializable {
         this.comments = comments;
     }
 
-    public String getYearOfRelease() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(yearOfRelease.getTime());
+    public Date getYearOfRelease() {
+        return yearOfRelease;
     }
 
-    public void setYearOfRelease(Calendar yearOfRelease) {
+    public void setYearOfRelease(Date yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
-    }  
+    }    
 }
