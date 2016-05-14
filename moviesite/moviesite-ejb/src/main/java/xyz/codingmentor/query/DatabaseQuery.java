@@ -4,7 +4,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import xyz.codingmentor.entity.User;
+import xyz.codingmentor.entity.Users;
 import javax.persistence.Query;
 
 @Stateless
@@ -15,12 +15,12 @@ public class DatabaseQuery {
 
     private Query query;
 
-    public User findUserByUsername(String username) {
+    public Users findUserByUsername(String username) {
         query = entityManager.createQuery(
-                "SELECT u FROM User u WHERE u.username LIKE " + "'" + username + "'");
+                "SELECT u FROM Users u WHERE u.username LIKE " + "'" + username + "'");
 
         try {
-            return (User) query.getSingleResult();
+            return (Users) query.getSingleResult();
         } catch (Exception e) {
             return null;
         }

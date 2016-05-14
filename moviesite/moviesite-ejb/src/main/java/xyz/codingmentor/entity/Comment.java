@@ -33,7 +33,7 @@ public class Comment implements Serializable {
     
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
-    private User user;
+    private Users user;
    
     public Comment() {
         //it is bean
@@ -71,11 +71,11 @@ public class Comment implements Serializable {
         this.show = show;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

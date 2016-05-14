@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>moviesite</artifactId>
-    <groupId>csapat1.codingmentor</groupId>
-    <version>1.0.0</version>
+        <groupId>xyz.codingmentor</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>hu.codingmentor</groupId>
@@ -20,11 +20,6 @@
     </properties>
     
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>moviesite-ejb</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>moviesite-ejb</artifactId>
