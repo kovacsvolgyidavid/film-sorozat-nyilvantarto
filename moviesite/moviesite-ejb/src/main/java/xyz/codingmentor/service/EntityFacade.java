@@ -11,6 +11,10 @@ public class EntityFacade {
     @PersistenceContext (unitName = "MoviePU")
     private EntityManager em;
 
+    public EntityFacade() {
+    }
+    
+
     public <T> void create(T entity) {
         em.persist(entity);
     }

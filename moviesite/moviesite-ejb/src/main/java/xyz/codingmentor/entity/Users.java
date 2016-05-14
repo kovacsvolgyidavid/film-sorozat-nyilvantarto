@@ -1,6 +1,7 @@
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,20 +10,25 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import xyz.codingmentor.constraint.NameConstraint;
 import xyz.codingmentor.constraint.PasswordConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
 
 @Entity
-@Table(name = "USER_")
+@Table(name = "USERS")
 @NamedQuery(name = "findUserByUsername", 
-        query = "SELECT u FROM User u WHERE u.username = :username")
-public class User extends Person implements Serializable {
+        query = "SELECT u FROM Users u WHERE u.username = :username")
+public class Users extends Person implements Serializable {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+//    @Id
+//    @GeneratedValue
+//    private Long id;
     
+//    @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
@@ -34,12 +40,12 @@ public class User extends Person implements Serializable {
     @Column(name="MOVIE_PER_PAGE")
     private Integer moviePerPage;
     
-    private String rank;
+//    private String rank;
     
-    @OneToMany (mappedBy = "users")
-    private List<Comment> comments;
+//    @OneToMany (mappedBy = "users")
+//    private List<Comment> comments;
     
-    public User() {
+    public Users() {
         //Empty
     }
 
@@ -67,19 +73,12 @@ public class User extends Person implements Serializable {
         this.moviePerPage = moviePerPage;
     }
     
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }  
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(List<Comment> comments) {
+//        this.comments = comments;
+//    }
+    
 }

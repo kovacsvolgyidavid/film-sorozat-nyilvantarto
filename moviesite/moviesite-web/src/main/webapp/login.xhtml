@@ -8,28 +8,15 @@
         <title>Login</title>
     </h:head>
     <h:body>
-        <h:form id="form">
-            <p:growl id="messages" showDetail="false" sticky="false" showSummary="true"/>
-            
-            <h1>Login</h1>
-            <h:panelGrid columns="2" cellpadding="5">
-
-                <p:outputLabel value="Username:"/>
-                <p:inputText value="#{login.user.username}">
-                    <f:validateBean disabled="true"/>
-                </p:inputText>
-
-                <p:outputLabel value="Password:"/>
-                <p:password value="#{login.user.password}" >
-                    <f:validateBean disabled="true"/>
-                </p:password>
-
-                <h:panelGroup/>
-                <p:commandButton value="Login" action="#{login.login()}" ajax="false"/>
-
-                <p:link value="Registration" outcome="registration"/>
-            </h:panelGrid>
-        </h:form>  
+        <p:panel header="Login From">
+            <form method="POST" action="j_security_check">
+                Username: <input type="text" name="j_username" />
+                Password: <input type="password" name="j_password" />
+                <br />
+                <input type="submit" value="Login" />
+                <input type="reset" value="Reset" />
+            </form> 
+        </p:panel>
     </h:body>
 </html>
 

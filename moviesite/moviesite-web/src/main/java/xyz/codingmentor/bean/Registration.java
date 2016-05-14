@@ -19,7 +19,7 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import org.primefaces.model.UploadedFile;
-import xyz.codingmentor.entity.User;
+import xyz.codingmentor.entity.Users;
 import xyz.codingmentor.service.EntityFacade;
 
 @Named
@@ -29,16 +29,19 @@ public class Registration {
     @Inject
     private EntityFacade entityFacade;
     private UploadedFile uploadedFile;
-    private User user;
+    private Users user;
+
+    public Registration() {
+    }
     
     @PostConstruct
     private void init(){
-        user = new User();
+        user = new Users();
     }
     
     public void signIn(){
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
+        TypedQuery<Users> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", Users.class);
         username.setParameter("username", user.getUsername());
         
         try {
@@ -51,7 +54,7 @@ public class Registration {
                 uploadPicture();
             }
 
-            user.setRank("User");
+//            user.setRank("User");
             user.setMoviePerPage(50);
             entityFacade.create(user);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
@@ -95,11 +98,11 @@ public class Registration {
         this.uploadedFile = uploadedFile;
     }
     
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }   
 }
