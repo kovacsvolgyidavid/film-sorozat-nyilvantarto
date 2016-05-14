@@ -2,6 +2,15 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="MoviePU" transaction-type="JTA">
     <jta-data-source>jdbc/movie</jta-data-source>
+    <class>xyz.codingmentor.entity.Users</class>
+    <class>xyz.codingmentor.entity.Actor</class>
+    <class>xyz.codingmentor.entity.Comment</class>
+    <class>xyz.codingmentor.entity.Director</class>
+    <class>xyz.codingmentor.entity.Episode</class>
+    <class>xyz.codingmentor.entity.Groups</class>
+    <class>xyz.codingmentor.entity.Movie</class>
+    <class>xyz.codingmentor.entity.Season</class>
+    <class>xyz.codingmentor.entity.Series</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

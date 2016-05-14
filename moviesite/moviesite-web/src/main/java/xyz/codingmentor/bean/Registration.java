@@ -23,7 +23,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-import xyz.codingmentor.entity.User;
+import xyz.codingmentor.entity.Users;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
@@ -32,7 +32,7 @@ import xyz.codingmentor.service.EntityFacade;
 public class Registration implements Serializable {
 
     @Inject
-    private EntityFacade entityFacade;
+    private EntityFacade<Users> entityFacade;
 
     @Inject
     private DatabaseQuery databaseQuery;
@@ -40,11 +40,11 @@ public class Registration implements Serializable {
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
-    private User user;
+    private Users user;
 
     @PostConstruct
     public void init() {
-        user = new User();
+        user = new Users();
     }
 
     public void signIn() {
@@ -66,7 +66,7 @@ public class Registration implements Serializable {
 //            user.setRank("User");
             user.setMoviePerPage(50);
             entityFacade.create(user);
-            user = new User();
+            user = new Users();
             uploadedFile = null;
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
@@ -145,11 +145,11 @@ public class Registration implements Serializable {
         this.image = image;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

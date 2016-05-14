@@ -13,8 +13,8 @@ import xyz.codingmentor.constraint.UsernameConstraint;
 
 @Entity
 //@Table(name = "USERS")
-@NamedQuery(name = "findUserByUsername", 
-        query = "SELECT u FROM Users u WHERE u.username = :username")
+//@NamedQuery(name = "findUserByUsername", 
+//        query = "SELECT u FROM Users u WHERE u.username = :username")
 public class Users extends Person implements Serializable {
 
     @Size(min = 1, message = "This field has to be filled.")

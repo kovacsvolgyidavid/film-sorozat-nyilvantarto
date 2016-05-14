@@ -8,7 +8,7 @@ import xyz.codingmentor.entity.Episode;
 import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Season;
 import xyz.codingmentor.entity.Series;
-import xyz.codingmentor.entity.User;
+import xyz.codingmentor.entity.Users;
 import xyz.codingmentor.service.EntityFacade;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,7 +18,7 @@ import javax.inject.Named;
 public class DatabaseTest {
     
     private Movie movie;
-    private User user;
+    private Users user;
     private Actor actor;
     private Comment comment;
     private Director director;
