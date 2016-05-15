@@ -5,7 +5,7 @@
   <artifactId>moviesite</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>moviesitesecu</name>
+  <name>moviesite</name>
   <modules>
     <module>moviesite-ear</module>
     <module>moviesite-web</module>

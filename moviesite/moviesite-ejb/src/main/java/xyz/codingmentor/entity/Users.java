@@ -7,11 +7,12 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import xyz.codingmentor.constraint.PasswordConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
 
 @Entity
@@ -33,6 +34,7 @@ public class Users extends Person implements Serializable {
     
     @CollectionTable(name="groups")
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<Groups> groups=new HashSet<>();
 //    private String rank;
     
