@@ -24,11 +24,6 @@ import xyz.codingmentor.constraint.UsernameConstraint;
         query = "SELECT u FROM Users u WHERE u.username = :username")
 public class Users extends Person implements Serializable {
 
-//    @Id
-//    @GeneratedValue
-//    private Long id;
-    
-//    @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
