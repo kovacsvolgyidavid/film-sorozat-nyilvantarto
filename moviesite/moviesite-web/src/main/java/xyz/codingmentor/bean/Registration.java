@@ -5,10 +5,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -36,7 +40,7 @@ public class Registration implements Serializable {
 
     @Inject
     private DatabaseQuery databaseQuery;
-    
+
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
@@ -61,6 +65,20 @@ public class Registration implements Serializable {
                 user.setPathOfPhoto(PATH + "user.jpg");
             } else {
                 uploadPicture();
+            }
+
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                String text = user.getPassword();
+                md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+                byte[] digest = md.digest();
+                BigInteger bigInt = new BigInteger(1, digest);
+                String output = bigInt.toString(16);
+
+                user.setPassword(output);
+
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+                System.out.println("Error");//TODO: itt majd valami logger kell
             }
 
             user.getGroups().add(Groups.USER);

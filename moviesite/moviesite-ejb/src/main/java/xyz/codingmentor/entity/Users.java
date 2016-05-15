@@ -24,8 +24,8 @@ public class Users extends Person implements Serializable {
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
     
-    @Size(min = 1, message = "This field has to be filled.")
-    @PasswordConstraint(message = "Wrong password format.")
+    //@Size(min = 1, message = "This field has to be filled.")
+    //@PasswordConstraint(message = "Wrong password format.")
     private String password;
     
     @Column(name="MOVIE_PER_PAGE")
