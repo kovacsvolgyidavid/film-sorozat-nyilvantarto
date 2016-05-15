@@ -1,20 +1,16 @@
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import xyz.codingmentor.constraint.NameConstraint;
 import xyz.codingmentor.constraint.PasswordConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
 
@@ -23,7 +19,7 @@ import xyz.codingmentor.constraint.UsernameConstraint;
 @NamedQuery(name = "findUserByUsername", 
         query = "SELECT u FROM Users u WHERE u.username = :username")
 public class Users extends Person implements Serializable {
-
+    @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
@@ -35,6 +31,9 @@ public class Users extends Person implements Serializable {
     @Column(name="MOVIE_PER_PAGE")
     private Integer moviePerPage;
     
+    @CollectionTable(name="groups")
+    @ElementCollection
+    private Set<Groups> groups=new HashSet<>();
 //    private String rank;
     
 //    @OneToMany (mappedBy = "users")
@@ -68,6 +67,7 @@ public class Users extends Person implements Serializable {
         this.moviePerPage = moviePerPage;
     }
     
+    
 //    public List<Comment> getComments() {
 //        return comments;
 //    }
@@ -75,5 +75,13 @@ public class Users extends Person implements Serializable {
 //    public void setComments(List<Comment> comments) {
 //        this.comments = comments;
 //    }
+
+    public Set<Groups> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Groups> groups) {
+        this.groups = groups;
+    }
     
 }

@@ -5,19 +5,49 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Login</title>
+        <style>
+            #main-part {
+                position: relative;
+                top: 10vh;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+        </style>
+        <link rel="stylesheet"  type="text/css" href="style.css" />
     </h:head>
     <h:body>
         <p:panel header="Login From">
             <form method="POST" action="j_security_check">
                 Username: <input type="text" name="j_username" />
-                Password: <input type="password" name="j_password" />
-                <br />
-                <input type="submit" value="Login" />
-                
-                <p:link value="Refistration" outcome="reistration"/>
-            </form> 
-        </p:panel>
+                <div class="left-side"/>
+                <div class="right-side"/>
+                <div class="header"/>
+
+
+                <div id="main-part" style="text-align: center; height: 100%">
+                    <h1>Login</h1>
+                    <h:panelGrid columns="1" style="margin: 0 auto">
+                        <!--<p:panel header="Login From">-->
+                        <form method="POST" action="j_security_check">
+                            Username: <input type="text" name="j_username" />
+                            Password: <input type="password" name="j_password" />
+                            <br />
+                            <input type="submit" value="Login" />
+                            <input type="reset" value="Reset" />
+                        </form> 
+                        <!--</p:panel>-->
+
+
+                        <!--<h:panelGroup/>-->
+
+                        <p:link value="Registration" outcome="registration"/>
+
+                    </h:panelGrid>
+                </div>
+                <!--</h:form>-->
     </h:body>
-</html>
+    </html>
 
