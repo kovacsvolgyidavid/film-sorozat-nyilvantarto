@@ -38,9 +38,9 @@ public class Users extends Person implements Serializable {
     private Set<Groups> groups=new HashSet<>();
 //    private String rank;
     
-//    @OneToMany (mappedBy = "users")
-//    private List<Comment> comments;
-    
+//@OneToMany (mappedBy = "users")
+// private List<Comment> comments;
+//    
     public Users() {
         //Empty
     }
@@ -69,13 +69,13 @@ public class Users extends Person implements Serializable {
         this.moviePerPage = moviePerPage;
     }
     
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(List<Comment> comments) {
+//        this.comments = comments;
+//    }
 
     public Set<Groups> getGroups() {
         return groups;
