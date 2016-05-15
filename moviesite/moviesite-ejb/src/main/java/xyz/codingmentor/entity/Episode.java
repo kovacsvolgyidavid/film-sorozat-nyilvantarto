@@ -1,8 +1,7 @@
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,15 +24,15 @@ public class Episode implements Serializable {
     private String title;
     
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "SEASON_ID"/*, nullable = false*/)
+    @JoinColumn(name = "SEASON_ID")
     private Season season;
     
     @Column(name = "SERIAL_NUMBER")
     private String serialNumber;
     
-    @Column(name = "YEAR_OF_RELEASE")
+    @Column(name = "DATE_OF_RELEASE")
     @Temporal(TemporalType.DATE)
-    private Calendar yearOfRelease;
+    private Date dateOfRelease;
 
     public Episode() {
         //it is bean
@@ -71,12 +70,11 @@ public class Episode implements Serializable {
         this.serialNumber = serialNumber;
     }
 
-    public String getYearOfRelease() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(yearOfRelease.getTime());
+    public Date getDateOfRelease() {
+        return dateOfRelease;
     }
 
-    public void setYearOfRelease(Calendar yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
-    }  
+    public void setDateOfRelease(Date dateOfRelease) {
+        this.dateOfRelease = dateOfRelease;
+    }
 }

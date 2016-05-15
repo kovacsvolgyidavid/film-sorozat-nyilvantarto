@@ -69,14 +69,13 @@ public class Users extends Person implements Serializable {
         this.moviePerPage = moviePerPage;
     }
     
-    
-//    public List<Comment> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<Comment> comments) {
-//        this.comments = comments;
-//    }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     public Set<Groups> getGroups() {
         return groups;

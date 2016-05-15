@@ -1,8 +1,7 @@
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,11 +23,11 @@ public class Comment implements Serializable {
 
     @Column(name = "DATE_OF_COMMENT")
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar dateOfComment;
+    private Date dateOfComment;
     
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "SHOW_ID"/*, nullable = false*/)
-    private Movie shows;
+    @JoinColumn(name = "SHOW_ID")
+    private Movie show;
     
 //    @ManyToOne (fetch = FetchType.LAZY)
 //    @JoinColumn(name = "USER_ID"/*, nullable = false*/)
@@ -54,21 +53,20 @@ public class Comment implements Serializable {
         this.content = content;
     }
 
-    public String getDateOfComment() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return format.format(dateOfComment.getTime());
+    public Date getDateOfComment() {
+        return dateOfComment;
     }
 
-    public void setDateOfComment(Calendar dateOfComment) {
+    public void setDateOfComment(Date dateOfComment) {
         this.dateOfComment = dateOfComment;
     }
 
-    public Movie getShows() {
-        return shows;
+    public Movie getShow() {
+        return show;
     }
 
-    public void setShows(Movie shows) {
-        this.shows = shows;
+    public void setShow(Movie show) {
+        this.show = show;
     }
 
 //    public Users getUsers() {
@@ -77,5 +75,5 @@ public class Comment implements Serializable {
 //
 //    public void setUsers(Users users) {
 //        this.users = users;
-//    }  
+    }
 }

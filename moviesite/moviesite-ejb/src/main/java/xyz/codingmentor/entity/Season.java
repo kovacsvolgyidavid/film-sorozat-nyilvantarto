@@ -1,8 +1,7 @@
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,9 +33,9 @@ public class Season implements Serializable {
     @Column(name = "SERIAL_NUMBER")
     private String serialNumber;
     
-    @Column(name = "YEAR_OF_RELEASE")
+    @Column(name = "DATE_OF_RELEASE")
     @Temporal(TemporalType.DATE)
-    private Calendar yearOfRelease;
+    private Date dateOfRelease;
     
     @Column(name = "LINK_OF_PROMO_VIDEO")
     private String linkOfPromoVideo;
@@ -85,13 +84,12 @@ public class Season implements Serializable {
         this.serialNumber = serialNumber;
     }
 
-    public String getYearOfRelease() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(yearOfRelease.getTime());
+    public Date getDateOfRelease() {
+        return dateOfRelease;
     }
 
-    public void setYearOfRelease(Calendar yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
+    public void setDateOfRelease(Date dateOfRelease) {
+        this.dateOfRelease = dateOfRelease;
     }
 
     public String getLinkOfPromoVideo() {

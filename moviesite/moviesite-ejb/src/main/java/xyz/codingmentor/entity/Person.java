@@ -25,7 +25,7 @@ public class Person implements Serializable {
     
     private String sex;
     
-    @Column(name="YEAR_OF_BIRTH")
+    @Column(name="DATE_OF_BIRTH")
     @Temporal(TemporalType.DATE)
     @NotNull(message = "This field has to be filled.")
     private Date dateOfBirth;

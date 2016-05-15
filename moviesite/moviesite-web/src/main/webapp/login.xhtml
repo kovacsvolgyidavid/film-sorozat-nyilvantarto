@@ -5,7 +5,18 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Login</title>
+        <style>
+            #main-part {
+                position: relative;
+                top: 10vh;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+        </style>
+        <link rel="stylesheet"  type="text/css" href="style.css" />
     </h:head>
     <h:body>
             <form method="POST" action="j_security_check">
@@ -17,6 +28,7 @@
             </form> 
             <h:form>
             <p:link value="Registration" outcome="registration"/>
+                
             </h:form>
     </h:body>
 </html>
