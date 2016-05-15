@@ -1,5 +1,5 @@
 package xyz.codingmentor.bean;
-
+//Szia hogy vagy ? reméleme jól :( - faszság komment
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
