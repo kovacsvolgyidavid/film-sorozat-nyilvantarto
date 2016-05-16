@@ -26,7 +26,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-import xyz.codingmentor.entity.Groups;
+import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.entity.Users;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;

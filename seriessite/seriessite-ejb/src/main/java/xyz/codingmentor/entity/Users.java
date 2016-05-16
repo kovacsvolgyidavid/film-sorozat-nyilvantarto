@@ -1,7 +1,10 @@
 package xyz.codingmentor.entity;
 
+import xyz.codingmentor.enums.Groups;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -11,15 +14,20 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import xyz.codingmentor.constraint.NameConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
 
 @Entity
 @Table(name = "USERS")
 @NamedQuery(name = "findUserByUsername", 
         query = "SELECT u FROM Users u WHERE u.username = :username")
-public class Users extends Person implements Serializable {
+public class Users implements Serializable {
     @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
@@ -36,11 +44,23 @@ public class Users extends Person implements Serializable {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private Set<Groups> groups=new HashSet<>();
-//    private String rank;
+     @Size(min = 1, message = "This field has to be filled.")
+    @NameConstraint(message = "Wrong name format.")
+    private String name;
     
-//@OneToMany (mappedBy = "users")
-// private List<Comment> comments;
-//    
+    private String sex;
+    
+    @Column(name="DATE_OF_BIRTH")
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "This field has to be filled.")
+    private Date dateOfBirth;
+    
+    @Column(name="PATH_OF_PHOTO")
+    private String pathOfPhoto;
+    
+@OneToMany (mappedBy = "users")
+private List<Comment> comments;
+    
     public Users() {
         //Empty
     }
@@ -69,13 +89,13 @@ public class Users extends Person implements Serializable {
         this.moviePerPage = moviePerPage;
     }
     
-//    public List<Comment> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<Comment> comments) {
-//        this.comments = comments;
-//    }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     public Set<Groups> getGroups() {
         return groups;
@@ -83,6 +103,38 @@ public class Users extends Person implements Serializable {
 
     public void setGroups(Set<Groups> groups) {
         this.groups = groups;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPathOfPhoto() {
+        return pathOfPhoto;
+    }
+
+    public void setPathOfPhoto(String pathOfPhoto) {
+        this.pathOfPhoto = pathOfPhoto;
     }
     
 }

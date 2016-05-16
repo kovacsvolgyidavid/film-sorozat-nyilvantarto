@@ -29,9 +29,9 @@ public class Comment implements Serializable {
     @JoinColumn(name = "SHOW_ID")
     private Movie show;
     
-//    @ManyToOne (fetch = FetchType.LAZY)
-//    @JoinColumn(name = "USER_ID"/*, nullable = false*/)
-//    private Users users;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "USERNAME"/*, nullable = false*/)
+    private Users users;
    
     public Comment() {
         //it is bean
@@ -69,11 +69,12 @@ public class Comment implements Serializable {
         this.show = show;
     }
 
-//    public Users getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Users users) {
-//        this.users = users;
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
     }
 
