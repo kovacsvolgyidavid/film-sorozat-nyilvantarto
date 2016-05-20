@@ -14,6 +14,8 @@ public class Series extends Movie implements Serializable {
     @OneToMany (mappedBy = "series")
     private List<Season> seasons;
     
+    private String description;
+    
     public List<Season> getSeasons() {
         return seasons;
     }
@@ -30,6 +32,25 @@ public class Series extends Movie implements Serializable {
     public String toString() {
         return "Series{" + "seasons=" + seasons + '}';
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String getTitle() {
+        return super.getTitle(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getId() {
+        return super.getId(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
     
 }

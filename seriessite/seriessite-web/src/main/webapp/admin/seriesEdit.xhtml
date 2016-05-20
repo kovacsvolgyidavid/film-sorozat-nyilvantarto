@@ -37,7 +37,7 @@
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-1"> </div>
-                    <div class="ui-grid-col-7"> 
+                    <div class="ui-grid-col-6"> 
                         <h:panelGrid columns="2" cellpadding="20" style="margin-top:60px">
                             <!--Series name-->
                             <p:outputLabel value="Series name: "/>
@@ -51,41 +51,19 @@
                                         title="Format: dd/MM/yyyy" />
                         </h:panelGrid>
                     </div>
-                    <div class="ui-grid-col-4">
+                    <div class="ui-grid-col-5">
                         <!--Picture-->
-                        <h:panelGrid cellpadding="20" style="margin-top:20px">
-                            <p:fileUpload id="upload" mode="simple" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
+                        <h:panelGrid cellpadding="1" >
+                            <p:fileUpload id="upload" mode="simple" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true" style="margin-top:25px"/>
+                            <p:outputLabel value="Picture: "/>
+                            <p:outputLabel value="Picture2: "/>
                             <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
                         </h:panelGrid>
                     </div>
                 </div>
             </div>
 
-
-            <div class="ui-grid ui-grid-responsive">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-4">4</div>
-                    <div class="ui-grid-col-4">4</div>
-                    <div class="ui-grid-col-4">4</div>
-                </div>
-            </div>
-
-            <div class="ui-grid ui-grid-responsive">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-4">2</div>
-                    <div class="ui-grid-col-4">2</div>
-                    <div class="ui-grid-col-4">2</div>
-
-                    <div class="ui-grid-col-4">2</div>
-                    <div class="ui-grid-col-4">2</div>
-                    <div class="ui-grid-col-4">2</div>
-                </div>
-            </div>
-
-
-
             <p:separator />
-
 
             <!--List actors, directors, and seasons-->
             <div class="ui-grid ui-grid-responsive">
@@ -94,65 +72,47 @@
                         <!--Add Actor-->
                         <h3 style="margin-top: 0">Actor</h3>
                         <p:growl id="msgs" showDetail="true" />
-                        <p:orderList value="#{seriesEdit.actorList}" id="actorListId" var="actorVar" itemLabel="#{actorVar}" itemValue="#{actorVar}" controlsLocation="none">
-                            <p:ajax event="select" listener="#{seriesEdit.onSelect}" update="msgs"/>
-                            <p:ajax event="unselect" listener="#{seriesEdit.onUnselect}" update="msgs"/>
-                            <p:ajax event="reorder" listener="#{seriesEdit.onReorder}" update="msgs"/>
+                        <p:orderList  value="#{seriesEdit.actorList}" id="actorListId" var="actorVar" itemLabel="#{actorVar}" itemValue="#{actorVar}" controlsLocation="none" style="margin-top: 0">
 
                             <f:facet name="actors">Actors</f:facet>
 
-
                             <!--Actor title-->
                             <p:column style="width:50px">
-                                <p:link outcome="#{seriesEdit.goToActorEditSite()}" value="#{actorVar.name}">
+                                <p:link outcome="actorEdit.xhtml" value="#{actorVar.name}">
                                     <f:param name="actorId" value="#{actorVar.id}" />
                                 </p:link>
                             </p:column>
 
                             <!--Edit actor button-->
-                            <p:column style="width:50px">
-                                <p:button  outcome="#{seriesEdit.goToActorEditSite()}" icon="ui-icon-edit">
+                            <p:column style="width:60px">
+                                <p:commandButton  action="actorEdit.xhtml" icon="fa fa-fw fa-edit" type="button" title="Edit">
                                     <f:param name="actorId" value="#{actorVar.id}" />
-                                </p:button>
+                                </p:commandButton>
                             </p:column>
 
                             <!--Remove actor button-->
                             <p:column style="width:50px">
-                                <p:commandButton action="#{seriesEdit.removeActorFromSeries}" update="actorListId" icon="ui-icon-trash" title="Remove" />
+                                <p:commandButton action="#{seriesEdit.removeActorFromSeries}" icon="ui-icon-trash" title="Remove">
+                                    <f:param name="actorId" value="#{actorVar.id}" />
+                                </p:commandButton>
                             </p:column>
-
-
                         </p:orderList>
 
-                        <!-- Dropdown  actor list -->
+                        <!-- Dropdown  actor list to add new actor to series -->
                         <h:panelGrid columns="2" cellpadding="5">
-                            <!--<h:outputLabel for="btnSelect" value="Add:" />-->
-                            <p:selectOneMenu id="btnSelect" value="#{seriesEdit.actor}" onchange="$('#form').submit()">
+                            <p:selectOneMenu id="btnSelect" value="#{seriesEdit.actor}" converter="actorConverter" onchange="$('#form').submit()">
                                 <f:selectItem itemLabel="Choose Actor" itemValue="" />
-                                <f:selectItems value="#{seriesEdit.actorList}" />
+                                <f:selectItems value="#{seriesEdit.actorListNotInSeries}" />
                             </p:selectOneMenu>
-                            <p:commandButton action="#{seriesEdit.goToActorEditSite()}" value="Add" id="addBtn" icon="ui-icon-add" title="Add" />
+                            <p:commandButton action="#{seriesEdit.addActorToSeries()}" value="Add" id="addBtn" icon="ui-icon-add" title="Add" />
                         </h:panelGrid>
 
                     </div>
                 </div>
             </div>
 
-
-
-
             <!--Description panel-->
-            <p:outputPanel id="containmentPanel" layout="block" style="width:400px;height:200px;border:2px solid black;">
-                <p:panel id="containment" header="Containment" style="margin:0">
-                    Description
-                </p:panel>
-                <p:resizable for="containment" containment="true"/>
-            </p:outputPanel>
-
-
-
-
-
+            <p:inputTextarea rows="10" cols="50" completeMethod="#{seriesEdit.series.description}" queryDelay="750" minQueryLength="4" style="margin:0 auto;"/>
 
         </h:form>
     </h:body>

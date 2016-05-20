@@ -23,6 +23,7 @@ import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.service.EntityFacade;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -39,7 +40,7 @@ public class SeriesEdit implements Serializable {
     private EntityFacade entityFacade;
 
     //Files are located in seriessite-web/src/main/resources/series
-    private static final String PATH = "/series/";
+    private static final String PATH = "series/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private Actor actor;
@@ -51,6 +52,8 @@ public class SeriesEdit implements Serializable {
     @PostConstruct
     public void init() {
         actor = new Actor();
+        series = new Series();
+        series.setTitle("Title of title");
 
         Actor s1 = new Actor();
         s1.setId(1L);
@@ -88,10 +91,11 @@ public class SeriesEdit implements Serializable {
         actorListNotInSeries.add(s32);
     }
     
-    public String goToActorEditSite() {
-        //1 is Actor edit it
-        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
-    }
+//    public String goToActorEditSite() {
+//        //1 is Actor edit it
+////        return "actorEdit.xhtml/?id="+actor.getId()+",faces-redirect=true";
+//        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
+//    }
     
     
 
@@ -111,50 +115,7 @@ public class SeriesEdit implements Serializable {
         this.actorListNotInSeries = actorListNotInSeries;
     }
     
-    
-    
 
-//    public void signIn() {
-        //        FacesContext facesContext = FacesContext.getCurrentInstance();
-        //
-        //        if (databaseQuery.findUserByUsername(user.getUsername()) != null) {
-        //            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
-        //        } else {
-        //            if (uploadedFile == null) {
-        //                user.setPathOfPhoto(PATH + "user.jpg");
-        //            } else {
-//                           actor.setPathOfPhoto(nameOfImage);
-        //                saveImageToDirectory("imageName");
-        //            }
-        //
-        //            try {
-        //                MessageDigest md = MessageDigest.getInstance("SHA-256");
-        //                String text = user.getPassword();
-        //                md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
-        //                byte[] digest = md.digest();
-        //                BigInteger bigInt = new BigInteger(1, digest);
-        //                String output = bigInt.toString(16);
-        //
-        //                user.setPassword(output);
-        //
-        //            } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-        //                System.out.println("Error");//TODO: itt majd valami logger kell
-        //            }
-        //
-        //            user.getGroups().add(Groups.USER);
-        //            user.setMoviePerPage(50);
-    
-        //            entityFacade.create(user);
-        //            user = new Users();
-        //            uploadedFile = null;
-        //
-        //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
-        //        }
-        //
-        ////        } catch (NoResultException noResultException) {
-        //        //}
-        //    }
-        //
     public void saveImageToDirectory(String nameOfImage) {
         createDirectory();
 
@@ -187,17 +148,11 @@ public class SeriesEdit implements Serializable {
 
     public void imageUpload(FileUploadEvent event) {
         uploadedFile = event.getFile();
-
-//        try {
-//            image = new DefaultStreamedContent(uploadedFile.getInputstream());
-//        } catch (IOException ex) {
-//            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
-    public void resetPicture(AjaxBehaviorEvent event) {
-        uploadedFile = null;
-    }
+//    public void resetPicture(AjaxBehaviorEvent event) {
+//        uploadedFile = null;
+//    }
 
     public UploadedFile getUploadedFile() {
         return uploadedFile;
@@ -210,14 +165,11 @@ public class SeriesEdit implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
+                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
                 ClassLoader classLoader = getClass().getClassLoader();
                 ///Location: film-sorozat-nyilvantarto/seriessite/seriessite-web/src/main/resources/series
-                //http://www.mkyong.com/java/java-read-a-file-from-resources-folder/
-                File noPicture = new File(classLoader.getResource("series/noimages.png").getFile());
-
-                LOG.info(noPicture.getParent().toString());
-                LOG.info(noPicture.getAbsolutePath().toString());
-                LOG.info(noPicture.getPath());
+                File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
+                LOG.info(noPicture.getName());
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
             } else {
                 LOG.info(this.getClass().getCanonicalName()+ "else ag in getImage function");
@@ -253,36 +205,23 @@ public class SeriesEdit implements Serializable {
 
 
     public void addActorToSeries(){
-        LOG.info("Here should add actor to series");
+        
+        LOG.info("Here should add actor to series. Id." + actor.getId());
         
     }
     
     public void removeActorFromSeries(){
-        LOG.info("Here should remove actor fromseries");
+        FacesContext context = FacesContext.getCurrentInstance();
+       
+//        Map<String,String> params = 
+//                context.getExternalContext().getRequestParameterMap();
+//	  String id = params.get("actorId");
+//        LOG.info("Here should remove actor fromseries "+ id + "iddd");
+        LOG.info("Here should remove actor fromseries "+ 4 + "iddd");
         
     }
 
 
 
-    public void onSelect(SelectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
-    }
 
-    public void onUnselect(UnselectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
-        actor = (Actor) event.getObject();
-        LOG.info(actor.toString());
-    }
-
-    public void onReorder() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
-    }
-
-//    public String ujOldal() {
-//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-//        return "login?faces-redirect=true";
-//    }
 }
