@@ -15,12 +15,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import xyz.codingmentor.entity.Actor;
+import xyz.codingmentor.entity.Comment;
+import xyz.codingmentor.entity.Director;
 import xyz.codingmentor.entity.Episode;
 import xyz.codingmentor.entity.Season;
 import xyz.codingmentor.entity.Series;
+import xyz.codingmentor.entity.Users;
+import xyz.codingmentor.enums.Groups;
+import xyz.codingmentor.service.EntityFacade;
 
 /**
  *
@@ -33,7 +40,10 @@ public class SeriesView implements Serializable {
     private Series series;
     private static final String PATH = "/path/resources";
     private Season actualSeason;
-
+    private String comment;
+    @Inject
+    private EntityFacade entityFacade;
+    Users user;
     @PostConstruct
     public void init() {//TODO: delete this
         series = new Series();
@@ -49,10 +59,43 @@ public class SeriesView implements Serializable {
         episode1.setTitle("Kill with fire");
         season1.setEpisodes(new ArrayList<Episode>());
         season1.getEpisodes().add(episode1);
+        Episode episode2=new Episode();
+        episode2.setDateOfRelease(Calendar.getInstance().getTime());
+        episode2.setTitle("Carrot on a stick");
+        season1.getEpisodes().add(episode2);
       series.getSeasons().add(season1);
       series.getSeasons().add(season2);
       series.getSeasons().add(season3);
-
+      series.setActors(new ArrayList<Actor>());
+      Actor actor1=new Actor();
+      actor1.setName("Leonardo Caprio");
+      actor1.setDateOfBirth(Calendar.getInstance().getTime());
+      series.getActors().add(actor1);
+      Director director1=new Director();
+      director1.setName("Tar Béla");
+      director1.setDateOfBirth(Calendar.getInstance().getTime());
+      series.setDirectors(new ArrayList<Director>());
+      series.getDirectors().add(director1);
+      entityFacade.create(actor1);
+      entityFacade.create(episode1);
+      entityFacade.create(episode2);
+      entityFacade.create(season1);
+      entityFacade.create(season2);
+      entityFacade.create(season3);
+      entityFacade.create(director1);
+      entityFacade.create(series);
+      Users user=new Users();
+      user.setName("Kovácsvölgyi Dávid");
+      Calendar calendar=Calendar.getInstance();
+      calendar.set(1990, 9, 5);
+      user.setDateOfBirth(calendar.getTime());
+      user.getGroups().add(Groups.ADMIN);
+      user.setPassword("Metal123");
+      user.setSex("Male");
+      user.setUsername("kovi");
+      entityFacade.create(user);
+      this.user=user;
+      comment="pénisz";
     }
 
     public String getTitle() {
@@ -111,4 +154,30 @@ public class SeriesView implements Serializable {
         }
         return actualSeason.getEpisodes();
     }
+    public List<Actor> getActors(){
+        return series.getActors();
+    }
+    
+    public List<Director> getDirectors(){
+        return series.getDirectors();
+    }
+    public void addComment(){//TODO:lepusholni adatbázisba
+        Comment addComment=new Comment();
+        addComment.setContent(comment);
+        addComment.setDateOfComment(Calendar.getInstance().getTime());
+        addComment.setUsers(user);
+        addComment.setShow(series);
+        entityFacade.create(addComment);   
+        comment="";
+    }
+    public String getComment(){
+        return comment;
+    }
+    public void setComment(String comment){
+        this.comment=comment;
+    }
+    public List<Comment> getComments(){
+        return series.getComments();
+    }
+    
 }
