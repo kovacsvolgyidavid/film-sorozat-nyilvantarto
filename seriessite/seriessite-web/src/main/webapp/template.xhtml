@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Bootstrap for begginners</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <link rel="stylesheet" href="resources/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="resources/css/bootstrap.css"/>
+        <link rel="stylesheet" href="resources/css/bootstrap-theme.min.css"/>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:growl id="grow" showDetail="false" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+
+
+
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div id="navbar" class="container-fluid">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="#">Home</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Logout</a></li>
+                        <li><a href="#">Name</a></li>
+                        <p:commandButton value="Profile" action="#{profil.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
+                        <!--                    <li><a href="admin/admin.xhtml">Admin</a></li>-->
+                        <p:commandButton value="Admin" action="admin/admin" style="height:50px; background-color: 
+                                         red" immediate="true"/>
+                        <!--                    <p:commandButton value="Admin" action="admin/admin.xhtml"/>-->
+                    </ul>
+                </div>
+            </nav>  
+
+            <br/><br/><br/>
+
+            <div class="row">
+                <div class="col-md-2 sidebar"/>
+                <div class="col-md-8 col-md-offset-2">
+                    <ui:insert name="content">
+                        Content<br/>
+                    </ui:insert>
+                </div>
+                <div class="col-md-2 col-md-offset-10 sidebar"/>
+            </div>
+
+
+
+        </h:form>
+
+
+
+        <style>
+
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                display: block;
+                background-color: #CCCCCC;
+            }
+
+            .ui-fileupload-content {
+                display: none;
+            }
+            .ui-fileupload-buttonbar.ui-widget-header {
+                background-color: transparent;
+                border: 0 none;
+            }
+        </style>
+    </h:body>
+</html>
+

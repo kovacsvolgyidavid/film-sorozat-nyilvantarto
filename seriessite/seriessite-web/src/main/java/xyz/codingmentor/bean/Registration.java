@@ -28,6 +28,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.entity.Users;
+import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
@@ -45,10 +46,13 @@ public class Registration implements Serializable {
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private Users user;
+    private final static Enum[] sexes = new Enum[2];
 
     @PostConstruct
     public void init() {
         user = new Users();
+        sexes[0] = Sex.MALE;
+        sexes[1] = Sex.FEMALE;
     }
 
     public void signIn() {
@@ -170,9 +174,31 @@ public class Registration implements Serializable {
     public void setUsers(Users user) {
         this.user = user;
     }
+    
+    public Enum[] getSexes() {
+        return sexes;
+    }
 
     public String ujOldal() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login?faces-redirect=true";
+    }
+    
+    public String hashPassword(String password){
+        String hashedPassword = null;
+        
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            String text = user.getPassword();
+            md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+            byte[] digest = md.digest();
+            BigInteger bigInt = new BigInteger(1, digest);
+            hashedPassword = bigInt.toString(16);
+
+            
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            Logger.getLogger(Profil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hashedPassword;     
     }
 }
