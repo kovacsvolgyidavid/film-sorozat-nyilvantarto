@@ -5,12 +5,79 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite">
+    <h:head>
         <title>TODO supply a title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+    </h:head>
+    <h:body><table>
+            <tr>
+                <td rowspan="4">
+                    <p:graphicImage id="gi" value="#{seriesView.image}" width="230" height="180" cache="false"/>
+                </td>
+
+                <td>
+                    <h1><h:outputText value="#{seriesView.title}"/></h1>    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Release date:"/>    
+                </td>
+                <td>
+                    <h:outputText value="#{seriesView.releaseDate}"/>    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Seasons:"/>    
+                </td>
+                <td>
+                    <h:outputText value="#{seriesView.seasonNumber}"/>    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText value="Episodes:"/>    
+                </td>
+                <td>
+                    <h:outputText value="#{seriesView.episodeNumber}"/>    
+                </td>
+            </tr>
+        </table>
+        <c:set var="upperLimit" value="#{seriesView.seasonNumber}"/>
+        <h:form id="season_form">
+            <c:forEach var="i" begin="0" end="#{upperLimit-1}">
+               <c:choose>
+                <c:when test="#{i==seriesView.actualSeason}">
+                    <p:commandButton value="#{i+1}" disabled="true"/>
+                </c:when>
+                <c:otherwise>
+                    <p:commandButton value="#{i+1}" update="season_form">
+                        <p:ajax listener="#{seriesView.setActualSeason(i)}" update="season_form"/>
+                    </p:commandButton>
+                </c:otherwise>
+            </c:choose>
+            </c:forEach>
+            <h:dataTable value="#{seriesView.actualSeasonEpisodes}" var="episode">
+                <h:column>
+                    <cc:facet name="header">Episode</cc:facet>
+                    #{seriesView.actualSeasonEpisodes.indexOf(episode)+1}
+                </h:column>
+                <h:column>
+                    <cc:facet name="header">Title</cc:facet>
+                    #{episode.title}
+                </h:column>
+                <h:column>
+                    <cc:facet name="header">Release</cc:facet>
+                    #{episode.dateOfRelease}
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+    </h:body>
 </html>
