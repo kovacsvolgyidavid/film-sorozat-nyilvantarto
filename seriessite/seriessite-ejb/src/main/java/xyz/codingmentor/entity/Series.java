@@ -3,9 +3,12 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
+@NamedQuery(name = "Series.findSerieByName", 
+        query = "SELECT s FROM Series s WHERE s.title = :title")
 public class Series extends Movie implements Serializable {
     
     @OneToMany (mappedBy = "series")
@@ -22,4 +25,11 @@ public class Series extends Movie implements Serializable {
     public Series() {
         //it is bean
     } 
+
+    @Override
+    public String toString() {
+        return "Series{" + "seasons=" + seasons + '}';
+    }
+    
+    
 }

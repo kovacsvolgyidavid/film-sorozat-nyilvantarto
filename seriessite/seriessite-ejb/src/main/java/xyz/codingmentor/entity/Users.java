@@ -44,6 +44,7 @@ public class Users implements Serializable {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private Set<Groups> groups=new HashSet<>();
+    
      @Size(min = 1, message = "This field has to be filled.")
     @NameConstraint(message = "Wrong name format.")
     private String name;

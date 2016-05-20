@@ -11,13 +11,19 @@
         
 
         <form method="POST" action="j_security_check">
+            A
+            <h:link value="Reg" outcome="registration"/>
+            B
             Username: <input type="text" name="j_username" />
             Password: <input type="password" name="j_password" />
             <br />
             <input type="submit" value="Login" />
             <input type="reset" value="Reset" />
+            <h:link value="Reg" outcome="registration"/>
+            C
+            <h:link value="Reg" outcome="registration"/>
         </form> 
         
-        <h:form><h:link value="Reg" outcome="registration"/></h:form>
+        <!--<h:form><h:link value="Reg" outcome="registration"/></h:form>-->
     </h:body>
 </html>

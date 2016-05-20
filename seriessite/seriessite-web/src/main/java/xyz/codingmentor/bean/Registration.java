@@ -1,5 +1,6 @@
 package xyz.codingmentor.bean;
 //Szia hogy vagy ? reméleme jól :( - faszság komment
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class Registration implements Serializable {
 
     @Inject
     private DatabaseQuery databaseQuery;
+    private static final Logger LOG = Logger.getLogger(Registration.class.getName());
 
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
@@ -62,6 +64,14 @@ public class Registration implements Serializable {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
             if (uploadedFile == null) {
+                File f2 = new File(PATH + "user.jpg");
+                LOG.info(f2.getParent().toString());
+                
+                File f = new File(PATH + "user.jpg");
+                LOG.info(f.getParent().toString());
+                LOG.info(f.getAbsolutePath().toString());
+                LOG.info(f.getPath());
+                
                 user.setPathOfPhoto(PATH + "user.jpg");
             } else {
                 uploadPicture();
@@ -81,7 +91,8 @@ public class Registration implements Serializable {
                 System.out.println("Error");//TODO: itt majd valami logger kell
             }
 
-            user.getGroups().add(Groups.USER);
+//            user.getGroups().add(Groups.USER);
+            user.getGroups().add(Groups.ADMIN);
             user.setMoviePerPage(50);
             entityFacade.create(user);
             user = new Users();
@@ -102,6 +113,8 @@ public class Registration implements Serializable {
             String fullFileName = uploadedFile.getFileName();
 
             Path file = Paths.get(PATH + fullFileName);
+            LOG.info(file.getParent().toString());
+            LOG.info(file.getFileName().toString());
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
             user.setPathOfPhoto(file.toString());
         } catch (IOException ex) {
@@ -148,7 +161,12 @@ public class Registration implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
+                File f = new File(PATH + "user.jpg");
+                LOG.info(f.getParent().toString());
+                LOG.info(f.getAbsolutePath().toString());
+                LOG.info(f.getPath());
+                image = new DefaultStreamedContent(new FileInputStream(f));
+//                image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
             } else {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
