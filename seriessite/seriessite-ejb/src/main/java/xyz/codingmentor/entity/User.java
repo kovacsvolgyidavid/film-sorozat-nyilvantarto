@@ -21,7 +21,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import xyz.codingmentor.constraint.NameConstraint;
-import xyz.codingmentor.constraint.PasswordConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
 import xyz.codingmentor.enums.Sex;
 
@@ -35,11 +34,9 @@ public class User implements Serializable {
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
     
-//    @Size(min = 1, message = "This field has to be filled.")
-//    @PasswordConstraint(message = "Wrong password format.")
-    private String password;
-    
+    @Column(name="password")
     private String hashedPassword;
+    
     @Column(name="MOVIE_PER_PAGE")
     private Integer moviePerPage;
     
@@ -78,11 +75,11 @@ private List<Comment> comments;
     }
 
     public String getPassword() {
-        return password;
+        return hashedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.hashedPassword = password;
     }
 
     public Integer getMoviePerPage() {
@@ -140,14 +137,4 @@ private List<Comment> comments;
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
-
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-    
-    
 }

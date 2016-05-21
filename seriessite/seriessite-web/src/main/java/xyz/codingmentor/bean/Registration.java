@@ -5,14 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -26,6 +22,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import xyz.codingmentor.dto.UserDTO;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Sex;
@@ -45,15 +42,14 @@ public class Registration implements Serializable {
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
-    private User user;
-    private final static Enum[] sexes = new Enum[2];
-
+    private final static Enum[] SEXES = new Enum[2];
+    private UserDTO dtoUser;
+    
     @PostConstruct
     public void init() {
-        user = new User();
-        sexes[0] = Sex.MALE;
-        sexes[1] = Sex.FEMALE;
-
+        SEXES[0] = Sex.MALE;
+        SEXES[1] = Sex.FEMALE;
+        dtoUser=new UserDTO();
     }
 
     public void signIn() {
@@ -63,29 +59,18 @@ public class Registration implements Serializable {
 
 //        try {
 //            username.getSingleResult();//TODO: query.beanbe át kell tenni, ott kell majda named queryket meghívni
-        if (databaseQuery.findUserByUsername(user.getUsername()) != null) {
+        if (databaseQuery.findUserByUsername(dtoUser.getUser().getUsername()) != null) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
             if (uploadedFile == null) {
-                user.setPathOfPhoto(PATH + "user.jpg");
+                dtoUser.getUser().setPathOfPhoto(PATH + "user.jpg");
             } else {
                 uploadPicture();
             }
-            try {
-                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                String text = user.getPassword();
-                md.update(text.getBytes("UTF-8"));
-                byte[] digest = md.digest();
-                BigInteger bigInt = new BigInteger(1, digest);
-                String output = bigInt.toString(16);
-                user.setPassword(output);
-            } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Problem when hashing password:{0}", user.getPassword());
-            }
-            user.getGroups().add(Groups.USER);
-            user.setMoviePerPage(50);
-            entityFacade.create(user);
-            user = new User();
+            dtoUser.getUser().getGroups().add(Groups.USER);
+            dtoUser.getUser().setMoviePerPage(50);
+            entityFacade.create(dtoUser.makeUser());
+            dtoUser.setUser(new User());
             uploadedFile = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
         }
@@ -100,7 +85,7 @@ public class Registration implements Serializable {
             String fullFileName = uploadedFile.getFileName();
             Path file = Paths.get(PATH + fullFileName);
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-            user.setPathOfPhoto(file.toString());
+            dtoUser.getUser().setPathOfPhoto(file.toString());
         } catch (IOException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,20 +141,37 @@ public class Registration implements Serializable {
         this.image = image;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String ujOldal() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login?faces-redirect=true";
     }
 
     public Enum[] getSexes() {
-        return sexes;
+        return SEXES;
     }
+
+    public EntityFacade getEntityFacade() {
+        return entityFacade;
+    }
+
+    public void setEntityFacade(EntityFacade entityFacade) {
+        this.entityFacade = entityFacade;
+    }
+
+    public DatabaseQuery getDatabaseQuery() {
+        return databaseQuery;
+    }
+
+    public void setDatabaseQuery(DatabaseQuery databaseQuery) {
+        this.databaseQuery = databaseQuery;
+    }
+
+    public UserDTO getDtoUser() {
+        return dtoUser;
+    }
+
+    public void setDtoUser(UserDTO dtoUser) {
+        this.dtoUser = dtoUser;
+    }
+    
 }
