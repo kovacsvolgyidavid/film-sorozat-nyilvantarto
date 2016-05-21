@@ -3,18 +3,15 @@ package xyz.codingmentor.entity;
 import xyz.codingmentor.enums.Groups;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,46 +19,48 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import xyz.codingmentor.constraint.NameConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
+import xyz.codingmentor.enums.Sex;
 
 @Entity
 @Table(name = "USERS")
-@NamedQuery(name = "findUserByUsername", 
-        query = "SELECT u FROM Users u WHERE u.username = :username")
-public class Users implements Serializable {
+@SecondaryTable(name = "groups")
+@NamedQuery(name = "findUserByUsername",
+        query = "SELECT u FROM User u WHERE u.username = :username")
+public class User implements Serializable {
+
     @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
-    
-    //@Size(min = 1, message = "This field has to be filled.")
-    //@PasswordConstraint(message = "Wrong password format.")
-    private String password;
-    
-    @Column(name="MOVIE_PER_PAGE")
+
+    @Column(name = "password")
+    private String hashedPassword;
+
+    @Column(name = "MOVIE_PER_PAGE")
     private Integer moviePerPage;
-    
-    @CollectionTable(name="groups")
-    @ElementCollection
+
     @Enumerated(EnumType.STRING)
-    private Set<Groups> groups=new HashSet<>();
-     @Size(min = 1, message = "This field has to be filled.")
+    @Column(table = "groups")
+    private Groups groups;
+
+    @Size(min = 1, message = "This field has to be filled.")
     @NameConstraint(message = "Wrong name format.")
     private String name;
-    
-    private String sex;
-    
-    @Column(name="DATE_OF_BIRTH")
+
+    private Sex sex;
+
+    @Column(name = "DATE_OF_BIRTH")
     @Temporal(TemporalType.DATE)
     @NotNull(message = "This field has to be filled.")
     private Date dateOfBirth;
-    
-    @Column(name="PATH_OF_PHOTO")
+
+    @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
-    
-@OneToMany (mappedBy = "users")
-private List<Comment> comments;
-    
-    public Users() {
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
+    public User() {
         //Empty
     }
 
@@ -74,11 +73,11 @@ private List<Comment> comments;
     }
 
     public String getPassword() {
-        return password;
+        return hashedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.hashedPassword = password;
     }
 
     public Integer getMoviePerPage() {
@@ -88,7 +87,7 @@ private List<Comment> comments;
     public void setMoviePerPage(Integer moviePerPage) {
         this.moviePerPage = moviePerPage;
     }
-    
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -97,11 +96,19 @@ private List<Comment> comments;
         this.comments = comments;
     }
 
-    public Set<Groups> getGroups() {
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public Groups getGroups() {
         return groups;
     }
 
-    public void setGroups(Set<Groups> groups) {
+    public void setGroups(Groups groups) {
         this.groups = groups;
     }
 
@@ -113,11 +120,11 @@ private List<Comment> comments;
         this.name = name;
     }
 
-    public String getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
@@ -136,5 +143,4 @@ private List<Comment> comments;
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
-    
 }

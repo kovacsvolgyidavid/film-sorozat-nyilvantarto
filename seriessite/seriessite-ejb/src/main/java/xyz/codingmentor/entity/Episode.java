@@ -22,14 +22,14 @@ public class Episode implements Serializable {
 
     @NotNull
     private String title;
-    
-    @ManyToOne (fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SEASON_ID")
     private Season season;
-    
+
     @Column(name = "SERIAL_NUMBER")
     private String serialNumber;
-    
+
     @Column(name = "DATE_OF_RELEASE")
     @Temporal(TemporalType.DATE)
     private Date dateOfRelease;

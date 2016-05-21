@@ -8,10 +8,10 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Director extends Person implements Serializable {
-    
-    @Column(name="ORIGINAL_NAME")
+
+    @Column(name = "ORIGINAL_NAME")
     private String originalName;
-    
+
     @ManyToMany(mappedBy = "directors")
     private List<Movie> movies;
 
@@ -33,5 +33,5 @@ public class Director extends Person implements Serializable {
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
-    }  
+    }
 }
