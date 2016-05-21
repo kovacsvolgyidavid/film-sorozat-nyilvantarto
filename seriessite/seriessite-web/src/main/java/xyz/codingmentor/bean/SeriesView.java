@@ -25,7 +25,7 @@ import xyz.codingmentor.entity.Director;
 import xyz.codingmentor.entity.Episode;
 import xyz.codingmentor.entity.Season;
 import xyz.codingmentor.entity.Series;
-import xyz.codingmentor.entity.Users;
+import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.service.EntityFacade;
 
@@ -43,7 +43,7 @@ public class SeriesView implements Serializable {
     private String comment;
     @Inject
     private EntityFacade entityFacade;
-    Users user;
+    User user;
     @PostConstruct
     public void init() {//TODO: delete this
         series = new Series();
@@ -84,7 +84,7 @@ public class SeriesView implements Serializable {
       entityFacade.create(season3);
       entityFacade.create(director1);
       entityFacade.create(series);
-      Users user=new Users();
+      User user=new User();
       user.setName("Kovácsvölgyi Dávid");
       Calendar calendar=Calendar.getInstance();
       calendar.set(1990, 9, 5);
@@ -162,7 +162,7 @@ public class SeriesView implements Serializable {
         Comment addComment=new Comment();
         addComment.setContent(comment);
         addComment.setDateOfComment(Calendar.getInstance().getTime());
-        addComment.setUsers(user);
+        addComment.setUser(user);
         addComment.setShow(series);
         entityFacade.create(addComment);   
         comment="";
