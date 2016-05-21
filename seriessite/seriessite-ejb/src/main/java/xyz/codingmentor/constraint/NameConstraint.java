@@ -8,14 +8,14 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import xyz.codingmentor.validator.NameConstraintValidator;
 
-
 @Target(FIELD)
 @Retention(RUNTIME)
-@Constraint(validatedBy=NameConstraintValidator.class)
+@Constraint(validatedBy = NameConstraintValidator.class)
 public @interface NameConstraint {
+
     String message() default "{NameConstraint.message}";
-     
+
     Class<?>[] groups() default {};
- 
-    Class<? extends Payload>[] payload() default {};     
+
+    Class<? extends Payload>[] payload() default {};
 }

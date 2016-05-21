@@ -44,12 +44,12 @@ public class Registration implements Serializable {
     private StreamedContent image;
     private final static Enum[] SEXES = new Enum[2];
     private UserDTO dtoUser;
-    
+
     @PostConstruct
     public void init() {
         SEXES[0] = Sex.MALE;
         SEXES[1] = Sex.FEMALE;
-        dtoUser=new UserDTO();
+        dtoUser = new UserDTO();
     }
 
     public void signIn() {
@@ -173,5 +173,5 @@ public class Registration implements Serializable {
     public void setDtoUser(UserDTO dtoUser) {
         this.dtoUser = dtoUser;
     }
-    
+
 }

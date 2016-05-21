@@ -78,10 +78,10 @@
                         <p:ajax listener="#{registration.resetPicture}" update="gi"/>
                     </p:commandButton>                    
                 </h:panelGrid>
-                
+
                 <p:outputLabel value="Picture: "/>
                 <p:graphicImage id="gi" value="#{registration.image}" width="230" height="180" cache="false"/>
-                
+
                 <p:commandLink action="#{registration.ujOldal()}" value="Login" ajax="false" immediate="true"/>
                 <p:commandButton value="Sign In" actionListener="#{registration.signIn()}" ajax="false" style="float: right"/>
             </h:panelGrid>

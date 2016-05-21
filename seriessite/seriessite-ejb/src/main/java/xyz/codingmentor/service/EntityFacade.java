@@ -8,12 +8,12 @@ import javax.persistence.criteria.CriteriaQuery;
 
 @Stateless
 public class EntityFacade {
-    @PersistenceContext (unitName = "MoviePU")
+
+    @PersistenceContext(unitName = "MoviePU")
     private EntityManager em;
 
     public EntityFacade() {
     }
-    
 
     public <T> void create(T entity) {
         em.persist(entity);
@@ -35,8 +35,8 @@ public class EntityFacade {
     public EntityManager getEntityManager() {
         return em;
     }
-    
-    public <T>List<T> findAll(Class<T> entityClass) {
+
+    public <T> List<T> findAll(Class<T> entityClass) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return em.createQuery(cq).getResultList();

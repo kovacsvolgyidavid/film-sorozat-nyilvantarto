@@ -23,42 +23,43 @@ import xyz.codingmentor.enums.Sex;
 
 @Entity
 @Table(name = "USERS")
-@SecondaryTable(name="groups")
-@NamedQuery(name = "findUserByUsername", 
+@SecondaryTable(name = "groups")
+@NamedQuery(name = "findUserByUsername",
         query = "SELECT u FROM User u WHERE u.username = :username")
 public class User implements Serializable {
+
     @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
-    
-    @Column(name="password")
+
+    @Column(name = "password")
     private String hashedPassword;
-    
-    @Column(name="MOVIE_PER_PAGE")
+
+    @Column(name = "MOVIE_PER_PAGE")
     private Integer moviePerPage;
-    
+
     @Enumerated(EnumType.STRING)
-    @Column(table="groups")
+    @Column(table = "groups")
     private Groups groups;
-    
-     @Size(min = 1, message = "This field has to be filled.")
+
+    @Size(min = 1, message = "This field has to be filled.")
     @NameConstraint(message = "Wrong name format.")
     private String name;
-    
+
     private Sex sex;
-    
-    @Column(name="DATE_OF_BIRTH")
+
+    @Column(name = "DATE_OF_BIRTH")
     @Temporal(TemporalType.DATE)
     @NotNull(message = "This field has to be filled.")
     private Date dateOfBirth;
-    
-    @Column(name="PATH_OF_PHOTO")
+
+    @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
-    
-@OneToMany (mappedBy = "user")
-private List<Comment> comments;
-    
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
     public User() {
         //Empty
     }
@@ -86,7 +87,7 @@ private List<Comment> comments;
     public void setMoviePerPage(Integer moviePerPage) {
         this.moviePerPage = moviePerPage;
     }
-    
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -110,7 +111,7 @@ private List<Comment> comments;
     public void setGroups(Groups groups) {
         this.groups = groups;
     }
-    
+
     public String getName() {
         return name;
     }
