@@ -164,14 +164,19 @@ public class Profil implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                image = new DefaultStreamedContent(new FileInputStream(user.getPathOfPhoto()));
+                if(user.getPathOfPhoto().equals("user.jpg")){
+                    ClassLoader classLoader = getClass().getClassLoader();
+                    File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
+                    image = new DefaultStreamedContent(new FileInputStream(noPicture));                    
+                } else{
+                    image = new DefaultStreamedContent(new FileInputStream(user.getPathOfPhoto()));
+                }    
             } else {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
         } catch (Exception ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return image;
     }
 
