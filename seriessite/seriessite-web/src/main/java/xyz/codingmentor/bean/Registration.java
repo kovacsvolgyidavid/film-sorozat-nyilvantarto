@@ -23,8 +23,8 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.dto.UserDTO;
-import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.entity.User;
+import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
@@ -67,7 +67,7 @@ public class Registration implements Serializable {
             } else {
                 uploadPicture();
             }
-            dtoUser.getUser().getGroups().add(Groups.USER);
+            dtoUser.getUser().setGroups(Groups.USER);
             dtoUser.getUser().setMoviePerPage(50);
             entityFacade.create(dtoUser.makeUser());
             dtoUser.setUser(new User());

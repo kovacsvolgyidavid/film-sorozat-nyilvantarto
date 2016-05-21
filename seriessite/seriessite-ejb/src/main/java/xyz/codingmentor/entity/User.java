@@ -3,18 +3,15 @@ package xyz.codingmentor.entity;
 import xyz.codingmentor.enums.Groups;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +23,7 @@ import xyz.codingmentor.enums.Sex;
 
 @Entity
 @Table(name = "USERS")
+@SecondaryTable(name="groups")
 @NamedQuery(name = "findUserByUsername", 
         query = "SELECT u FROM User u WHERE u.username = :username")
 public class User implements Serializable {
@@ -40,10 +38,9 @@ public class User implements Serializable {
     @Column(name="MOVIE_PER_PAGE")
     private Integer moviePerPage;
     
-    @CollectionTable(name="groups")
-    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<Groups> groups=new HashSet<>();
+    @Column(table="groups")
+    private Groups groups;
     
      @Size(min = 1, message = "This field has to be filled.")
     @NameConstraint(message = "Wrong name format.")
@@ -98,14 +95,22 @@ private List<Comment> comments;
         this.comments = comments;
     }
 
-    public Set<Groups> getGroups() {
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public Groups getGroups() {
         return groups;
     }
 
-    public void setGroups(Set<Groups> groups) {
+    public void setGroups(Groups groups) {
         this.groups = groups;
     }
-
+    
     public String getName() {
         return name;
     }
