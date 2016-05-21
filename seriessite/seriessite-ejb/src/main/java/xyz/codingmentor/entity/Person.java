@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import xyz.codingmentor.constraint.NameConstraint;
+import xyz.codingmentor.enums.Sex;
 
 @MappedSuperclass
 public class Person implements Serializable {
@@ -23,7 +24,7 @@ public class Person implements Serializable {
     @NameConstraint(message = "Wrong name format.")
     private String name;
     
-    private String sex;
+    private Sex sex;
     
     @Column(name="DATE_OF_BIRTH")
     @Temporal(TemporalType.DATE)
@@ -53,11 +54,11 @@ public class Person implements Serializable {
         this.name = name;
     }
 
-    public String getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 

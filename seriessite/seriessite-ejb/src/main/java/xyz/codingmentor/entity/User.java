@@ -21,22 +21,25 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import xyz.codingmentor.constraint.NameConstraint;
+import xyz.codingmentor.constraint.PasswordConstraint;
 import xyz.codingmentor.constraint.UsernameConstraint;
+import xyz.codingmentor.enums.Sex;
 
 @Entity
 @Table(name = "USERS")
 @NamedQuery(name = "findUserByUsername", 
-        query = "SELECT u FROM Users u WHERE u.username = :username")
-public class Users implements Serializable {
+        query = "SELECT u FROM User u WHERE u.username = :username")
+public class User implements Serializable {
     @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
     private String username;
     
-    //@Size(min = 1, message = "This field has to be filled.")
-    //@PasswordConstraint(message = "Wrong password format.")
+//    @Size(min = 1, message = "This field has to be filled.")
+//    @PasswordConstraint(message = "Wrong password format.")
     private String password;
     
+    private String hashedPassword;
     @Column(name="MOVIE_PER_PAGE")
     private Integer moviePerPage;
     
@@ -44,11 +47,12 @@ public class Users implements Serializable {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private Set<Groups> groups=new HashSet<>();
+    
      @Size(min = 1, message = "This field has to be filled.")
     @NameConstraint(message = "Wrong name format.")
     private String name;
     
-    private String sex;
+    private Sex sex;
     
     @Column(name="DATE_OF_BIRTH")
     @Temporal(TemporalType.DATE)
@@ -58,10 +62,10 @@ public class Users implements Serializable {
     @Column(name="PATH_OF_PHOTO")
     private String pathOfPhoto;
     
-@OneToMany (mappedBy = "users")
+@OneToMany (mappedBy = "user")
 private List<Comment> comments;
     
-    public Users() {
+    public User() {
         //Empty
     }
 
@@ -113,11 +117,11 @@ private List<Comment> comments;
         this.name = name;
     }
 
-    public String getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
@@ -136,5 +140,14 @@ private List<Comment> comments;
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+    
     
 }

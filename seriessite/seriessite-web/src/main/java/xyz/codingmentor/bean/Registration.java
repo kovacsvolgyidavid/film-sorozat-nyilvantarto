@@ -1,5 +1,5 @@
 package xyz.codingmentor.bean;
-//Szia hogy vagy ? reméleme jól :( - faszság komment
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,7 +27,8 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.enums.Groups;
-import xyz.codingmentor.entity.Users;
+import xyz.codingmentor.entity.User;
+import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
@@ -44,11 +45,15 @@ public class Registration implements Serializable {
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
-    private Users user;
+    private User user;
+    private final static Enum[] sexes = new Enum[2];
 
     @PostConstruct
     public void init() {
-        user = new Users();
+        user = new User();
+        sexes[0] = Sex.MALE;
+        sexes[1] = Sex.FEMALE;
+
     }
 
     public void signIn() {
@@ -57,7 +62,7 @@ public class Registration implements Serializable {
 //        username.setParameter("username", user.getUsername());
 
 //        try {
-//            username.getSingleResult();
+//            username.getSingleResult();//TODO: query.beanbe át kell tenni, ott kell majda named queryket meghívni
         if (databaseQuery.findUserByUsername(user.getUsername()) != null) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
@@ -66,54 +71,43 @@ public class Registration implements Serializable {
             } else {
                 uploadPicture();
             }
-
             try {
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 String text = user.getPassword();
-                md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+                md.update(text.getBytes("UTF-8"));
                 byte[] digest = md.digest();
                 BigInteger bigInt = new BigInteger(1, digest);
                 String output = bigInt.toString(16);
-
                 user.setPassword(output);
-
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-                System.out.println("Error");//TODO: itt majd valami logger kell
+                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, "Problem when hashing password:{0}", user.getPassword());
             }
-
             user.getGroups().add(Groups.USER);
             user.setMoviePerPage(50);
             entityFacade.create(user);
-            user = new Users();
+            user = new User();
             uploadedFile = null;
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
         }
-
 //        } catch (NoResultException noResultException) {
-        //}
+        //} TODO: query-be kell átpakolni
     }
 
     public void uploadPicture() {
         createDirectory();
-
         try {
             InputStream inputstream = uploadedFile.getInputstream();
             String fullFileName = uploadedFile.getFileName();
-
             Path file = Paths.get(PATH + fullFileName);
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
             user.setPathOfPhoto(file.toString());
         } catch (IOException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
     }
 
     public void createDirectory() {
         File directory = new File(PATH);
-
         if (!directory.exists()) {
             try {
                 directory.mkdirs();
@@ -125,7 +119,6 @@ public class Registration implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) {
         uploadedFile = event.getFile();
-
         try {
             image = new DefaultStreamedContent(uploadedFile.getInputstream());
         } catch (IOException ex) {
@@ -163,16 +156,20 @@ public class Registration implements Serializable {
         this.image = image;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUsers(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
     public String ujOldal() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login?faces-redirect=true";
+    }
+
+    public Enum[] getSexes() {
+        return sexes;
     }
 }

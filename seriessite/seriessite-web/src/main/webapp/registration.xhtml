@@ -65,8 +65,8 @@
 
                 <p:outputLabel value="Sex:" />
                 <p:selectOneRadio id="sex" value="#{registration.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
-                    <f:selectItem itemLabel="Male" itemValue="Male" />
-                    <f:selectItem itemLabel="Female" itemValue="Female" />
+                    <f:selectItem itemLabel="Male" itemValue="#{registration.sexes[0]}" />
+                    <f:selectItem itemLabel="Female" itemValue="#{registration.sexes[1]}" />
                 </p:selectOneRadio>
                 <h:panelGroup/>
                 <p:message for="sex" />
