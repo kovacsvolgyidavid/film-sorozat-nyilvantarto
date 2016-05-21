@@ -48,7 +48,7 @@ public class SeriesView implements Serializable {
     public void init() {//TODO: delete this
         series = new Series();
         series.setTitle("Breaking Bad");
-        series.setPathOfPhoto(PATH + "/user.jpg");
+        series.setPathOfPhoto(PATH + "/breakingbad.jpg");
         series.setYearOfRelease(Calendar.getInstance().getTime());
         series.setSeasons(new ArrayList<Season>());
         Season season1=new Season();
@@ -95,7 +95,6 @@ public class SeriesView implements Serializable {
       user.setUsername("kovi");
       entityFacade.create(user);
       this.user=user;
-      comment="pénisz";
     }
 
     public String getTitle() {
@@ -114,11 +113,9 @@ public class SeriesView implements Serializable {
         return image;
     }
 
-    public String getReleaseDate() {
-        Calendar releaseYear = Calendar.getInstance();
-        releaseYear.setTime(series.getYearOfRelease());
-        return releaseYear.getDisplayName(Calendar.YEAR, Calendar.LONG, Locale.UK);
-    }
+   public Series getSeries(){
+       return this.series;
+   }
 
     public String getSeasonNumber() {
         if (series.getSeasons() == null) {
@@ -179,5 +176,8 @@ public class SeriesView implements Serializable {
     public List<Comment> getComments(){
         return series.getComments();
     }
+    public String callStringView(){
+        return "/user/seriesView.xhtml";
     
+    }
 }

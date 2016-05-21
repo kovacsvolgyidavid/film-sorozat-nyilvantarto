@@ -29,7 +29,9 @@ and open the template in the editor.
                     <h:outputText value="Release date:"/>    
                 </td>
                 <td>
-                    <h:outputText value="#{seriesView.releaseDate}"/>    
+                    <h:outputText value="#{seriesView.series.yearOfRelease}">
+                        <f:convertDateTime pattern="yyyy"/>
+                    </h:outputText>  
                 </td>
             </tr>
             <tr>
