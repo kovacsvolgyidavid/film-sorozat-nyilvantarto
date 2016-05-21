@@ -45,4 +45,5 @@ public class Actor extends Person implements Serializable {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
+    
 }

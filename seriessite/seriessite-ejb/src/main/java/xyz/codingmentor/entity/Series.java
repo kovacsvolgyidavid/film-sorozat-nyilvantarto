@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import xyz.codingmentor.enums.CompareValues;
 
 @Entity
 public class Series extends Movie implements Serializable {
@@ -11,6 +13,8 @@ public class Series extends Movie implements Serializable {
     @OneToMany (mappedBy = "series")
     private List<Season> seasons;
     
+    @Transient
+    private String compare = CompareValues.COMPARE.toString();
     public List<Season> getSeasons() {
         return seasons;
     }
@@ -22,4 +26,19 @@ public class Series extends Movie implements Serializable {
     public Series() {
         //it is bean
     } 
+
+    public String getCompare() {
+        return compare;
+    }
+
+ 
+    
+    public void changeCompare(){
+        if (compare.equals(CompareValues.COMPARE.toString()))
+            compare = CompareValues.COMPARING.toString();
+        else if(compare.equals(CompareValues.COMPARING.toString()))
+            compare = CompareValues.COMPARE.toString();
+    }
+    
+    
 }
