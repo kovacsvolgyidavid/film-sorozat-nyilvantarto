@@ -22,6 +22,7 @@ import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.service.EntityFacade;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -156,14 +157,6 @@ public class SeriesEdit implements Serializable {
         }
     }
 
-    public void resetPicture(AjaxBehaviorEvent event) {
-        uploadedFile = null;
-    }
-
-    public UploadedFile getUploadedFile() {
-        return uploadedFile;
-    }
-
     public void setUploadedFile(UploadedFile uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
@@ -174,8 +167,6 @@ public class SeriesEdit implements Serializable {
             if (uploadedFile == null) {
                 LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
                 ClassLoader classLoader = getClass().getClassLoader();
-                ///Location: film-sorozat-nyilvantarto/seriessite/seriessite-web/src/main/resources/series
-//                File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
                 File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
                 LOG.info("after image load");
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
@@ -189,6 +180,14 @@ public class SeriesEdit implements Serializable {
         }
 
         return image;
+    }
+
+    public void resetPicture(AjaxBehaviorEvent event) {
+        uploadedFile = null;
+    }
+
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
     }
 
     public void setImage(StreamedContent image) {
@@ -210,12 +209,26 @@ public class SeriesEdit implements Serializable {
     public void setActorList(List<Actor> actorList) {
         this.actorList = actorList;
     }
+    
+    private Actor searchActorById(List<Actor> l, Long id){
+        for (Iterator<Actor> iterator = l.iterator(); iterator.hasNext();) {
+            Actor next = iterator.next();
+            if (next.getId().equals(id)) {
+                return next;
+            }
+            
+        }
+        return null;
+    }
 
     public void addActorToSeries() {
+        Actor a = searchActorById(actorListNotInSeries,actor.getId());
+        actorList.add(a);
+        actorListNotInSeries.remove(a);
+        
         LOG.info("in addActorToSeries function");
         
 //        LOG.info("Here should add actor to series. Id: " + actor.getId());
-
     }
 
     public void removeActorFromSeries() {
@@ -224,7 +237,7 @@ public class SeriesEdit implements Serializable {
         Map<String, String> params
                 = context.getExternalContext().getRequestParameterMap();
         String id = params.get("actorId");
-        
+
         LOG.info("Here should remove actor fromseries " + id + " iddd");
 
     }

@@ -23,13 +23,22 @@
                 height:200px;
                 width:100%;
             }
+                  
+            .ui-fileupload-content {
+                display: none;
+            }
+            .ui-fileupload-buttonbar.ui-widget-header {
+                background-color: transparent;
+                border: 0 none;
+            }
+  
         </style>
 
     </h:head>
     <h:body>
 
 
-        <h:form>
+        <h:form id="mainId">
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-1"> </div>
@@ -50,13 +59,13 @@
                     <div class="ui-grid-col-5">
                         <!--Picture-->
                         <h:panelGrid columns="2" cellspacing="0">
-                            <p:fileUpload id="upload" mode="simple" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
                             <p:commandButton value="Reset">
                                 <p:ajax listener="#{seriesEdit.resetPicture}" update="gi"/>
-                            </p:commandButton>                    
+                            </p:commandButton>  
+                            <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
                         </h:panelGrid> 
-                        <p:outputLabel value="Picture: "/>
-                        <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
+                        <!--<p:outputLabel value="Picture: "/>-->
 
                     </div>
                 </div>
@@ -73,9 +82,9 @@
                         <p:growl id="msgs" showDetail="true" />
                         <p:orderList  value="#{seriesEdit.actorList}" id="actorListId" var="actorVar" itemLabel="#{actorVar}" itemValue="#{actorVar}" controlsLocation="none" style="margin-top: 0">
 
-                            <f:facet name="actors">Actors</f:facet>
+                            <!--<f:facet name="actors">Actors</f:facet>-->
 
-                            Actor title
+                            <!--Actor title-->
                             <p:column style="width:50px">
                                 <p:link outcome="actorEdit.xhtml" value="#{actorVar.name}">
                                     <f:param name="actorId" value="#{actorVar.id}" />
@@ -91,7 +100,7 @@
 
                             <!--Remove actor button-->
                             <p:column style="width:50px">
-                                <p:commandButton action="#{seriesEdit.removeActorFromSeries}" update="actorListId" icon="ui-icon-trash" title="Remove">
+                                <p:commandButton action="#{seriesEdit.removeActorFromSeries}" icon="ui-icon-trash" title="Remove">
                                     <f:param name="actorId" value="#{actorVar.id}" />
                                 </p:commandButton>
                             </p:column>
@@ -100,24 +109,25 @@
 
                         <!-- Dropdown  actor list to add new actor to series -->
 
-                        <h:form id="myform">
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <f:facet name="input">
-                                    <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actor}">
+                        <!--<h:form id="myform">-->
+                            <h:panelGrid columns="3" cellpadding="5" style="margin-left:50px">
+                                <!--<f:facet name="input">-->
+                                    <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actor}" >
                                         <f:selectItem itemLabel="Choose Actor" itemValue="" />
                                         <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actor" itemLabel="#{actor.name}" itemValue="#{actor.name}"/>
                                     </p:selectOneMenu>
-                                </f:facet>
+                                <!--</f:facet>-->
 
-                                <f:facet name="output">
+                                <!--<f:facet name="output">-->
                                     <h:outputText value="#{seriesEdit.actor.name}" />
-                                </f:facet>
+                                <!--</f:facet>-->
 
                                 <p:commandButton id="addBtn" value="Add" icon="ui-icon-add" title="Add"
-                                                 action="#{seriesEdit.addActorToSeries()}" update="@(form)" />
+                                                 action="#{seriesEdit.addActorToSeries}" />
+                                 <!--update="@(form)" nem megy sehol sem-->
 
                             </h:panelGrid>
-                        </h:form>
+                        <!--</h:form>-->
 
                     </div>
                 </div>
