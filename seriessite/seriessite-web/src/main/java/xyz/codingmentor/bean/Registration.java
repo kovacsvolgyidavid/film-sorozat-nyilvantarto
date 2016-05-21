@@ -82,7 +82,7 @@ public class Registration implements Serializable {
                 user.setPassword(output);
 
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-                System.out.println("Error");//TODO: itt majd valami logger kell
+                System.out.println("Error");//TODO: itt majd logger kell
             }
 
             user.getGroups().add(Groups.USER);

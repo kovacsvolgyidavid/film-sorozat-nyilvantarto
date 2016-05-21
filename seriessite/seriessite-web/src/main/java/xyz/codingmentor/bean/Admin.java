@@ -108,7 +108,7 @@ public class Admin implements Serializable {
         
         user = new Users();
         user.setName("Aron Kiss");
-        user.setPassword("AronK0");
+        user.setPassword(hashPassword("AronK0"));
         user.setUsername("kissaron");
 //        user.setSex("Male");
         user.setSex(Sex.MALE);
@@ -120,7 +120,7 @@ public class Admin implements Serializable {
         
         user = new Users();
         user.setName("Roland Feher");
-        user.setPassword("RolandF2");
+        user.setPassword(hashPassword("RolandF2"));
         user.setUsername("froland");
 //        user.setSex("Male");
         user.setSex(Sex.MALE);
@@ -134,7 +134,7 @@ public class Admin implements Serializable {
         
         user = new Users();
         user.setName("Bela Nagy");
-        user.setPassword("BaleN47");
+        user.setPassword(hashPassword("BaleN47"));
         user.setUsername("nagybela");
 //        user.setSex("Male");
         user.setSex(Sex.MALE);
@@ -146,7 +146,7 @@ public class Admin implements Serializable {
         
         user = new Users();
         user.setName("Anita Kovacs");
-        user.setPassword("AKovacs10");
+        user.setPassword(hashPassword("AKovacs10"));
         user.setUsername("anita");
 //        user.setSex("Female");
         user.setSex(Sex.FEMALE);
@@ -158,7 +158,7 @@ public class Admin implements Serializable {
         
         user = new Users();
         user.setName("Zsófia Horváth");
-        user.setPassword("ZsH200");
+        user.setPassword(hashPassword("ZsH200"));
         user.setUsername("zsofi");
 //        user.setSex("Female");
         user.setSex(Sex.FEMALE);
@@ -176,7 +176,7 @@ public class Admin implements Serializable {
         
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            String text = user.getPassword();
+            String text = password;
             md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
             byte[] digest = md.digest();
             BigInteger bigInt = new BigInteger(1, digest);

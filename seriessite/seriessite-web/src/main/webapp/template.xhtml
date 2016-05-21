@@ -18,7 +18,7 @@
 
     <h:body>
         <h:form id="form">
-            <p:growl id="grow" showDetail="false" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+            <p:growl id="grow" showDetail="true" sticky="false" rendered="#{not facesContext.validationFailed}"/>
 
 
 
@@ -27,14 +27,17 @@
                     <ul class="nav navbar-nav navbar-left">
                         <li><a href="#">Home</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Logout</a></li>
+                    <ul class="nav navbar-nav navbar-right navbar-link">
+                        <li><a href="admin/logout.xhtml">Logout</a></li>
                         <li><a href="#">Name</a></li>
+                        
                         <p:commandButton value="Profile" action="#{profil.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
                         <!--                    <li><a href="admin/admin.xhtml">Admin</a></li>-->
-                        <p:commandButton value="Admin" action="admin/admin" style="height:50px; background-color: 
+
+                        <p:commandButton value="Admin" action="/admin/admin" style="height:50px; background-color: 
                                          red" immediate="true"/>
-                        <!--                    <p:commandButton value="Admin" action="admin/admin.xhtml"/>-->
+                        <li><a href="admin/admin.xhtml" >Admin</a></li>
+<!--                        ?faces-redirect=true-->
                     </ul>
                 </div>
             </nav>  
@@ -58,7 +61,9 @@
 
 
         <style>
-
+            .ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
+                padding:0px 0px 0px 0px; height: 100%
+            }
 
             .sidebar {
                 position: fixed;

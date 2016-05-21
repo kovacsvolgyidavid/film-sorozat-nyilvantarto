@@ -22,6 +22,10 @@
             <ui:define name="content">
 <!--            <h:form id="form">  -->
                     <p:growl id="msgs" showDetail="true"/>
+                    
+                    <br/>
+                    <h1 style="text-align: center">Users</h1>
+                    <br/>
 
                     <p:dataTable id="table" var="user" value="#{admin.users}" editMode="cell" widgetVar="userTable" style="padding: 0px"
                                  filteredValue="#{admin.filteredUsers}">
