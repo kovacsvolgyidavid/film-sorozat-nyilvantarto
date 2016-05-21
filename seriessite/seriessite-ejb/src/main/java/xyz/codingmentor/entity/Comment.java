@@ -24,15 +24,15 @@ public class Comment implements Serializable {
     @Column(name = "DATE_OF_COMMENT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfComment;
-    
-    @ManyToOne (fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SHOW_ID")
     private Movie show;
-    
-    @ManyToOne (fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USERNAME"/*, nullable = false*/)
-    private Users users;
-   
+    private User user;
+
     public Comment() {
         //it is bean
     }
@@ -69,12 +69,11 @@ public class Comment implements Serializable {
         this.show = show;
     }
 
-    public Users getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
-    }
-
+}

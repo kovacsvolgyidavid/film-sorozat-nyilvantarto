@@ -24,31 +24,33 @@ public class Movie implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @NotNull
     private String title;
-    
+
     @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
-    
+
     @Column(name = "DATE_OF_RELEASE")
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
-    
+
     @ManyToMany
-    @JoinTable (name = "MOVIE_DIRECTOR",
-    joinColumns = @JoinColumn(name = "MOVIE_ID"), 
-    inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
+    @JoinTable(name = "MOVIE_DIRECTOR",
+            joinColumns = @JoinColumn(name = "MOVIE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
     public List<Director> directors;
-    
+
     @ManyToMany
-    @JoinTable (name = "MOVIE_ACTOR",
-    joinColumns = @JoinColumn(name = "MOVIE_ID"), 
-    inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
+    @JoinTable(name = "MOVIE_ACTOR",
+            joinColumns = @JoinColumn(name = "MOVIE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     public List<Actor> actors;
-    
-    @OneToMany (mappedBy = "show")
+
+    @OneToMany(mappedBy = "show")
     private List<Comment> comments;
+
+    private String descreption;
 
     public Movie() {
         //it is bean
@@ -108,5 +110,14 @@ public class Movie implements Serializable {
 
     public void setYearOfRelease(Date yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
-    }    
+    }
+
+    public String getDescreption() {
+        return descreption;
+    }
+
+    public void setDescreption(String descreption) {
+        this.descreption = descreption;
+    }
+
 }

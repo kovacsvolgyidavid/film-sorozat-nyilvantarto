@@ -20,23 +20,23 @@ public class Season implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    
+
     private String title;
-    
-    @ManyToOne (fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SERIES_ID"/*, nullable = false*/)
     private Series series;
-    
-    @OneToMany (mappedBy = "season")
+
+    @OneToMany(mappedBy = "season")
     private List<Episode> episodes;
-    
+
     @Column(name = "SERIAL_NUMBER")
     private String serialNumber;
-    
+
     @Column(name = "DATE_OF_RELEASE")
     @Temporal(TemporalType.DATE)
     private Date dateOfRelease;
-    
+
     @Column(name = "LINK_OF_PROMO_VIDEO")
     private String linkOfPromoVideo;
 

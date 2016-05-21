@@ -9,10 +9,10 @@ import xyz.codingmentor.enums.CompareValues;
 
 @Entity
 public class Series extends Movie implements Serializable {
-    
-    @OneToMany (mappedBy = "series")
+
+    @OneToMany(mappedBy = "series")
     private List<Season> seasons;
-    
+
     @Transient
     private String compare = CompareValues.COMPARE.toString();
     public List<Season> getSeasons() {
@@ -21,11 +21,11 @@ public class Series extends Movie implements Serializable {
 
     public void setSeasons(List<Season> seasons) {
         this.seasons = seasons;
-    }       
-    
+    }
+
     public Series() {
         //it is bean
-    } 
+    }
 
     public String getCompare() {
         return compare;
