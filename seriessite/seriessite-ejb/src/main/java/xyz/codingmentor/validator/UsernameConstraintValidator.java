@@ -6,9 +6,9 @@ import javax.validation.ConstraintValidatorContext;
 import xyz.codingmentor.constraint.UsernameConstraint;
 
 public class UsernameConstraintValidator implements ConstraintValidator<UsernameConstraint, String> {
-    
+
     private Pattern pattern;
-  
+
     private static final String USERNAME_PATTERN = "^[\\p{Ll}0-9_-]{3,15}$";
 
     @Override
@@ -18,9 +18,10 @@ public class UsernameConstraintValidator implements ConstraintValidator<Username
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if("".equals(value))
+        if ("".equals(value)) {
             return true;
-        else
+        } else {
             return pattern.matcher(value).matches();
-    }  
+        }
+    }
 }
