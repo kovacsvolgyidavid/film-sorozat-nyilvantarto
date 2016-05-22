@@ -5,7 +5,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,7 +14,7 @@
     </h:head>
     <h:body>
         <h:form>
-            <p:panelGrid columns="1"  style="margin: 0 auto;" >
+            <h:panelGrid columns="1"  style="margin: 0 auto;" >
 
                 <h:panelGroup style="display:block; text-align:center">
 
@@ -27,49 +28,58 @@
 
                 </h:panelGroup>
 
-            </p:panelGrid>
+            </h:panelGrid>
         </h:form>
+        <h:form>
+            <ui:repeat value="#{series_User.series}" var="serie">
+                <h:panelGrid id="seriesblock" columns="4" style="#{series_User.blockStyle}">
+                    <h:panelGroup id="comparingblock">
+                        <p:commandButton id="b_comparing" value="Comparing"
+                                         rendered="#{series_User.comparingSeries.contains(serie)}"
+                                         action="#{series_User.removeComparing(serie)}"
+                                         style="font-size:8px; height: 25px; width: 70px"
+                                         update="seriesblock">
+                        </p:commandButton>
 
-        <ui:repeat value="#{series_User.series}" var="serie">
-            <p:panelGrid columns="4" style="margin: 0 auto;">
-                <h:panelGroup>
-                    <p:commandButton id="b_compare" value="#{serie.compare}" action="#{serie.changeCompare()}" 
-                                     style="font-size:8px;height: 25px; width: 70px" >
-                        <p:ajax update="b_compare"/>
-                    </p:commandButton>
-                </h:panelGroup>
+                        <p:commandButton id="b_compare" value="Compare"
+                                         rendered="#{!series_User.comparingSeries.contains(serie)}"
+                                         action="#{series_User.setComparing(serie)}"
+                                         style="font-size:8px; height: 25px; width: 70px"
+                                         update="seriesblock">
+                        </p:commandButton>
+                    </h:panelGroup >
 
-                <h:panelGroup>
-                    <h:link value="#{serie.title}" outcome="#{serie.title}.xhtml" />
-                    <p:dataTable id="actorstable" >
-                        <p:column headerText="Actors">
-                            <ui:repeat value="#{serie.actors}" var="act">
-                                <p:outputLabel value="#{act.}"
-                            </ui:repeat>
-                            <p:outputLabel value="Release: #{serie.yearOfRelease}" />
-                            <p:outputLabel value="Seasons: #{serie.seasons.size()}"/>
-                            <p:outputLabel value="Episodes: #{serie.seasons}"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
+                    <h:panelGroup>
+                        <p:graphicImage value="#{series_User.getImage(serie)}" width="230" height="180" />
+                    </h:panelGroup>
 
-                <h:panelGroup>
-                    <p:dataTable id="directorstable" >
-                        <p:column headerText="Directors">
-                            <ui:repeat value="#{serie.directors}" var="dir">
-                                <h:outputText value="#{dir}" />
-                            </ui:repeat>
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGroup>
-
-            </p:panelGrid>
-        </ui:repeat>
-
+                    <h:panelGroup>
+                        <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: 16px"/>
+                        <p:dataList value="#{serie.actors}" var="act">
+                            <f:facet name="header">
+                                Actors
+                            </f:facet>
+                            #{act.name}
+                        </p:dataList>
+                        <p:outputLabel value="Release:" />
+                        <p:outputLabel value="Seasons:"/>
+                        <p:outputLabel value="Episodes:"/>
+                    </h:panelGroup>
 
 
+                    <h:panelGroup>
+                        <p:dataTable id="directorstable" >
+                            <p:column headerText="Directors">
+                                <ui:repeat value="#{serie.directors}" var="dir">
+                                    <h:outputText value="#{dir.name}" />
+                                </ui:repeat>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
 
-
+                </h:panelGrid>
+            </ui:repeat>
+        </h:form>
     </h:body>
 </html>
 

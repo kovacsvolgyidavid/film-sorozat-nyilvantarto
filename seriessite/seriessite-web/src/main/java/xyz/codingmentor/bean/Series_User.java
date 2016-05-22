@@ -39,6 +39,8 @@ public class Series_User implements Serializable {
 
     private List<Series> series;
     private StreamedContent image;
+    private List<Series> comparingSeries;
+    private String blockStyle = "margin: 0 auto;";
 
     @PostConstruct
     public void init() {
@@ -53,30 +55,27 @@ public class Series_User implements Serializable {
         actor1.setName("Johnie Depp");
         actor2.setName("Jack Sparrow");
         actor3.setName("Penge Pityu");
-        List<Actor> actorList1 = new ArrayList<>();
-        List<Actor> actorList2 = new ArrayList<>();
-        actorList1.add(actor1);
-        actorList1.add(actor2);
-        actorList1.add(actor3);
-        actorList2.add(actor3);
-        actorList2.add(actor2);
-        actorList2.add(actor1);
-
+        
         series = new ArrayList();
         Series series1 = new Series();
         Series series2 = new Series();
         series1.setTitle("testtitle1");
-        series1.setActors(actorList1);
+        series1.getActors().add(actor1);
+        series1.getActors().add(actor2);
+        series1.getActors().add(actor3);
         series1.setPathOfPhoto("C:\\path\\resources\\testpic.jpg");
         series2.setTitle("testtitle2");
-        series2.setActors(actorList2);
-        series1.setPathOfPhoto("C:\\path\\resources\\testpic.jpg");
+        series2.getActors().add(actor3);
+        series2.getActors().add(actor2);
+        series2.getActors().add(actor1);
+        series2.setPathOfPhoto("C:\\path\\resources\\testpic.jpg");
         series.add(series1);
         series.add(series2);
+
+        comparingSeries = new ArrayList();
     }
 
     public List<Series> getSeries() {
-
         return series;
     }
 
@@ -94,6 +93,26 @@ public class Series_User implements Serializable {
 
         }
         return image;
+    }
+
+    public void setComparing(Series serie) {
+        if (comparingSeries.size() < 2) {
+            comparingSeries.add(serie);
+            blockStyle = "margin: 0 auto; background-color: greenyellow";
+        }
+    }
+
+    public void removeComparing(Series serie) {
+        comparingSeries.remove(serie);
+        blockStyle = "margin: 0 auto;";
+    }
+
+    public List<Series> getComparingSeries() {
+        return comparingSeries;
+    }
+
+    public String getBlockStyle() {
+        return blockStyle;
     }
 
 }
