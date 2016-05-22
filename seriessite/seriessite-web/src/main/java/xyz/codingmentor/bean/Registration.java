@@ -64,11 +64,11 @@ public class Registration implements Serializable {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
             if (uploadedFile == null) {
-                dtoUser.getUser().setPathOfPhoto(PATH + "user.jpg");
+                dtoUser.getUser().setPathOfPhoto("user.jpg");
             } else {
                 uploadPicture();
             }
-            dtoUser.getUser().setGroups(Groups.USER);
+            dtoUser.getUser().setGroups(Groups.ADMIN);
             dtoUser.getUser().setMoviePerPage(50);
             entityFacade.create(dtoUser.makeUser());
             dtoUser.setUser(new User());

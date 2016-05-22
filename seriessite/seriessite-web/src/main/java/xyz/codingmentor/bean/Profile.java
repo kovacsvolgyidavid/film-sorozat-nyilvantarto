@@ -66,16 +66,13 @@ public class Profile implements Serializable {
         //resetUser(modifiedUser, originalUser);
         uploadedFile = null;
         this.user = user; //resetelj a copy metódussal
-        return "/profile?faces-redirect=true";
-        
-        
-        
+        return "/profile?faces-redirect=true";  
     }
     
     public String getMyProfile() {
         user = entityFacade.read(User.class, "aron");
 //        user = entityFacade.read(Users.class, myUsername);
-        return "/profile?faces-redirect=true";
+        return "/user/profile?faces-redirect=true";
     }
     
     public String getUserProfile2(User user) {
@@ -87,7 +84,7 @@ public class Profile implements Serializable {
         String id = params.get("userId");
         System.out.println("Here go to user side. UserID: " + id);
 //        1 is Actor edit it
-        return "/profile.xhtml?faces-redirect=true";
+        return "/user/profile.xhtml?faces-redirect=true";
 //        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
     

@@ -10,9 +10,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <link rel="stylesheet" href="resources/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="resources/css/bootstrap.css"/>
-        <link rel="stylesheet" href="resources/css/bootstrap-theme.min.css"/>
+        <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/resources/css/bootstrap.css"/>
+        <link rel="stylesheet" href="/resources/css/bootstrap-theme.min.css"/>
 
     </h:head>
 
@@ -34,7 +34,7 @@
                         <p:commandButton value="Profile" action="#{profile.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
                         <!--                    <li><a href="admin/admin.xhtml">Admin</a></li>-->
 
-                        <p:commandButton value="Admin" action="/admin/admin" style="height:50px; background-color: 
+                        <p:commandButton value="Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px; background-color: 
                                          red" immediate="true"/>
                     </ul>
                 </div>
