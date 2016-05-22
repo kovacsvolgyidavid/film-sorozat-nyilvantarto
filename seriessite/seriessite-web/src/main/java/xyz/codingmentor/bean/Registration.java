@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -52,7 +53,7 @@ public class Registration implements Serializable {
         dtoUser = new UserDTO();
     }
 
-    public void signIn() {
+    public String signIn() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 //        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
 //        username.setParameter("username", user.getUsername());
@@ -76,6 +77,7 @@ public class Registration implements Serializable {
         }
 //        } catch (NoResultException noResultException) {
         //} TODO: query-be kell átpakolni
+        return "/login.xhtml";
     }
 
     public void uploadPicture() {
