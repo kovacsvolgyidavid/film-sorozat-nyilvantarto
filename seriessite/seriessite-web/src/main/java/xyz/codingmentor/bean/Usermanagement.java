@@ -17,7 +17,7 @@ public class Usermanagement implements Serializable {
     public String logout() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         session.invalidate();
-        return "/login.xhtml";
+        return "/login.xhtml?faces-redirect=true";
     }
     
     public String getActualUser(){

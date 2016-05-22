@@ -41,8 +41,6 @@ public class Admin implements Serializable {
 
     @PostConstruct
     public void init() {
-//        sexes[0] = "Male";
-//        sexes[1] = "Female";
         
         sexes[0] = Sex.MALE;
         sexes[1] = Sex.FEMALE;
@@ -50,7 +48,7 @@ public class Admin implements Serializable {
         ranks[0] = Groups.ADMIN;
         ranks[1] = Groups.USER;
 
-        createUsers();
+//        createUsers(); //TODO: generálni adatbázist
         users = entityFacade.findAll(User.class);
     }
     

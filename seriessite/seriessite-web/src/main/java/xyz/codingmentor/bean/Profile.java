@@ -70,7 +70,7 @@ public class Profile implements Serializable {
     }
     
     public String getMyProfile() {
-        user = entityFacade.read(User.class, "aron");
+        user = entityFacade.read(User.class, Usermanagement.getUsername());
 //        user = entityFacade.read(Users.class, myUsername);
         return "/user/profile?faces-redirect=true";
     }

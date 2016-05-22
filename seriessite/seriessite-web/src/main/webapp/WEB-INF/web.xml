@@ -19,7 +19,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>template/template.xhtml</welcome-file>
+        <welcome-file>user/series-user.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
@@ -30,9 +30,9 @@
         <param-value>auto</param-value>
     </context-param>
     <context-param>
-       <param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
-       <param-value>/template</param-value>
-   </context-param>
+        <param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+        <param-value>/template</param-value>
+    </context-param>
     <security-constraint>
         <display-name>Admin Pages</display-name>
         <web-resource-collection>
