@@ -67,11 +67,11 @@ public class Registration implements Serializable {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
             if (uploadedFile == null) {
-                dtoUser.getUser().setPathOfPhoto(PATH + "user.jpg");
+                dtoUser.getUser().setPathOfPhoto("user.jpg");
             } else {
                 uploadPicture();
             }
-            dtoUser.getUser().setGroups(Groups.USER);
+            dtoUser.getUser().setGroups(Groups.ADMIN);
             dtoUser.getUser().setMoviePerPage(50);
             entityFacade.create(dtoUser.makeUser());
             dtoUser.setUser(new User());
@@ -131,7 +131,10 @@ public class Registration implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
+                //image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
+                ClassLoader classLoader = getClass().getClassLoader();
+                File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
+                image = new DefaultStreamedContent(new FileInputStream(noPicture));
             } else {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
