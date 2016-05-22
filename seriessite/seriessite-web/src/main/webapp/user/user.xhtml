@@ -8,8 +8,9 @@
         <title>User</title>
     </h:head>
     <h:body>
-        <h:form>
-            <p:commandButton value="Breaking bad" action="#{seriesView.callStringView()}"/>
+        <h:form id="logout">
+                <p:outputLabel value="#{usermanagement.actualUser}"/>         
+                <p:commandButton value="Logout" action="#{usermanagement.logout()}"/>
         </h:form>
     </h:body>
 </html>

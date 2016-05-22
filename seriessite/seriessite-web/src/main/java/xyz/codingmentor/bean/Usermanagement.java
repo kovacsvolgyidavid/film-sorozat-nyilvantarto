@@ -1,23 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.bean;
 
+import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author basstik
  */
-public class Logout {
+@Named
+@RequestScoped
+public class Usermanagement implements Serializable {
 
     public String logout() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         session.invalidate();
-        return "/index?faces-redirect=true";
+        return "/login.xhtml";
+    }
+    
+    public String getActualUser(){
+        return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
 
     public boolean isUserLoggedIn() {
@@ -26,9 +30,6 @@ public class Logout {
         return result;
     }
 
-    /**
-     * Get the login username if it exists
-     */
     public String getUsername() {
         String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         return user;

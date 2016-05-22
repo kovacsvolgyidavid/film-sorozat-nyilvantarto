@@ -39,13 +39,13 @@ public class Movie implements Serializable {
     @JoinTable(name = "MOVIE_DIRECTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
-    public List<Director> directors;
+    private List<Director> directors;
 
     @ManyToMany
     @JoinTable(name = "MOVIE_ACTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
-    public List<Actor> actors;
+    private List<Actor> actors;
 
     @OneToMany(mappedBy = "show")
     private List<Comment> comments;
