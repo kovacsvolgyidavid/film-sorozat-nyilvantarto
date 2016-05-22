@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import xyz.codingmentor.enums.CompareValues;
 
 @Entity
 public class Series extends Movie implements Serializable {

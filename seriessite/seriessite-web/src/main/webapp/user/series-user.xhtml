@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Series</title>
     </h:head>
-    <h:body>
+    <h:body id="body" style="background-color: lavenderblush">
         <h:form>
             <h:panelGrid columns="1"  style="margin: 0 auto;" >
 
@@ -30,7 +30,8 @@
 
             </h:panelGrid>
         </h:form>
-        <h:form>
+        <h:form id="mainform">
+            <p:growl id="gr" showDetail="false" sticky="false" rendered="#{series_User.comparingSeries.size() == 1}"/>
             <ui:repeat value="#{series_User.series}" var="serie">
                 <h:panelGrid id="seriesblock" columns="4" style="#{series_User.blockStyle}">
                     <h:panelGroup id="comparingblock">
@@ -38,14 +39,16 @@
                                          rendered="#{series_User.comparingSeries.contains(serie)}"
                                          action="#{series_User.removeComparing(serie)}"
                                          style="font-size:8px; height: 25px; width: 70px"
-                                         update="seriesblock">
+                                         update="seriesblock" >
+                            <p:ajax update=":mainform:growl"/>
                         </p:commandButton>
-
+                        
                         <p:commandButton id="b_compare" value="Compare"
                                          rendered="#{!series_User.comparingSeries.contains(serie)}"
                                          action="#{series_User.setComparing(serie)}"
                                          style="font-size:8px; height: 25px; width: 70px"
                                          update="seriesblock">
+                          <p:ajax update=":mainform:growl"/>
                         </p:commandButton>
                     </h:panelGroup >
 
@@ -54,27 +57,39 @@
                     </h:panelGroup>
 
                     <h:panelGroup>
-                        <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: 16px"/>
-                        <p:dataList value="#{serie.actors}" var="act">
+                        <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
+                        <p:dataList value="#{serie.actors}" var="actor">
                             <f:facet name="header">
                                 Actors
                             </f:facet>
-                            #{act.name}
+                            #{actor.name}
                         </p:dataList>
-                        <p:outputLabel value="Release:" />
-                        <p:outputLabel value="Seasons:"/>
-                        <p:outputLabel value="Episodes:"/>
+
+                        <p>
+                            <p:outputLabel value="Release: "/>
+                            <p:outputLabel value="#{serie.yearOfRelease.toLocaleString()}" />
+                        </p>
+                        <p>
+                            <p:outputLabel value="Seasons: "/>
+                            <p:outputLabel value="#{serie.seasons.size()}" />
+                        </p>
+                        <p>
+                            <p:outputLabel value="Episodes: "/>
+                            <p:outputLabel value="#{series_User.getNumberOfEpisodes(serie)}" />
+                        </p>
+
+
                     </h:panelGroup>
 
 
                     <h:panelGroup>
-                        <p:dataTable id="directorstable" >
-                            <p:column headerText="Directors">
-                                <ui:repeat value="#{serie.directors}" var="dir">
-                                    <h:outputText value="#{dir.name}" />
-                                </ui:repeat>
-                            </p:column>
-                        </p:dataTable>
+                        <p:dataList value="#{serie.directors}" var="director">
+                            <f:facet name="header">
+                                Directors
+                            </f:facet>
+                            #{director.name}
+                        </p:dataList>
+                        <p:media value="#{series_User.getPromoVideoLink(serie)}" width="250" height="150" player="flash"/>
                     </h:panelGroup>
 
                 </h:panelGrid>
