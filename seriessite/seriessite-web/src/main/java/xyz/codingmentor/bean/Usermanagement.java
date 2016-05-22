@@ -30,7 +30,7 @@ public class Usermanagement implements Serializable {
         return result;
     }
 
-    public String getUsername() {
+    public static String getUsername() {
         String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         return user;
     }

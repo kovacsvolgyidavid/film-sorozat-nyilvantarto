@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -26,7 +25,6 @@ import xyz.codingmentor.entity.Episode;
 import xyz.codingmentor.entity.Season;
 import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.entity.User;
-import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.service.EntityFacade;
 
 /**
@@ -44,6 +42,7 @@ public class SeriesView implements Serializable {
     @Inject
     private EntityFacade entityFacade;
     User user;
+    
     @PostConstruct
     public void init() {//TODO: delete this
         series = new Series();
@@ -51,50 +50,40 @@ public class SeriesView implements Serializable {
         series.setPathOfPhoto(PATH + "/breakingbad.jpg");
         series.setYearOfRelease(Calendar.getInstance().getTime());
         series.setSeasons(new ArrayList<Season>());
-        Season season1=new Season();
-        Season season2=new Season();
-        Season season3=new Season();
-        Episode episode1=new Episode();
+        Season season1 = new Season();
+        Season season2 = new Season();
+        Season season3 = new Season();
+        Episode episode1 = new Episode();
         episode1.setDateOfRelease(Calendar.getInstance().getTime());
         episode1.setTitle("Kill with fire");
         season1.setEpisodes(new ArrayList<Episode>());
         season1.getEpisodes().add(episode1);
-        Episode episode2=new Episode();
+        Episode episode2 = new Episode();
         episode2.setDateOfRelease(Calendar.getInstance().getTime());
         episode2.setTitle("Carrot on a stick");
         season1.getEpisodes().add(episode2);
-      series.getSeasons().add(season1);
-      series.getSeasons().add(season2);
-      series.getSeasons().add(season3);
-      series.setActors(new ArrayList<Actor>());
-      Actor actor1=new Actor();
-      actor1.setName("Leonardo Caprio");
-      actor1.setDateOfBirth(Calendar.getInstance().getTime());
-      series.getActors().add(actor1);
-      Director director1=new Director();
-      director1.setName("Tar Béla");
-      director1.setDateOfBirth(Calendar.getInstance().getTime());
-      series.setDirectors(new ArrayList<Director>());
-      series.getDirectors().add(director1);
-      entityFacade.create(actor1);
-      entityFacade.create(episode1);
-      entityFacade.create(episode2);
-      entityFacade.create(season1);
-      entityFacade.create(season2);
-      entityFacade.create(season3);
-      entityFacade.create(director1);
-      entityFacade.create(series);
-      User user=new User();
-      user.setName("Kovácsvölgyi Dávid");
-      Calendar calendar=Calendar.getInstance();
-      calendar.set(1990, 9, 5);
-      user.setDateOfBirth(calendar.getTime());
-      user.getGroups().add(Groups.ADMIN);
-      user.setPassword("Metal123");
-      user.setSex("Male");
-      user.setUsername("kovi");
-      entityFacade.create(user);
-      this.user=user;
+        series.getSeasons().add(season1);
+        series.getSeasons().add(season2);
+        series.getSeasons().add(season3);
+        series.setActors(new ArrayList<Actor>());
+        Actor actor1 = new Actor();
+        actor1.setName("Leonardo Caprio");
+        actor1.setDateOfBirth(Calendar.getInstance().getTime());
+        series.getActors().add(actor1);
+        Director director1 = new Director();
+        director1.setName("Tar Béla");
+        director1.setDateOfBirth(Calendar.getInstance().getTime());
+        series.setDirectors(new ArrayList<Director>());
+        series.getDirectors().add(director1);
+        entityFacade.create(actor1);
+        entityFacade.create(episode1);
+        entityFacade.create(episode2);
+        entityFacade.create(season1);
+        entityFacade.create(season2);
+        entityFacade.create(season3);
+        entityFacade.create(director1);
+        entityFacade.create(series);
+        this.user = entityFacade.read(User.class, Usermanagement.getUsername());
     }
 
     public String getTitle() {
@@ -113,9 +102,9 @@ public class SeriesView implements Serializable {
         return image;
     }
 
-   public Series getSeries(){
-       return this.series;
-   }
+    public Series getSeries() {
+        return this.series;
+    }
 
     public String getSeasonNumber() {
         if (series.getSeasons() == null) {
@@ -145,39 +134,46 @@ public class SeriesView implements Serializable {
     public void setActualSeason(int i) {
         actualSeason = series.getSeasons().get(i);
     }
-    public List<Episode> getActualSeasonEpisodes(){
-        if(actualSeason==null){
+
+    public List<Episode> getActualSeasonEpisodes() {
+        if (actualSeason == null) {
             return null;
         }
         return actualSeason.getEpisodes();
     }
-    public List<Actor> getActors(){
+
+    public List<Actor> getActors() {
         return series.getActors();
     }
-    
-    public List<Director> getDirectors(){
+
+    public List<Director> getDirectors() {
         return series.getDirectors();
     }
-    public void addComment(){//TODO:lepusholni adatbázisba
-        Comment addComment=new Comment();
+
+    public void addComment() {//TODO:lepusholni adatbázisba
+        Comment addComment = new Comment();
         addComment.setContent(comment);
         addComment.setDateOfComment(Calendar.getInstance().getTime());
         addComment.setUser(user);
         addComment.setShow(series);
-        entityFacade.create(addComment);   
-        comment="";
+        entityFacade.create(addComment);
+        comment = "";
     }
-    public String getComment(){
+
+    public String getComment() {
         return comment;
     }
-    public void setComment(String comment){
-        this.comment=comment;
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
-    public List<Comment> getComments(){
+
+    public List<Comment> getComments() {
         return series.getComments();
     }
-    public String callStringView(){
+
+    public String callStringView() {
         return "/user/seriesView.xhtml";
-    
+
     }
 }
