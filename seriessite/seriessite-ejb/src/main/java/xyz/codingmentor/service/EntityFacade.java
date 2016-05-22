@@ -28,7 +28,7 @@ public class EntityFacade {
     }
 
     public <T> T delete(T entity) {
-        em.remove(entity);
+        em.remove(em.merge(entity));
         return entity;
     }
 
