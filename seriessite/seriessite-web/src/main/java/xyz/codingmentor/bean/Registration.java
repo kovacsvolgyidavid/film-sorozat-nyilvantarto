@@ -143,7 +143,7 @@ public class Registration implements Serializable {
         this.image = image;
     }
 
-    public String ujOldal() {
+    public String redirectLogin() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login?faces-redirect=true";
     }

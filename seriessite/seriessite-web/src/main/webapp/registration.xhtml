@@ -70,7 +70,7 @@
                 </h:panelGrid>
                 <p:outputLabel value="Picture: "/>
                 <p:graphicImage id="gi" value="#{registration.image}" width="230" height="180" cache="false"/>
-                <p:commandLink action="#{registration.ujOldal()}" value="Login" ajax="false" immediate="true"/>
+                <p:commandLink action="#{registration.redirectLogin()}" value="Login" ajax="false" immediate="true"/>
                 <p:commandButton value="Registrate" action="#{registration.signIn()}" ajax="false" style="float: right"/>
             </h:panelGrid>
         </h:form> 
