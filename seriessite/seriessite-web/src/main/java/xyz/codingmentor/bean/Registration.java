@@ -1,5 +1,5 @@
 package xyz.codingmentor.bean;
-//Szia hogy vagy ? reméleme jól :( - faszság komment
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,11 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -27,8 +26,10 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import xyz.codingmentor.dto.UserDTO;
+import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
-import xyz.codingmentor.entity.Users;
+import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
@@ -41,92 +42,62 @@ public class Registration implements Serializable {
 
     @Inject
     private DatabaseQuery databaseQuery;
-    private static final Logger LOG = Logger.getLogger(Registration.class.getName());
 
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
-    private Users user;
+    private final static Enum[] SEXES = new Enum[2];
+    private UserDTO dtoUser;
 
     @PostConstruct
     public void init() {
-        user = new Users();
+        SEXES[0] = Sex.MALE;
+        SEXES[1] = Sex.FEMALE;
+        dtoUser = new UserDTO();
     }
 
-    public void signIn() {
+    public String signIn() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 //        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
 //        username.setParameter("username", user.getUsername());
 
 //        try {
-//            username.getSingleResult();
-        if (databaseQuery.findUserByUsername(user.getUsername()) != null) {
+//            username.getSingleResult();//TODO: query.beanbe át kell tenni, ott kell majda named queryket meghívni
+        if (databaseQuery.findUserByUsername(dtoUser.getUser().getUsername()) != null) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
         } else {
             if (uploadedFile == null) {
-                File f2 = new File(PATH + "user.jpg");
-                LOG.info(f2.getParent().toString());
-                
-                File f = new File(PATH + "user.jpg");
-                LOG.info(f.getParent().toString());
-                LOG.info(f.getAbsolutePath().toString());
-                LOG.info(f.getPath());
-                
-                user.setPathOfPhoto(PATH + "user.jpg");
+                dtoUser.getUser().setPathOfPhoto(PATH + "user.jpg");
             } else {
                 uploadPicture();
             }
-
-            try {
-                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                String text = user.getPassword();
-                md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
-                byte[] digest = md.digest();
-                BigInteger bigInt = new BigInteger(1, digest);
-                String output = bigInt.toString(16);
-
-                user.setPassword(output);
-
-            } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-                System.out.println("Error");//TODO: itt majd valami logger kell
-            }
-
-//            user.getGroups().add(Groups.USER);
-            user.getGroups().add(Groups.ADMIN);
-            user.setMoviePerPage(50);
-            entityFacade.create(user);
-            user = new Users();
+            dtoUser.getUser().setGroups(Groups.USER);
+            dtoUser.getUser().setMoviePerPage(50);
+            entityFacade.create(dtoUser.makeUser());
+            dtoUser.setUser(new User());
             uploadedFile = null;
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
         }
-
 //        } catch (NoResultException noResultException) {
-        //}
+        //} TODO: query-be kell átpakolni
+        return "/login.xhtml";
     }
 
     public void uploadPicture() {
         createDirectory();
-
         try {
             InputStream inputstream = uploadedFile.getInputstream();
             String fullFileName = uploadedFile.getFileName();
-
             Path file = Paths.get(PATH + fullFileName);
-            LOG.info(file.getParent().toString());
-            LOG.info(file.getFileName().toString());
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-            user.setPathOfPhoto(file.toString());
+            dtoUser.getUser().setPathOfPhoto(file.toString());
         } catch (IOException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
     }
 
     public void createDirectory() {
         File directory = new File(PATH);
-
         if (!directory.exists()) {
             try {
                 directory.mkdirs();
@@ -138,7 +109,6 @@ public class Registration implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) {
         uploadedFile = event.getFile();
-
         try {
             image = new DefaultStreamedContent(uploadedFile.getInputstream());
         } catch (IOException ex) {
@@ -161,12 +131,7 @@ public class Registration implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                File f = new File(PATH + "user.jpg");
-                LOG.info(f.getParent().toString());
-                LOG.info(f.getAbsolutePath().toString());
-                LOG.info(f.getPath());
-                image = new DefaultStreamedContent(new FileInputStream(f));
-//                image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
+                image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
             } else {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
@@ -181,16 +146,37 @@ public class Registration implements Serializable {
         this.image = image;
     }
 
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUsers(Users user) {
-        this.user = user;
-    }
-
-    public String ujOldal() {
+    public String redirectLogin() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "login?faces-redirect=true";
     }
+
+    public Enum[] getSexes() {
+        return SEXES;
+    }
+
+    public EntityFacade getEntityFacade() {
+        return entityFacade;
+    }
+
+    public void setEntityFacade(EntityFacade entityFacade) {
+        this.entityFacade = entityFacade;
+    }
+
+    public DatabaseQuery getDatabaseQuery() {
+        return databaseQuery;
+    }
+
+    public void setDatabaseQuery(DatabaseQuery databaseQuery) {
+        this.databaseQuery = databaseQuery;
+    }
+
+    public UserDTO getDtoUser() {
+        return dtoUser;
+    }
+
+    public void setDtoUser(UserDTO dtoUser) {
+        this.dtoUser = dtoUser;
+    }
+
 }

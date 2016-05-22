@@ -8,16 +8,16 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Actor extends Person implements Serializable {
-    
-    @Column(name="PLACE_OF_BIRTH")
+
+    @Column(name = "PLACE_OF_BIRTH")
     private String placeOfBirth;
-    
-    @Column(name="OFFICIAL_WEBSITE")
+
+    @Column(name = "OFFICIAL_WEBSITE")
     private String officialWebsite;
 
     @ManyToMany(mappedBy = "actors")
     private List<Movie> movies;
-    
+
     public Actor() {
         //it is bean
     }

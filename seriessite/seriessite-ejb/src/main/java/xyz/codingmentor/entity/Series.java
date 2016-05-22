@@ -10,10 +10,10 @@ import javax.persistence.OneToMany;
 @NamedQuery(name = "Series.findSerieByName", 
         query = "SELECT s FROM Series s WHERE s.title = :title")
 public class Series extends Movie implements Serializable {
-    
-    @OneToMany (mappedBy = "series")
+
+    @OneToMany(mappedBy = "series")
     private List<Season> seasons;
-    
+
     private String description;
     
     public List<Season> getSeasons() {
@@ -22,11 +22,11 @@ public class Series extends Movie implements Serializable {
 
     public void setSeasons(List<Season> seasons) {
         this.seasons = seasons;
-    }       
-    
+    }
+
     public Series() {
         //it is bean
-    } 
+    }
 
     @Override
     public String toString() {

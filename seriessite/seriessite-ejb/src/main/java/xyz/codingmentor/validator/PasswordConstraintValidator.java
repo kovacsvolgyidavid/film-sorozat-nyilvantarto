@@ -6,9 +6,9 @@ import javax.validation.ConstraintValidatorContext;
 import xyz.codingmentor.constraint.PasswordConstraint;
 
 public class PasswordConstraintValidator implements ConstraintValidator<PasswordConstraint, String> {
-    
+
     private Pattern pattern;
-  
+
     private static final String PASSWORD_PATTERN = "^((?=.*\\d)(?=.*\\p{Ll})(?=.*\\p{Lu}).{6,20})$";
 
     @Override
@@ -18,10 +18,10 @@ public class PasswordConstraintValidator implements ConstraintValidator<Password
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if("".equals(value))
+        if ("".equals(value)) {
             return true;
-        else
+        } else {
             return pattern.matcher(value).matches();
-    } 
+        }
+    }
 }
-

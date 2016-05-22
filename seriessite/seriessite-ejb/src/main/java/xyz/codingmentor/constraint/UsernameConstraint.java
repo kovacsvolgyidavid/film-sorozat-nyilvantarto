@@ -10,11 +10,12 @@ import xyz.codingmentor.validator.UsernameConstraintValidator;
 
 @Target(FIELD)
 @Retention(RUNTIME)
-@Constraint(validatedBy=UsernameConstraintValidator.class)
+@Constraint(validatedBy = UsernameConstraintValidator.class)
 public @interface UsernameConstraint {
+
     String message() default "{UsernameConstraint.message}";
-     
+
     Class<?>[] groups() default {};
- 
-    Class<? extends Payload>[] payload() default {}; 
+
+    Class<? extends Payload>[] payload() default {};
 }

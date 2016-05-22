@@ -10,11 +10,12 @@ import xyz.codingmentor.validator.PasswordConstraintValidator;
 
 @Target(FIELD)
 @Retention(RUNTIME)
-@Constraint(validatedBy=PasswordConstraintValidator.class)
+@Constraint(validatedBy = PasswordConstraintValidator.class)
 public @interface PasswordConstraint {
+
     String message() default "{PasswordConstraint.message}";
-     
+
     Class<?>[] groups() default {};
- 
-    Class<? extends Payload>[] payload() default {};     
+
+    Class<? extends Payload>[] payload() default {};
 }
