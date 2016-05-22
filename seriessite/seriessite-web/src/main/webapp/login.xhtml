@@ -5,19 +5,48 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Login</title>
+        <style>
+            #main-part {
+                position: relative;
+                top: 10vh;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+        </style>
+        <link rel="stylesheet"  type="text/css" href="style.css" />
     </h:head>
     <h:body>
+        <p:growl id="messages" showDetail="false" sticky="false" showSummary="true"/>
+        <div class="left-side"/>
+        <div class="right-side"/>
+        <div class="header"/>
+        <div id="main-part" style="text-align: center; height: 100%">
+            <h1>Login</h1>
+            
+                <h:form id="login" onsubmit="action = 'j_security_check';" prependId="false">
+                    <h:panelGrid columns="1" cellpadding="4" style="margin: 0 auto">
+                        <p:outputLabel for="j_username" value="Username" />
+                        <p:inputText id="j_username" />            
+                        <p:outputLabel for="j_password" value="Password" />
+                        <p:password id="j_password" />
+                        <p:commandButton id="submit" value="Login" ajax="false"/>
+                        <p:commandLink value="Registration" action="/registration.xhtml"/>
+                    </h:panelGrid>
+                </h:form> 
+                <!--            
+<form method="POST" action="j_security_check">
+                    <p:outputLabel value="Username" />
+                    <input type="text" name="j_username" />           
+                    <p:outputLabel value="Password" />
+                    <input type="password" name="j_password" /><br/>
+                    <input type="submit" value="Login"/>
+                    
+                </form>-->
+           
+        </div>
 
-
-        <form method="POST" action="j_security_check">
-            Username: <input type="text" name="j_username" />
-            Password: <input type="password" name="j_password" />
-            <br />
-            <input type="submit" value="Login" />
-            <input type="reset" value="Reset" />
-        </form> 
-
-        <h:form><h:link value="Reg" outcome="registration"/></h:form>
     </h:body>
 </html>
