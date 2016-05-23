@@ -48,13 +48,14 @@ public class Admin implements Serializable {
         ranks[0] = Groups.ADMIN;
         ranks[1] = Groups.USER;
 
-//        createUsers(); //TODO: generálni adatbázist
+        createUsers(); //TODO: generálni adatbázist
         users = entityFacade.findAll(User.class);
     }
     
     public void deleteUser(User user){
         User deletedUser = entityFacade.read(User.class, user.getUsername());
         users.remove(user);
+        filteredUsers.remove(user);
         entityFacade.delete(deletedUser);
     }
 

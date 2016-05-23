@@ -50,7 +50,7 @@ public class Profile implements Serializable {
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private User user;
-    private User myUsername;
+    private User dtoUser;
     private String oldPassword;
     private final static Enum[] sexes = new Enum[2];
 
@@ -71,7 +71,6 @@ public class Profile implements Serializable {
     
     public String getMyProfile() {
         user = entityFacade.read(User.class, Usermanagement.getUsername());
-//        user = entityFacade.read(Users.class, myUsername);
         return "/user/profile?faces-redirect=true";
     }
     
@@ -98,8 +97,6 @@ public class Profile implements Serializable {
     public void saveUserPassword() {
         //if(hashPassword(oldPassword).equals(entityFacade.read(Users.class, user.getUsername()).getPassword())){
         String oldPasswordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
-        hashPassword(oldPassword);
-        hashPassword(oldPassword);
         
         if(hashPassword(oldPassword).equals(oldPasswordFromTable)){   
             user.setPassword(hashPassword(user.getPassword()));
@@ -156,14 +153,14 @@ public class Profile implements Serializable {
         this.user = user;
     }
 
-    public User getMyUsername() {
-        return myUsername;
+    public User getDtoUser() {
+        return dtoUser;
     }
 
-    public void setMyUsername(User myUsername) {
-        this.myUsername = myUsername;
+    public void setDtoUser(User dtoUser) {
+        this.dtoUser = dtoUser;
     }
-
+    
     public String getOldPassword() {
         return oldPassword;
     }

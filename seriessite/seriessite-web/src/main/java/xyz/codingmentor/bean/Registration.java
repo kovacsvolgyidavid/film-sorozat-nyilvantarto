@@ -61,7 +61,7 @@ public class Registration implements Serializable {
 //        try {
 //            username.getSingleResult();//TODO: query.beanbe át kell tenni, ott kell majda named queryket meghívni
         if (databaseQuery.findUserByUsername(dtoUser.getUser().getUsername()) != null) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));           
         } else {
             if (uploadedFile == null) {
                 dtoUser.getUser().setPathOfPhoto("user.jpg");
@@ -74,10 +74,11 @@ public class Registration implements Serializable {
             dtoUser.setUser(new User());
             uploadedFile = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
+            return "/login.xhtml";
         }
+        return "";
 //        } catch (NoResultException noResultException) {
         //} TODO: query-be kell átpakolni
-        return "/login.xhtml";
     }
 
     public void uploadPicture() {
