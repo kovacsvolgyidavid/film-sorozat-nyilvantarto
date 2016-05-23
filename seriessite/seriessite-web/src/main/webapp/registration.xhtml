@@ -32,21 +32,23 @@
                              title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"/>
                 <h:panelGroup/>
                 <p:message for="name" />
+                
                 <p:outputLabel value="Username: " />
                 <p:inputText id="username" value="#{registration.dtoUser.user.username}" 
                              title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters."/>
                 <h:panelGroup/>
                 <p:message for="username"/>
-                <p:outputLabel value="Password: " />
-                <p:password id="password2" value="#{registration.dtoUser.password}" match="password1" 
-                            title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters."
-                            validatorMessage="The two passwords have to be the same!"/>
+                
+                <p:outputLabel for="pwd1" value="Password: " />
+                <p:password id="pwd1" value="#{registration.dtoUser.password}" match="pwd2" 
+                            title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters."/>
                 <h:panelGroup/>
-                <p:message for="password2" />
-                <p:outputLabel value="Confirm Password: " />
-                <p:password id="password1" value="#{registration.dtoUser.password}"/>
+                <p:message for="pwd1" />
+                
+                <p:outputLabel for="pwd2" value="Confirm Password: " />
+                <p:password id="pwd2" value="#{registration.dtoUser.password}"/>
                 <h:panelGroup/>
-                <p:message for="password1" />
+                <p:message for="pwd2" />
 
                 <p:outputLabel value="Date of Birth: " />
                 <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
@@ -54,6 +56,7 @@
                             title="Format: dd/MM/yyyy" />
                 <h:panelGroup/>
                 <p:message for="date" />
+                
                 <p:outputLabel value="Sex:" />
                 <p:selectOneRadio id="sex" value="#{registration.dtoUser.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
                     <f:selectItem itemLabel="Male" itemValue="#{registration.sexes[0]}" />
@@ -61,6 +64,7 @@
                 </p:selectOneRadio>
                 <h:panelGroup/>
                 <p:message for="sex" />
+                
                 <h:panelGroup/>
                 <h:panelGrid columns="2" cellspacing="0">
                     <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi" auto="true"/>
@@ -68,8 +72,10 @@
                         <p:ajax listener="#{registration.resetPicture}" update="gi"/>
                     </p:commandButton>                    
                 </h:panelGrid>
+                
                 <p:outputLabel value="Picture: "/>
                 <p:graphicImage id="gi" value="#{registration.image}" width="230" height="180" cache="false"/>
+                
                 <p:commandLink action="#{registration.redirectLogin()}" value="Login" ajax="false" immediate="true"/>
                 <p:commandButton value="Registrate" action="#{registration.signIn()}" ajax="false" style="float: right"/>
             </h:panelGrid>

@@ -16,14 +16,16 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIData;
+import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.service.EntityFacade;
-
 
 @Named
 @SessionScoped
@@ -34,28 +36,29 @@ public class Admin implements Serializable {
     private final static Enum[] sexes = new Enum[2];
     private final static Enum[] ranks = new Enum[2];
     private User user;
-    
-    
+
     private List<User> users;
     private List<User> filteredUsers;
 
     @PostConstruct
     public void init() {
-        
+
         sexes[0] = Sex.MALE;
         sexes[1] = Sex.FEMALE;
-        
+
         ranks[0] = Groups.ADMIN;
         ranks[1] = Groups.USER;
 
-        createUsers(); //TODO: generálni adatbázist
+        //createUsers(); //TODO: generálni adatbázist
         users = entityFacade.findAll(User.class);
     }
-    
-    public void deleteUser(User user){
+
+    public void deleteUser(User user) {
         User deletedUser = entityFacade.read(User.class, user.getUsername());
         users.remove(user);
-        filteredUsers.remove(user);
+        if (filteredUsers != null) {
+            filteredUsers.remove(user);
+        }
         entityFacade.delete(deletedUser);
     }
 
@@ -82,29 +85,38 @@ public class Admin implements Serializable {
     public void setFilteredUsers(List<User> filteredUsers) {
         this.filteredUsers = filteredUsers;
     }
-    
+
 //    public List<String> getSexes() {
 //        return Arrays.asList(sexes);
 //    }
-    
     public List<Enum> getSexes() {
         return Arrays.asList(sexes);
     }
-    
+
     public List<Enum> getRanks() {
         return Arrays.asList(ranks);
     }
-    
-    public void rankValueChangeMethod(AjaxBehaviorEvent e) {
-        UIData data = (UIData) e.getComponent().findComponent("table");
-        int rowIndex = data.getRowIndex();
-        entityFacade.update(users.get(rowIndex)); 
+
+    public void resetFilteredUsers(AjaxBehaviorEvent e) {
+        if (((UIOutput) e.getSource()).getValue() == null) {
+            filteredUsers = null;
+            System.out.println("ORRBA");
+        }
     }
-    
-    public void createUsers(){
+
+    public void rankValueChangeMethod(User user) {
+        if (filteredUsers != null) {
+            filteredUsers.remove(user);
+            System.out.println("BA");
+        }
+        entityFacade.update(user);
+        RequestContext.getCurrentInstance().update("form");
+    }
+ 
+    public void createUsers() {
         List<Groups> groups = new ArrayList<>();
         //groups.add(Groups.USER);
-        
+
         user = new User();
         user.setName("Aron Kiss");
         user.setPassword(hashPassword("AronK0"));
@@ -117,7 +129,7 @@ public class Admin implements Serializable {
 //        user.setGroups(Groups.USER);
         user.setGroups(Groups.USER);
         entityFacade.create(user);
-        
+
         user = new User();
         user.setName("Roland Feher");
         user.setPassword(hashPassword("RolandF2"));
@@ -129,9 +141,9 @@ public class Admin implements Serializable {
         user.setMoviePerPage(50);
         user.setGroups(Groups.USER);
         entityFacade.create(user);
-        
+
         user = new User();
-        
+
         user = new User();
         user.setName("Bela Nagy");
         user.setPassword(hashPassword("BaleN47"));
@@ -143,7 +155,7 @@ public class Admin implements Serializable {
         user.setMoviePerPage(50);
         user.setGroups(Groups.USER);
         entityFacade.create(user);
-        
+
         user = new User();
         user.setName("Anita Kovacs");
         user.setPassword(hashPassword("AKovacs10"));
@@ -155,7 +167,7 @@ public class Admin implements Serializable {
         user.setMoviePerPage(50);
         user.setGroups(Groups.USER);
         entityFacade.create(user);
-        
+
         user = new User();
         user.setName("Zsófia Horváth");
         user.setPassword(hashPassword("ZsH200"));
@@ -167,13 +179,27 @@ public class Admin implements Serializable {
         user.setMoviePerPage(50);
         user.setGroups(Groups.USER);
         entityFacade.create(user);
-        
+
+        for (int i = 0; i < 200; i++) {
+            user = new User();
+            user.setName("Zsófia Horváth");
+            user.setPassword(hashPassword("ZsH200"));
+            user.setUsername("zsofi" + i);
+//        user.setSex("Female");
+            user.setSex(Sex.FEMALE);
+            user.setPathOfPhoto("user.jpg");
+            user.setDateOfBirth(new Date());
+            user.setMoviePerPage(50);
+            user.setGroups(Groups.USER);
+            entityFacade.create(user);
+        }
+
         user = new User();
     }
-    
-    public String hashPassword(String password){
+
+    public String hashPassword(String password) {
         String hashedPassword = null;
-        
+
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             String text = password;
@@ -182,10 +208,9 @@ public class Admin implements Serializable {
             BigInteger bigInt = new BigInteger(1, digest);
             hashedPassword = bigInt.toString(16);
 
-            
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return hashedPassword;     
+        return hashedPassword;
     }
 }

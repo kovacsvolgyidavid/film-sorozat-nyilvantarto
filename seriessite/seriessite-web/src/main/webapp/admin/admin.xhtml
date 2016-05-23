@@ -27,8 +27,9 @@
                     <h1 style="text-align: center">Users</h1>
                     <br/>
 
-                    <p:dataTable id="table" var="user" value="#{admin.users}" editMode="cell" widgetVar="userTable" style="padding: 0px"
-                                 filteredValue="#{admin.filteredUsers}">
+                    <p:dataTable id="table" var="user" value="#{admin.users}" editMode="cell" widgetVar="userTable" style="padding: 0px" resizableColumns="true"
+                                 filteredValue="#{admin.filteredUsers}" rows="20" paginator="true" rowsPerPageTemplate="10, 20, 50, 100"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                         <!--                <f:facet name="header">
                                             Cell Editing with Click and RightClick
                                         </f:facet>-->
@@ -70,13 +71,14 @@
                         <p:column headerText="Rank"  filterMatchMode="exact" filterBy="#{user.groups}" sortBy="#{user.groups}">
                             <f:facet name="filter">
                                 <p:selectOneMenu onchange="PF('userTable').filter()" >
+                                    <p:ajax listener="#{admin.resetFilteredUsers}"/>
                                     <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
                                     <f:selectItems value="#{admin.ranks}" />
                                 </p:selectOneMenu>
                             </f:facet>                    
 
-                            <h:selectOneMenu value="#{user.groups}" style="width:100%; height: 100%;">
-                                <p:ajax listener="#{admin.rankValueChangeMethod}" />
+                            <h:selectOneMenu value="#{user.groups}" style="width:100%; height: 100%;" disabled="#{usermanagement.actualUser eq user.username}">
+                                <p:ajax listener="#{admin.rankValueChangeMethod(user)}"/>
                                 <f:selectItems value="#{admin.ranks}" var="r" itemLabel="#{r}" itemValue="#{r}" />
                             </h:selectOneMenu>
                         </p:column>  
@@ -90,7 +92,7 @@
                         <p:column>
                             <f:facet name="header">Delete</f:facet>
                             <p:commandButton value="Delete" style="width:100%; height: 100%; border-width: 0px; background-color: darkorange"
-                                             action="#{admin.deleteUser(user)}" update="form"/>                
+                                             action="#{admin.deleteUser(user)}" update="form" disabled="#{usermanagement.actualUser eq user.username}"/>                
                         </p:column>                
                     </p:dataTable>
 

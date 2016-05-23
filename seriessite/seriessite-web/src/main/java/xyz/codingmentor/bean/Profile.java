@@ -28,6 +28,7 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import xyz.codingmentor.dto.UserDTO;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
@@ -50,7 +51,7 @@ public class Profile implements Serializable {
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private User user;
-    private User dtoUser;
+    private UserDTO userDTO;
     private String oldPassword;
     private final static Enum[] sexes = new Enum[2];
 
@@ -58,6 +59,9 @@ public class Profile implements Serializable {
     public void init() {
         sexes[0] = Sex.MALE;
         sexes[1] = Sex.FEMALE;
+        
+        userDTO = new UserDTO();
+        userDTO.setUser(new User());
         //modifiedUser = new Users();
     }
 
@@ -66,17 +70,20 @@ public class Profile implements Serializable {
         //resetUser(modifiedUser, originalUser);
         uploadedFile = null;
         this.user = user; //resetelj a copy metódussal
+//        userDTO.setUser(user);
         return "/profile?faces-redirect=true";  
     }
     
     public String getMyProfile() {
         user = entityFacade.read(User.class, Usermanagement.getUsername());
+//        userDTO.setUser(user);
         return "/user/profile?faces-redirect=true";
     }
     
     public String getUserProfile2(User user) {
         uploadedFile = null;
         this.user = user;
+//        userDTO.setUser(user);
         
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -99,7 +106,7 @@ public class Profile implements Serializable {
         String oldPasswordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
         
         if(hashPassword(oldPassword).equals(oldPasswordFromTable)){   
-            user.setPassword(hashPassword(user.getPassword()));
+            user.setPassword(hashPassword(userDTO.getPassword()));
             entityFacade.update(user);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Succes!", "The password has been changed."));
         } else {
@@ -153,12 +160,12 @@ public class Profile implements Serializable {
         this.user = user;
     }
 
-    public User getDtoUser() {
-        return dtoUser;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setDtoUser(User dtoUser) {
-        this.dtoUser = dtoUser;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
     
     public String getOldPassword() {
