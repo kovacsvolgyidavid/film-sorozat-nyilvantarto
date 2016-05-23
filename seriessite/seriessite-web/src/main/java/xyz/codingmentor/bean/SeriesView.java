@@ -172,8 +172,9 @@ public class SeriesView implements Serializable {
         return series.getComments();
     }
 
-    public String callStringView() {
-        return "/user/seriesView.xhtml";
+    public String callStringView(Series series) {
+        this.series=series;
+        return "/user/seriesView.xhtml?faces-redirect=true";
 
     }
 }
