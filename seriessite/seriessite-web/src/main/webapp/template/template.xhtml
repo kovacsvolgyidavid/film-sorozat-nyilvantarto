@@ -15,12 +15,10 @@
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap-theme.min.css"/>
 
     </h:head>
-
+    <!--    <h:body style="background-image: url('../resources/film-strip.jpg'); background-size: 12.5%">-->
     <h:body>
-        <h:form id="form">
+        <h:form id="form" style="height: 100%;">
             <p:growl id="grow" showDetail="true" sticky="false" rendered="#{not facesContext.validationFailed}"/>
-
-
 
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div id="navbar" class="container-fluid">
@@ -30,9 +28,9 @@
                     <ul class="nav navbar-nav navbar-right navbar-link">
                         <p:commandLink value="Logout" action="#{usermanagement.logout()}" ajax="false" immediate="true"/>
                         <p:outputLabel value="#{usermanagement.actualUser}" style="color: white"/>
-                        
+
                         <p:commandButton value="Profile" action="#{profile.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
-                       
+
 
                         <p:commandButton value="Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px; background-color: 
                                          red" immediate="true"/>
@@ -40,25 +38,31 @@
                 </div>
             </nav>  
 
-            <br/><br/><br/>
-
-            <div class="row">
-                <div class="col-md-2 sidebar"/>
-                <div class="col-md-8 col-md-offset-2">
-                    <ui:insert name="content">
-                        Content<br/>
-                    </ui:insert>
-                </div>
-                <div class="col-md-2 col-md-offset-10 sidebar"/>
+            <div class="container">
+                <br/><br/><br/>
+                <ui:insert name="content">
+                    Content
+                </ui:insert>
             </div>
-
-
-
         </h:form>
+        
+        <style type="text/css">
+            body, html {
+                height: 100%;
+                width: 100%;
+                font-family: Arial;
+                background: #00a8ea;
+            }
 
+            .container {    
+                width: 75%;
+                min-height: 100%;
+                height: auto;
+                margin: 0 auto;
+                background: white;
 
+            }
 
-        <style>
             .ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
                 padding:0px 0px 0px 0px; height: 100%
             }
