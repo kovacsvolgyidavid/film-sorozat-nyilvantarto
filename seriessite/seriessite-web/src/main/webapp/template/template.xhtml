@@ -28,7 +28,7 @@
                         <p:commandButton value="Home" action="/user/series-user.xhtml" style="height:50px; background-color: black; " immediate="true"/>
                     </ul>
                     <ul class="nav navbar-nav navbar-right navbar-link">
-                        <p:commandLink value="Logout" action="#{usermanagement.logout()}" ajax="false"/>
+                        <p:commandLink value="Logout" action="#{usermanagement.logout()}" ajax="false" immediate="true"/>
                         <p:outputLabel value="#{usermanagement.actualUser}" style="color: white"/>
                         
                         <p:commandButton value="Profile" action="#{profile.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
