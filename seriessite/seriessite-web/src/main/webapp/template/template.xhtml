@@ -25,14 +25,14 @@
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div id="navbar" class="container-fluid">
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="#">Home</a></li>
+                        <p:commandButton value="Home" action="/user/series-user.xhtml" style="height:50px; background-color: black; " immediate="true"/>
                     </ul>
                     <ul class="nav navbar-nav navbar-right navbar-link">
-                        <li><a href="admin/logout.xhtml">Logout</a></li>
-                        <li><a href="#">Name</a></li>
+                        <p:commandLink value="Logout" action="#{usermanagement.logout()}" ajax="false"/>
+                        <p:outputLabel value="#{usermanagement.actualUser}" style="color: white"/>
                         
                         <p:commandButton value="Profile" action="#{profile.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
-                        <!--                    <li><a href="admin/admin.xhtml">Admin</a></li>-->
+                       
 
                         <p:commandButton value="Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px; background-color: 
                                          red" immediate="true"/>
