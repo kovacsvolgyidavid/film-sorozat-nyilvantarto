@@ -35,6 +35,10 @@
                         <ul class="nav navbar-nav">
                             <li><p:commandLink value=" Home" action="/user/series-user.xhtml" style="height:50px;" 
                                                class="glyphicon glyphicon-home" immediate="true"/></li>
+
+
+                            <p class="navbar-text glyphicon glyphicon-heart" style="font-size: medium;"> 
+                                Today's visitors: #{usermanagement.visitorCounter.visitor}</p> 
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><p:commandLink value=" Logout" action="#{usermanagement.logout()}" ajax="false" style="height:50px;" 
