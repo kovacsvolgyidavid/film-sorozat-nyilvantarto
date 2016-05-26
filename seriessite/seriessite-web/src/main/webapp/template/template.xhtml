@@ -7,13 +7,14 @@
     <h:head>
         <title>Bootstrap for begginners</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.css"/>
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap-theme.min.css"/>
-
+                
     </h:head>
     <!--    <h:body style="background-image: url('../resources/film-strip.jpg'); background-size: 12.5%">-->
     <h:body>
@@ -21,32 +22,47 @@
             <p:growl id="grow" showDetail="true" sticky="false" rendered="#{not facesContext.validationFailed}"/>
 
             <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div id="navbar" class="container-fluid">
-                    <ul class="nav navbar-nav navbar-left">
-                        <p:commandButton value="Home" action="/user/series-user.xhtml" style="height:50px; background-color: black; " immediate="true"/>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right navbar-link">
-                        <p:commandLink value="Logout" action="#{usermanagement.logout()}" ajax="false" immediate="true"/>
-                        <p:outputLabel value="#{usermanagement.actualUser}" style="color: white"/>
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span> 
+                        </button>
+                        <a class="navbar-brand" href="#">Series Site</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li><p:commandLink value=" Home" action="/user/series-user.xhtml" style="height:50px;" 
+                                               class="glyphicon glyphicon-home" immediate="true"/></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><p:commandLink value=" Logout" action="#{usermanagement.logout()}" ajax="false" style="height:50px;" 
+                                               immediate="true" class="glyphicon glyphicon-log-out"/></li>
 
-                        <p:commandButton value="Profile" action="#{profile.getMyProfile()}" style="height:50px; background-color: #46b8da" immediate="true"/>
+                            <li><p:commandLink value=" #{usermanagement.actualUser}" action="#{profile.getMyProfile()}" style="height:50px;" 
+                                               immediate="true" class="glyphicon glyphicon-user"/></li>
 
-
-                        <p:commandButton value="Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px; background-color: 
-                                         red" immediate="true"/>
-                    </ul>
+                            <li><p:commandLink value=" Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px;" 
+                                               immediate="true" class="glyphicon glyphicon-search"/></li>
+                        </ul>
+                    </div>
                 </div>
-            </nav>  
+            </nav>
 
-            <div class="container">
+            <div class="container-s container-m">
                 <br/><br/><br/>
                 <ui:insert name="content">
                     Content
                 </ui:insert>
             </div>
         </h:form>
-        
+
         <style type="text/css">
+            .ui-growl{
+                top:70px;
+            }
+
             body, html {
                 height: 100%;
                 width: 100%;
@@ -54,13 +70,22 @@
                 background: #00a8ea;
             }
 
-            .container {    
-                width: 75%;
+            .container-s {    
+                width: 100%;
                 min-height: 100%;
                 height: auto;
                 margin: 0 auto;
                 background: white;
+            }
 
+            @media only screen and (min-width: 600px) { 
+                .container-m {    
+                    width: 75%;
+                    min-height: 100%;
+                    height: auto;
+                    margin: 0 auto;
+                    background: white;
+                }
             }
 
             .ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
@@ -84,5 +109,6 @@
                 border: 0 none;
             }
         </style>
+        <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>
     </h:body>
 </html>
