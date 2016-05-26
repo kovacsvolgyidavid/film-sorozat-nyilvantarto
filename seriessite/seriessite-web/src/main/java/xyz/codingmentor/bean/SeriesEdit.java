@@ -63,6 +63,8 @@ public class SeriesEdit implements Serializable {
         series = seriesFacade.findSeriesById(idOfSeries);
         actorList = seriesFacade.findActorsInSeries(idOfSeries);
         actorListNotInSeries = seriesFacade.findActorsNotInSeries(idOfSeries);
+//        LOG.info("Size: " + actorListNotInSeries.size());
+//        LOG.info("Name: " + actorListNotInSeries.get(0).getName());
 
         //        series.setTitle("Title of title");
 //        actorList = null;
@@ -234,7 +236,7 @@ public class SeriesEdit implements Serializable {
         this.actorList = actorList;
     }
     
-    private Actor searchActorById(String actorId){
+    private Actor searchActorById(List<Actor> l, String actorId){
         Long id=Long.parseLong(actorId);
         
         for (Actor next : actorListNotInSeries) {
@@ -246,10 +248,13 @@ public class SeriesEdit implements Serializable {
     }
 
     public void addActorToSeries() {
-        Actor actor = searchActorById(actorId);
+        Actor actor = searchActorById(actorListNotInSeries, actorId);
         
         LOG.info("addActorToSeries");
         LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
+        
+        actorList.add(actor);
+        actorListNotInSeries.remove(actor);
         seriesFacade.addActorToSeries(series.getId(), actor.getId());
     }
 
@@ -262,6 +267,7 @@ public class SeriesEdit implements Serializable {
 
 //        seriesFacade.deleteActorFromSeries(series.getId(), Long.parseLong(actorId));
         actorList.remove(actor);
+        actorListNotInSeries.add(actor);
         seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());
 
         LOG.info("Remove " + actor.getId() + " id of actor from " + series.getTitle());

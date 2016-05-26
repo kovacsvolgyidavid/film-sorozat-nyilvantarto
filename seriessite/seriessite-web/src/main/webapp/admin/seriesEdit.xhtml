@@ -117,7 +117,7 @@
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <!--<div class="ui-grid-col-4" style="margin-left:50px">-->
-                    <div class="ui-grid-col-4">
+                    <div id="editActorsDiv" class="ui-grid-col-4">
 
 
                         <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.actorList}">
@@ -141,21 +141,16 @@
                                                  action="#{seriesEdit.removeActorFromSeries(actorVar)}" update="actorListId">
                                 </p:commandButton>
                             </p:column>
-
-
-
-
                         </p:dataTable>
                            
-                        <h:panelGrid columns="2" cellpadding="10">
+                        <h:panelGrid id="addPanel" columns="2" cellpadding="10">
                             <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" >
                                 <f:selectItem itemLabel="Choose Actor" itemValue="#{null}" />
                                 <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actorVar" itemLabel="#{actorVar.name}" itemValue="#{actorVar.id}"/>
                                 <p:ajax event="change" update="@this" />
                             </p:selectOneMenu>
-                            
                             <p:commandButton value="Add" icon="ui-icon-add" title="Add"
-                                             action="#{seriesEdit.addActorToSeries}" />
+                                             action="#{seriesEdit.addActorToSeries}" update="actorListId addPanel" />
                         </h:panelGrid>
                         
                         <!--</h:form>-->
