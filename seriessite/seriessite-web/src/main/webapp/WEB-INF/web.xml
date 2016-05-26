@@ -23,7 +23,8 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>template/template.xhtml</welcome-file>
+        <!--<welcome-file>template/template.xhtml</welcome-file>-->
+        <welcome-file>admin/seriesEdit.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
@@ -34,15 +35,27 @@
         <param-value>auto</param-value>
     </context-param>
     <context-param>
-       <param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
-       <param-value>/template</param-value>
-   </context-param>
+        <param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+        <param-value>/template</param-value>
+    </context-param>
     <security-constraint>
         <display-name>Admin Pages</display-name>
         <web-resource-collection>
             <web-resource-name>Protected Admin Area</web-resource-name>
             <description/>
             <url-pattern>/admin/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>PUT</http-method>
+            <http-method>HEAD</http-method>
+            <http-method>POST</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>TRACE</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Template</web-resource-name>
+            <description/>
+            <url-pattern>/feature/*</url-pattern>
             <http-method>GET</http-method>
             <http-method>PUT</http-method>
             <http-method>HEAD</http-method>
