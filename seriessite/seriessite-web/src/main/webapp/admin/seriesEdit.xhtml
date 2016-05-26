@@ -31,6 +31,33 @@
                 background-color: transparent;
                 border: 0 none;
             }
+            .absoluteCenter {
+                /* Must manually set width/height */
+                width:800px;
+                height:500px;
+
+                /* The magic centering code */
+                margin:auto;
+                position:absolute;
+                top:0;bottom:0; /* Aligns Vertically - Remove for Horizontal Only */
+                left:0;right:0; /* Aligns Horizontally - Remove for Vertical Only  */
+
+                /* Prevent div from overflowing main window */
+                max-width:100%;
+                max-height:100%;
+                overflow:auto;
+            }
+            .centre{
+                width: 200px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center
+            }
+            .mydiv {
+                width: 200px; 
+                margin: 0 auto;
+                text-align: center
+            }
 
         </style>
 
@@ -75,82 +102,86 @@
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-4">
-                            4
+                        4
                     </div>
                     <div class="ui-grid-col-4">
-                            4
+                        4
                     </div>
                     <div class="ui-grid-col-4">
-                            4
+                        4
                     </div>
                 </div>
             </div>
-            
+
             <!--List actors, directors, and seasons-->
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <!--<div class="ui-grid-col-4" style="margin-left:50px">-->
                     <div class="ui-grid-col-4">
-                        <!--Add Actor-->
-                        <!--<h3 style="margin-top: 0">Actor</h3>-->
-                        <!--<p:growl id="msgs" showDetail="true" />-->
-                        <p:orderList  value="#{seriesEdit.actorList}" id="actorListId" var="actorVar" itemLabel="#{actorVar}" itemValue="#{actorVar}" controlsLocation="none" style="width:450px;marign:auto">
 
-                            <!--<f:facet name="actors">Actors</f:facet>-->
 
+                        <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.actorList}">
                             <!--Actor title-->
-                            <p:column style="width:50px">
+                            <p:column>
                                 <p:link outcome="actorEdit.xhtml" value="#{actorVar.name}">
                                     <f:param name="actorId" value="#{actorVar.id}" />
                                 </p:link>
                             </p:column>
 
                             <!--Edit actor button-->
-                            <p:column style="width:60px">
+                            <p:column style="width:35px;">
                                 <p:commandButton  action="#{seriesEdit.goToActorEditSite()}" icon="ui-icon-edit" title="Edit">
                                     <f:param name="actorId" value="#{actorVar.id}" />
                                 </p:commandButton>
                             </p:column>
 
                             <!--Remove actor button-->
-                            <p:column style="width:50px">
-                                <p:commandButton action="#{seriesEdit.removeActorFromSeries}" icon="ui-icon-trash" title="Remove">
-                                    <f:param name="actorId" value="#{actorVar.id}" />
+                            <p:column style="width:35px;">
+                                <p:commandButton icon="ui-icon-trash" title="Remove"   
+                                                 action="#{seriesEdit.removeActorFromSeries(actorVar)}" update="actorListId">
                                 </p:commandButton>
                             </p:column>
-                        </p:orderList>
 
 
-                        <!-- Dropdown  actor list to add new actor to series -->
 
-                        <!--<h:form id="myform">-->
-                        <h:panelGrid columns="2" cellpadding="5">
-                            <!--<f:facet name="input">-->
-                            <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actor}" >
-                                <f:selectItem itemLabel="Choose Actor" itemValue="" />
-                                <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actor" itemLabel="#{actor.name}" itemValue="#{actor.name}"/>
+
+                        </p:dataTable>
+                           
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" >
+                                <f:selectItem itemLabel="Choose Actor" itemValue="#{null}" />
+                                <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actorVar" itemLabel="#{actorVar.name}" itemValue="#{actorVar.id}"/>
+                                <p:ajax event="change" update="@this" />
                             </p:selectOneMenu>
-                            <!--</f:facet>-->
-
-                            <!--<f:facet name="output">-->
-                            <h:outputText value="#{seriesEdit.actor.name}" />
-                            <!--</f:facet>-->
-
-                            <p:commandButton id="addBtn" value="Add" icon="ui-icon-add" title="Add"
+                            
+                            <p:commandButton value="Add" icon="ui-icon-add" title="Add"
                                              action="#{seriesEdit.addActorToSeries}" />
-                            <!--update="@(form)" nem megy sehol sem-->
-
                         </h:panelGrid>
+                        
                         <!--</h:form>-->
 
                     </div>
+                    <div class="ui-grid-col-4">
+                        2
+                    </div>
+                    <div class="ui-grid-col-4">
+                        3
+                    </div>                                                    
                 </div>
             </div>
 
+            <p:separator />
+
             <!--Description panel-->
-            <h:outputText value="Desctiption" style="margin:0 auto ;width:50%" />
-            <p:inputTextarea rows="10" cols="100" completeMethod="#{seriesEdit.series.description}" 
-                             queryDelay="750" minQueryLength="4" style="margin:0 auto ;width: 600px"/>
+            <h:panelGrid style="margin:0 auto">
+                <h:outputText value="Desctiption" />
+                <p:inputTextarea rows="10" cols="100" value="#{seriesEdit.series.description}" 
+                                 queryDelay="750" minQueryLength="4" />
+
+            </h:panelGrid>
+
+
+
 
         </h:form>
     </h:body>
