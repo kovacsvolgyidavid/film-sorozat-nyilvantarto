@@ -32,6 +32,7 @@
             }
 
             button:focus {outline:0;}
+            
 
         </style>
         <link rel="stylesheet"  type="text/css" href="style.css" />
@@ -46,12 +47,12 @@
                     <!--            <div class="left-side"/>
                                 <div class="right-side"/>
                                 <div class="header"/>-->
-                    <p:tabView id="tabView">
+                    <p:tabView id="tabView" style="border: none">
 
                         <p:ajax event="tabChange" listener="#{profile.onTabChange}" update="form"/>
-                        <p:tab title="Profil" id="profileTab">
-                            <h1 style="text-align: center">Profil</h1><br/>
-                            <h:panelGrid columns="2" cellspacing="3" style="margin: 0 auto; width: 20%">
+                        <p:tab title="Profile" id="profileTab">
+                            <h1 style="text-align: center">Profile</h1><br/>
+                            <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                                 <p:outputLabel value="Name: "/>
                                 <p:inputText id="name" value="#{profile.user.name}"
                                              title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"/>
@@ -79,13 +80,17 @@
 
                                 <p:outputLabel value="Picture: "/>
                                 <p:graphicImage id="gi" value="#{profile.image}" width="230" height="180" cache="false"/>
-
+                                <h:panelGroup/>
+                                
+                                <h:panelGroup/>
+                                <h:panelGroup/>
                                 <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="form"/>
 
-                            </h:panelGrid>
+                            </p:panelGrid>
                         </p:tab>
                         <p:tab title="Password" id="passwordTab">
-                            <h:panelGrid columns="3" id="matchGrid" cellpadding="5">                   
+                            <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
+                            <p:panelGrid columns="3" style="margin: 0 auto;" styleClass="ui-noborder">                   
                                 <h:outputLabel for="oldPassword" value="Old password: *" />
                                 <p:password id="oldPassword" value="#{profile.oldPassword}"/>
                                 <h:panelGroup/>
@@ -97,19 +102,16 @@
                                 <h:outputLabel for="pwd2" value="Confirm Password: *" />
                                 <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"/>
                                 <p:message for="pwd2" />
-
+                                
+                                <h:panelGroup/>
                                 <p:commandButton value="Save" action="#{profile.saveUserPassword()}" process="passwordTab" update="form"/>
-                            </h:panelGrid>
+                            </p:panelGrid>
                         </p:tab>
                         <p:tab title="Favourites">
+                            <h1 style="text-align: center">Favourites</h1><br/>
 
                         </p:tab>
                     </p:tabView>
-
-
-<!--                    <p:link value="Admin" outcome="admin/admin"/>-->
-
-<!--                    </h:form>-->
             </ui:define>
         </ui:composition>
     </h:body>

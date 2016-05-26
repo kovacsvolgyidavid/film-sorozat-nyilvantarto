@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Bootstrap for begginners</title>
+        <title>Series Site</title>
 
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -14,12 +14,13 @@
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.css"/>
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap-theme.min.css"/>
-                
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/style.css"/>
+
     </h:head>
     <!--    <h:body style="background-image: url('../resources/film-strip.jpg'); background-size: 12.5%">-->
     <h:body>
         <h:form id="form" style="height: 100%;">
-            <p:growl id="grow" showDetail="true" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+            <p:growl id="grow" sticky="false" rendered="#{not facesContext.validationFailed}"/>
 
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container-fluid">
@@ -51,64 +52,11 @@
             </nav>
 
             <div class="container-s container-m">
-                <br/><br/><br/>
                 <ui:insert name="content">
                     Content
                 </ui:insert>
             </div>
         </h:form>
-
-        <style type="text/css">
-            .ui-growl{
-                top:70px;
-            }
-
-            body, html {
-                height: 100%;
-                width: 100%;
-                font-family: Arial;
-                background: #00a8ea;
-            }
-
-            .container-s {    
-                width: 100%;
-                min-height: 100%;
-                height: auto;
-                margin: 0 auto;
-                background: white;
-            }
-
-            @media only screen and (min-width: 600px) { 
-                .container-m {    
-                    width: 75%;
-                    min-height: 100%;
-                    height: auto;
-                    margin: 0 auto;
-                    background: white;
-                }
-            }
-
-            .ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
-                padding:0px 0px 0px 0px; height: 100%
-            }
-
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                display: block;
-                background-color: #CCCCCC;
-            }
-
-            .ui-fileupload-content {
-                display: none;
-            }
-            .ui-fileupload-buttonbar.ui-widget-header {
-                background-color: transparent;
-                border: 0 none;
-            }
-        </style>
         <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>
     </h:body>
 </html>
