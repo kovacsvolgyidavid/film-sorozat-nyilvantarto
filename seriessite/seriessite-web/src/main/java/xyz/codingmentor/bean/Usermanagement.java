@@ -6,10 +6,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author basstik
- */
 @Named
 @RequestScoped
 public class Usermanagement implements Serializable {

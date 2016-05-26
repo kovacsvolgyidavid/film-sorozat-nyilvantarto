@@ -19,6 +19,7 @@ body {
     height: auto;
     margin: 0 auto;
     background: white;
+    padding-bottom: 50px;
 }
 
 @media only screen and (min-width: 600px) { 
@@ -28,20 +29,12 @@ body {
         height: auto;
         margin: 0 auto;
         background: white;
+        padding-bottom: 50px;
     }
 }
 
 .ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
     padding:0px 0px 0px 0px; height: 100%
-}
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    display: block;
-    background-color: #CCCCCC;
 }
 
 .ui-fileupload-content {
@@ -52,3 +45,6 @@ body {
     border: 0 none;
 }
 
+.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
+    padding:0px 0px 0px 0px; height: 100%
+}

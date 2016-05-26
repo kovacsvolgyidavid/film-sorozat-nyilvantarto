@@ -66,7 +66,7 @@ public class Registration implements Serializable {
             entityFacade.create(dtoUser.makeUser());
             dtoUser.setUser(new User());
             uploadedFile = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration was successful."));
             return "/login.xhtml";
         }
         return "";

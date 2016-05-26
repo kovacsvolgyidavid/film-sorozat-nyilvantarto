@@ -9,109 +9,77 @@
 
 
     <h:head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Registration</title>
-        <style type="text/css">
-            .ui-fileupload-content {
-                display: none;
-            }
-            .ui-fileupload-buttonbar.ui-widget-header {
-                background-color: transparent;
-                border: 0 none;
-            }
-
-            .noBorder{
-                -webkit-box-shadow: none;
-                border: 0px;
-                -fx-focus-color: transparent;
-            }
-
-
-            .ui-state-highlight {
-                background-color: #FF0000 !important;
-            }
-
-            button:focus {outline:0;}
-            
-
-        </style>
-        <link rel="stylesheet"  type="text/css" href="style.css" />
+        <title>Profile</title>
     </h:head>
     <h:body> 
-<!--        javítsd ki hogy a fenti profil link a saját profilt dobja vissza-->
-        <ui:composition template="/template/template.xhtml">
+        <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
-<!--                <h:form id="form" enctype="multipart/form-data">
-                    <p:growl id="grow" showDetail="false" sticky="false" rendered="#{not facesContext.validationFailed}"/>-->
+                <p:tabView id="tabView" style="border: none">
 
-                    <!--            <div class="left-side"/>
-                                <div class="right-side"/>
-                                <div class="header"/>-->
-                    <p:tabView id="tabView" style="border: none">
+                    <p:ajax event="tabChange" listener="#{profile.onTabChange}" update="form"/>
+                    <p:tab title="Profile" id="profileTab">
+                        <h1 style="text-align: center">Profile</h1><br/>
+                        <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
+                            <p:outputLabel value="Name: "/>
+                            <p:inputText id="name" value="#{profile.user.name}"
+                                         title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"/>
+                            <h:panelGroup/>
+                            <p:message for="name" />
 
-                        <p:ajax event="tabChange" listener="#{profile.onTabChange}" update="form"/>
-                        <p:tab title="Profile" id="profileTab">
-                            <h1 style="text-align: center">Profile</h1><br/>
-                            <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
-                                <p:outputLabel value="Name: "/>
-                                <p:inputText id="name" value="#{profile.user.name}"
-                                             title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"/>
-                                <h:panelGroup/>
-                                <p:message for="name" />
+                            <p:outputLabel value="Date of Birth: " />
+                            <p:calendar id="date" value="#{profile.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                        navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                        title="Format: dd/MM/yyyy" />
+                            <h:panelGroup/>
+                            <p:message for="date" />
 
-                                <p:outputLabel value="Date of Birth: " />
-                                <p:calendar id="date" value="#{profile.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
-                                            navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                            title="Format: dd/MM/yyyy" />
-                                <h:panelGroup/>
-                                <p:message for="date" />
+                            <p:outputLabel value="Sex:" />
+                            <p:selectOneRadio id="sex" value="#{profile.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
+                                <f:selectItem itemLabel="Male" itemValue="#{profile.sexes[0]}" />
+                                <f:selectItem itemLabel="Female" itemValue="#{profile.sexes[1]}" />
+                            </p:selectOneRadio>
+                            <h:panelGroup/>
+                            <p:message for="sex" />
 
-                                <p:outputLabel value="Sex:" />
-                                <p:selectOneRadio id="sex" value="#{profile.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
-                                    <f:selectItem itemLabel="Male" itemValue="#{profile.sexes[0]}" />
-                                    <f:selectItem itemLabel="Female" itemValue="#{profile.sexes[1]}" />
-                                </p:selectOneRadio>
-                                <h:panelGroup/>
-                                <p:message for="sex" />
-
-                                <h:panelGroup/>
-                                <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"/>
+                            <h:panelGroup/>
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"/>
 
 
-                                <p:outputLabel value="Picture: "/>
-                                <p:graphicImage id="gi" value="#{profile.image}" width="230" height="180" cache="false"/>
-                                <h:panelGroup/>
-                                
-                                <h:panelGroup/>
-                                <h:panelGroup/>
-                                <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="form"/>
+                            <p:outputLabel value="Picture: "/>
+                            <p:graphicImage id="gi" value="#{profile.image}" width="230" height="180" cache="false"/>
+                            <h:panelGroup/>
 
-                            </p:panelGrid>
-                        </p:tab>
-                        <p:tab title="Password" id="passwordTab">
-                            <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
-                            <p:panelGrid columns="3" style="margin: 0 auto;" styleClass="ui-noborder">                   
-                                <h:outputLabel for="oldPassword" value="Old password: *" />
-                                <p:password id="oldPassword" value="#{profile.oldPassword}"/>
-                                <h:panelGroup/>
-                                
-                                <h:outputLabel for="pwd1" value="Password: *" />
-                                <p:password id="pwd1" value="#{profile.userDTO.password}" match="pwd2" label="Password"/>
-                                <p:message for="pwd1" />
+                            <h:panelGroup/>
+                            <h:panelGroup/>
+                            <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="form"/>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Password" id="passwordTab">
+                        <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
+                        <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
+                            <h:outputLabel for="oldPassword" value="Old password: *" />
+                            <p:password id="oldPassword" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."/>
+                            <h:panelGroup/>
+                            <p:message for="oldPassword" />
 
-                                <h:outputLabel for="pwd2" value="Confirm Password: *" />
-                                <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"/>
-                                <p:message for="pwd2" />
-                                
-                                <h:panelGroup/>
-                                <p:commandButton value="Save" action="#{profile.saveUserPassword()}" process="passwordTab" update="form"/>
-                            </p:panelGrid>
-                        </p:tab>
-                        <p:tab title="Favourites">
-                            <h1 style="text-align: center">Favourites</h1><br/>
+                            <h:outputLabel for="pwd1" value="Password: *" />
+                            <p:password id="pwd1" value="#{profile.userDTO.password}" match="pwd2" label="Password"/>
+                            <h:panelGroup/>
+                            <p:message for="pwd1" />
 
-                        </p:tab>
-                    </p:tabView>
+                            <h:outputLabel for="pwd2" value="Confirm Password: *" />
+                            <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"/>
+                            <h:panelGroup/>
+                            <p:message for="pwd2" />
+
+                            <h:panelGroup/>
+                            <p:commandButton value="Save" action="#{profile.saveUserPassword()}" process="passwordTab" update="form"/>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Favourites">
+                        <h1 style="text-align: center">Favourites</h1><br/>
+                    </p:tab>
+                </p:tabView>
             </ui:define>
         </ui:composition>
     </h:body>
