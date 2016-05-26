@@ -31,13 +31,14 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import xyz.codingmentor.entity.Actor;
+import xyz.codingmentor.service.SeriesFacade;
 
 @Named
 @SessionScoped
 public class SeriesEdit implements Serializable {
 
     @Inject
-    private EntityFacade entityFacade;
+    private SeriesFacade seriesFacade;
 
     private static final String PATH = "/series/";
     private UploadedFile uploadedFile;
@@ -52,41 +53,53 @@ public class SeriesEdit implements Serializable {
     public void init() {
         actor = new Actor();
         series = new Series();
-        series.setTitle("Title of title");
-
-        Actor s1 = new Actor();
-        s1.setId(1L);
-        s1.setName("Béla");
-
-        Actor s2 = new Actor();
-        s2.setId(2L);
-        s2.setName("János");
-
-        Actor s3 = new Actor();
-        s3.setId(3L);
-        s3.setName("Pisti");
-
-        actorList = new ArrayList<>();
-        actorList.add(s1);
-        actorList.add(s2);
-        actorList.add(s3);
-
-        Actor s12 = new Actor();
-        s12.setId(4L);
-        s12.setName("Zoli");
-
-        Actor s22 = new Actor();
-        s22.setId(5L);
-        s22.setName("Zita");
-
-        Actor s32 = new Actor();
-        s32.setId(6L);
-        s32.setName("Zsombor");
-
         actorListNotInSeries = new ArrayList<>();
-        actorListNotInSeries.add(s12);
-        actorListNotInSeries.add(s22);
-        actorListNotInSeries.add(s32);
+        actorList = new ArrayList<>();
+
+//        series.setTitle("Title of title");
+        Long idOfSeries = 1L;
+        series = seriesFacade.findSeriesById(idOfSeries);
+        actorList = seriesFacade.findActorsInSeries(idOfSeries);
+//        actorListNotInSeries = seriesFacade.findActorsInSeries(idOfSeries);
+
+//        actorList = null;
+//        actorListNotInSeries = null;
+
+//        Actor s1 = new Actor();
+//        s1.setId(1L);
+//        s1.setName("Béla");
+//
+//        Actor s2 = new Actor();
+//        s2.setId(2L);
+//        s2.setName("János");
+//
+//        Actor s3 = new Actor();
+//        s3.setId(3L);
+//        s3.setName("Pisti");
+//
+//        
+//        actorList.add(s1);
+//        actorList.add(s2);
+//        actorList.add(s3);
+//
+//        Actor s12 = new Actor();
+//        s12.setId(4L);
+//        s12.setName("Zoli");
+//
+//        Actor s22 = new Actor();
+//        s22.setId(5L);
+//        s22.setName("Zita");
+//
+//        Actor s32 = new Actor();
+//        s32.setId(6L);
+//        s32.setName("Zsombor");
+//
+//        
+//        actorListNotInSeries.add(s12);
+//        actorListNotInSeries.add(s22);
+//        actorListNotInSeries.add(s32);
+//        actorListNotInSeries = null;
+//        actorList = null;
     }
 
     public String goToActorEditSite() {
@@ -103,7 +116,12 @@ public class SeriesEdit implements Serializable {
     }
 
     public Series getSeries() {
-        return series;
+        if(series == null){
+            throw new IllegalArgumentException("The series is null");
+        }
+        else{
+           return series;
+        }
     }
 
     public void setSeries(Series series) {
@@ -111,7 +129,13 @@ public class SeriesEdit implements Serializable {
     }
 
     public List<Actor> getActorListNotInSeries() {
-        return actorListNotInSeries;
+        actorListNotInSeries = seriesFacade.getActorListNotInSeries(series.getId());
+        if(actorListNotInSeries == null){
+            throw new IllegalArgumentException("The actorListNotInSeries is null");
+        }
+        else{
+           return actorListNotInSeries;
+        }
     }
 
     public void setActorListNotInSeries(List<Actor> actorListNotInSeries) {
@@ -195,6 +219,7 @@ public class SeriesEdit implements Serializable {
     }
 
     public Actor getActor() {
+        LOG.info("getActor funkcion with actor id: " + actor.getId());
         return actor;
     }
 
@@ -203,42 +228,50 @@ public class SeriesEdit implements Serializable {
     }
 
     public List<Actor> getActorList() {
-        return actorList;
+        if(actorList == null){
+            throw new IllegalArgumentException("The actorList is null");
+        }
+        else{
+           return actorList;
+        }
     }
 
     public void setActorList(List<Actor> actorList) {
         this.actorList = actorList;
     }
-    
-    private Actor searchActorById(List<Actor> l, Long id){
+
+    private Actor searchActorById(List<Actor> l, Long id) {
         for (Iterator<Actor> iterator = l.iterator(); iterator.hasNext();) {
             Actor next = iterator.next();
             if (next.getId().equals(id)) {
                 return next;
             }
-            
+
         }
         return null;
     }
 
     public void addActorToSeries() {
-        Actor a = searchActorById(actorListNotInSeries,actor.getId());
-        actorList.add(a);
-        actorListNotInSeries.remove(a);
-        
-        LOG.info("in addActorToSeries function");
-        
+//        Actor a = searchActorById(actorListNotInSeries, actor.getId());
+//        actorList.add(a);
+//        actorListNotInSeries.remove(a);
+
+        seriesFacade.addActorToSeries(series.getId(), actor.getId());
+
+        LOG.info("Add actor "+ actor.getName() + "  to "+ series.getTitle());
+
 //        LOG.info("Here should add actor to series. Id: " + actor.getId());
     }
 
     public void removeActorFromSeries() {
         FacesContext context = FacesContext.getCurrentInstance();
-
         Map<String, String> params
                 = context.getExternalContext().getRequestParameterMap();
-        String id = params.get("actorId");
+        String actorId = params.get("actorId");
+        
+        seriesFacade.deleteActorFromSeries(series.getId(), Long.parseLong(actorId));
 
-        LOG.info("Here should remove actor fromseries " + id + " iddd");
+        LOG.info("Remove "+actorId+ " id of actor from " + series.getTitle());
 
     }
 

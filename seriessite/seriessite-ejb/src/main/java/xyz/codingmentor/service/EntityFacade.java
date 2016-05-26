@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 public class EntityFacade {
 
     @PersistenceContext(unitName = "MoviePU")
-    private EntityManager em;
+    protected EntityManager em;
 
     public EntityFacade() {
     }

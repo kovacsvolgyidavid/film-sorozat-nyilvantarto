@@ -23,7 +23,7 @@
                 height:200px;
                 width:100%;
             }
-                  
+
             .ui-fileupload-content {
                 display: none;
             }
@@ -31,7 +31,7 @@
                 background-color: transparent;
                 border: 0 none;
             }
-  
+
         </style>
 
     </h:head>
@@ -72,15 +72,29 @@
             </div>
 
             <p:separator />
-
-            <!--List actors, directors, and seasons-->
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-4">
+                            4
+                    </div>
+                    <div class="ui-grid-col-4">
+                            4
+                    </div>
+                    <div class="ui-grid-col-4">
+                            4
+                    </div>
+                </div>
+            </div>
+            
+            <!--List actors, directors, and seasons-->
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <!--<div class="ui-grid-col-4" style="margin-left:50px">-->
+                    <div class="ui-grid-col-4">
                         <!--Add Actor-->
-                        <h3 style="margin-top: 0">Actor</h3>
-                        <p:growl id="msgs" showDetail="true" />
-                        <p:orderList  value="#{seriesEdit.actorList}" id="actorListId" var="actorVar" itemLabel="#{actorVar}" itemValue="#{actorVar}" controlsLocation="none" style="margin-top: 0">
+                        <!--<h3 style="margin-top: 0">Actor</h3>-->
+                        <!--<p:growl id="msgs" showDetail="true" />-->
+                        <p:orderList  value="#{seriesEdit.actorList}" id="actorListId" var="actorVar" itemLabel="#{actorVar}" itemValue="#{actorVar}" controlsLocation="none" style="width:450px;marign:auto">
 
                             <!--<f:facet name="actors">Actors</f:facet>-->
 
@@ -110,23 +124,23 @@
                         <!-- Dropdown  actor list to add new actor to series -->
 
                         <!--<h:form id="myform">-->
-                            <h:panelGrid columns="3" cellpadding="5" style="margin-left:50px">
-                                <!--<f:facet name="input">-->
-                                    <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actor}" >
-                                        <f:selectItem itemLabel="Choose Actor" itemValue="" />
-                                        <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actor" itemLabel="#{actor.name}" itemValue="#{actor.name}"/>
-                                    </p:selectOneMenu>
-                                <!--</f:facet>-->
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <!--<f:facet name="input">-->
+                            <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actor}" >
+                                <f:selectItem itemLabel="Choose Actor" itemValue="" />
+                                <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actor" itemLabel="#{actor.name}" itemValue="#{actor.name}"/>
+                            </p:selectOneMenu>
+                            <!--</f:facet>-->
 
-                                <!--<f:facet name="output">-->
-                                    <h:outputText value="#{seriesEdit.actor.name}" />
-                                <!--</f:facet>-->
+                            <!--<f:facet name="output">-->
+                            <h:outputText value="#{seriesEdit.actor.name}" />
+                            <!--</f:facet>-->
 
-                                <p:commandButton id="addBtn" value="Add" icon="ui-icon-add" title="Add"
-                                                 action="#{seriesEdit.addActorToSeries}" />
-                                 <!--update="@(form)" nem megy sehol sem-->
+                            <p:commandButton id="addBtn" value="Add" icon="ui-icon-add" title="Add"
+                                             action="#{seriesEdit.addActorToSeries}" />
+                            <!--update="@(form)" nem megy sehol sem-->
 
-                            </h:panelGrid>
+                        </h:panelGrid>
                         <!--</h:form>-->
 
                     </div>
@@ -134,7 +148,9 @@
             </div>
 
             <!--Description panel-->
-            <p:inputTextarea rows="10" cols="50" completeMethod="#{seriesEdit.series.description}" queryDelay="750" minQueryLength="4" style="margin:0 auto;"/>
+            <h:outputText value="Desctiption" style="margin:0 auto ;width:50%" />
+            <p:inputTextarea rows="10" cols="100" completeMethod="#{seriesEdit.series.description}" 
+                             queryDelay="750" minQueryLength="4" style="margin:0 auto ;width: 600px"/>
 
         </h:form>
     </h:body>

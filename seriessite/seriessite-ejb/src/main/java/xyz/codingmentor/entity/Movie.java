@@ -50,7 +50,7 @@ public class Movie implements Serializable {
     @OneToMany(mappedBy = "show")
     private List<Comment> comments;
 
-    private String descreption;
+
 
     public Movie() {
         //it is bean
@@ -112,12 +112,5 @@ public class Movie implements Serializable {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public String getDescreption() {
-        return descreption;
-    }
-
-    public void setDescreption(String descreption) {
-        this.descreption = descreption;
-    }
 
 }

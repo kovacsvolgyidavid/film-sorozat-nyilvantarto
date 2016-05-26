@@ -5,8 +5,17 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Actor.findAll",
+            query = "SELECT a FROM Actor a"),
+    @NamedQuery(name = "Actor.findActorsById",
+            query = "SELECT a FROM Actor a WHERE a.id = :id")
+
+})
 public class Actor extends Person implements Serializable {
 
     @Column(name = "PLACE_OF_BIRTH")
