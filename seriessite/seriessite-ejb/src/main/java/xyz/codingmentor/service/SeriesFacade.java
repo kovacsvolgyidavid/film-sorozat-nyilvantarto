@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -65,27 +66,28 @@ public class SeriesFacade {
 
     public List<Actor> getActorListNotInSeries(Long seriesId) {
 
-
         TypedQuery<Actor> findAllActor = em.createNamedQuery("Actor.findAll", Actor.class);
         List<Actor> actorsAll = findAllActor.getResultList();
 
-        LOG.info("getActorListNotInSeries Size of actorsAll: " + actorsAll.size());
+//        LOG.info("getActorListNotInSeries Size of actorsAll: " + actorsAll.size());
 
         TypedQuery<Actor> findActorsInSeries = em.createNamedQuery("Series.findActorsBySeriesId", Actor.class);
         findActorsInSeries.setParameter("id", seriesId);
         List<Actor> actorsInSeries = findActorsInSeries.getResultList();
 
-        LOG.info("getActorListNotInSeries Size of actorsInSeries: " + actorsInSeries.size());
-        
-  
+//        LOG.info("getActorListNotInSeries Size of actorsInSeries: " + actorsInSeries.size());
 
         // Remove all elements in firstList from secondList
         actorsAll.removeAll(actorsInSeries);
 
-        LOG.info("getActorListNotInSeries Size of : " + actorsAll.size());
+//        LOG.info("getActorListNotInSeries Size of : " + actorsAll.size());
 
         return actorsAll;
 
+    }
+
+    public void saveSeries(Series series) {
+        em.merge(series);
     }
 
 }

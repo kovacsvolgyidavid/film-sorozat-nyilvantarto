@@ -34,6 +34,10 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.service.SeriesFacade;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 @Named
 @SessionScoped
@@ -112,7 +116,7 @@ public class SeriesEdit implements Serializable {
         Map<String, String> params
                 = context.getExternalContext().getRequestParameterMap();
         String id = params.get("actorId");
-        LOG.info("Here go to actor side. ActorID: " + id);
+//        LOG.info("Here go to actor side. ActorID: " + id);
 
 //        1 is Actor edit it
         return "actorEdit.xhtml/?id=" + id + ";faces-redirect=true";
@@ -132,7 +136,7 @@ public class SeriesEdit implements Serializable {
     }
 
     public List<Actor> getActorListNotInSeries() {
-        LOG.info("actorListNotInSeries size is " + actorListNotInSeries.size());
+//        LOG.info("actorListNotInSeries size is " + actorListNotInSeries.size());
         return actorListNotInSeries;
     }
 
@@ -184,20 +188,20 @@ public class SeriesEdit implements Serializable {
     }
 
     public StreamedContent getImage() {
-        LOG.info("in getImage function");
+//        LOG.info("in getImage function");
         try {
             if (uploadedFile == null) {
-                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
+//                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
-                LOG.info("after image load");
+//                LOG.info("after image load");
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
             } else {
                 LOG.info(this.getClass().getCanonicalName() + "else ag in getImage function");
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
         } catch (Exception ex) {
-            LOG.info("Not found image. Exceptin in getImage function");
+//            LOG.info("Not found image. Exceptin in getImage function");
 //            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -223,7 +227,7 @@ public class SeriesEdit implements Serializable {
     }
 
     public void setActorId(String actorId) {
-        LOG.info("setActor function");
+//        LOG.info("setActor function");
         this.actorId = actorId;
     }
 
@@ -250,8 +254,8 @@ public class SeriesEdit implements Serializable {
     public void addActorToSeries() {
         Actor actor = searchActorById(actorListNotInSeries, actorId);
         
-        LOG.info("addActorToSeries");
-        LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
+//        LOG.info("addActorToSeries");
+//        LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
         
         actorList.add(actor);
         actorListNotInSeries.remove(actor);
@@ -259,20 +263,24 @@ public class SeriesEdit implements Serializable {
     }
 
     public void removeActorFromSeries(Actor actor) {
-        LOG.info("removeActorFromSeries");
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        Map<String, String> params
-//                = context.getExternalContext().getRequestParameterMap();
-//        String actorId = params.get("actorId");
+//        LOG.info("removeActorFromSeries");
 
-//        seriesFacade.deleteActorFromSeries(series.getId(), Long.parseLong(actorId));
 
         actorList.remove(actor);
         actorListNotInSeries.add(actor);
         seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());
 
-        LOG.info("Remove " + actor.getId() + " id of actor from " + series.getTitle());
+//        LOG.info("Remove " + actor.getId() + " id of actor from " + series.getTitle());
 
     }
 
+        public void saveButtonAction(ActionEvent actionEvent) {
+        String text = "Successful save";
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+        
+        public void saveSeries(){
+            seriesFacade.saveSeries(series);
+        }
 }
