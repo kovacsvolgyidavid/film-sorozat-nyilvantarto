@@ -16,10 +16,9 @@ import javax.persistence.OneToMany;
         query = "SELECT s FROM Series s WHERE s.id = :id"),
     @NamedQuery(name = "Series.findActorsBySeriesId", 
         query = "SELECT s.actors FROM Series s WHERE s.id = :id"),
-    @NamedQuery(name = "Series.findActorsNotInSeriesBySeriesId", 
-        query = "SELECT s.actors FROM Series s WHERE s.id != :id")
+    @NamedQuery(name = "Series.findDirectorsBySeriesId", 
+        query = "SELECT s.directors FROM Series s WHERE s.id = :id")
 }) 
-
 public class Series extends Movie implements Serializable {
 
     @OneToMany(mappedBy = "series")

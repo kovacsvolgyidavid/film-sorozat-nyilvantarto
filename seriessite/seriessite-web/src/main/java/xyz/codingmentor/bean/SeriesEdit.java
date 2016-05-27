@@ -62,7 +62,7 @@ public class SeriesEdit implements Serializable {
         Long idOfSeries = 1L;
         series = seriesFacade.findSeriesById(idOfSeries);
         actorList = seriesFacade.findActorsInSeries(idOfSeries);
-        actorListNotInSeries = seriesFacade.findActorsNotInSeries(idOfSeries);
+        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries);
 //        LOG.info("Size: " + actorListNotInSeries.size());
 //        LOG.info("Name: " + actorListNotInSeries.get(0).getName());
 
@@ -266,6 +266,7 @@ public class SeriesEdit implements Serializable {
 //        String actorId = params.get("actorId");
 
 //        seriesFacade.deleteActorFromSeries(series.getId(), Long.parseLong(actorId));
+
         actorList.remove(actor);
         actorListNotInSeries.add(actor);
         seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());

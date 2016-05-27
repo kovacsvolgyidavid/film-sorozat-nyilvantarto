@@ -116,7 +116,6 @@
             <!--List actors, directors, and seasons-->
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
-                    <!--<div class="ui-grid-col-4" style="margin-left:50px">-->
                     <div id="editActorsDiv" class="ui-grid-col-4">
 
 
@@ -143,6 +142,7 @@
                             </p:column>
                         </p:dataTable>
                            
+                        <!--Add panel-->>
                         <h:panelGrid id="addPanel" columns="2" cellpadding="10">
                             <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" >
                                 <f:selectItem itemLabel="Choose Actor" itemValue="#{null}" />
@@ -150,18 +150,12 @@
                                 <p:ajax event="change" update="@this" />
                             </p:selectOneMenu>
                             <p:commandButton value="Add" icon="ui-icon-add" title="Add"
-                                             action="#{seriesEdit.addActorToSeries}" update="actorListId addPanel" />
+                                             action="#{seriesEdit.addActorToSeries}" update="actorListId" />
                         </h:panelGrid>
                         
                         <!--</h:form>-->
 
-                    </div>
-                    <div class="ui-grid-col-4">
-                        2
-                    </div>
-                    <div class="ui-grid-col-4">
-                        3
-                    </div>                                                    
+                    </div>                                                  
                 </div>
             </div>
 
@@ -172,11 +166,7 @@
                 <h:outputText value="Desctiption" />
                 <p:inputTextarea rows="10" cols="100" value="#{seriesEdit.series.description}" 
                                  queryDelay="750" minQueryLength="4" />
-
             </h:panelGrid>
-
-
-
 
         </h:form>
     </h:body>
