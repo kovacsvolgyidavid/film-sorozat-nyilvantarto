@@ -50,10 +50,13 @@ public class Series_User implements Serializable {
     private StreamedContent image;
     private List<Series> comparingSeries;
     private String blockStyle = "margin: 0 auto;";
-    private int numberOfEpisodes = 0;
 
     @PostConstruct
     public void init() {
+        //TEST INPUT
+
+        comparingSeries = new ArrayList();
+        databaseQuery.createTestSeries();
         series = entityFacade.findAll(Series.class);
     }
 

@@ -3,6 +3,7 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,13 +36,13 @@ public class Movie implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "MOVIE_DIRECTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
     private List<Director> directors;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "MOVIE_ACTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
@@ -50,7 +51,7 @@ public class Movie implements Serializable {
     @OneToMany(mappedBy = "show")
     private List<Comment> comments;
 
-    private String descreption;
+    private String description;
 
     public Movie() {
         //it is bean
@@ -112,12 +113,12 @@ public class Movie implements Serializable {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public String getDescreption() {
-        return descreption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescreption(String descreption) {
-        this.descreption = descreption;
+    public void setDescription(String descreption) {
+        this.description = descreption;
     }
 
 }

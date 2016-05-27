@@ -1,0 +1,124 @@
+<<<<<<< HEAD
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Series</title>
+    </h:head>
+    <h:body id="body" style="background-color: lavenderblush">
+        <h:form>
+            <h:panelGrid columns="1"  style="margin: 0 auto;" >
+
+                <h:panelGroup style="display:block; text-align:center">
+
+                    <p:commandButton value="Movies" id="moviesbutton" ajax="false" action="movies-user.xhtml?faces-redirect=true" />
+
+                    <p:commandButton value="Series" id="seriesbutton" disabled="true" />
+
+                    <p:commandButton value="Directors" id="directorsbutton" ajax="false" action="directors-user.xhtml?faces-redirect=true" />
+
+                    <p:commandButton value="Actors" id="actorsbutton" ajax="false" action="actors-user.xhtml?faces-redirect=true" />
+
+                </h:panelGroup>
+
+            </h:panelGrid>
+        </h:form>
+        <h:form id="mainform">
+            <p:growl id="gr" showDetail="false" sticky="false" rendered="#{series_User.comparingSeries.size() == 1}"/>
+            <ui:repeat value="#{series_User.series}" var="serie">
+                <h:panelGrid id="seriesblock" columns="4" style="#{series_User.blockStyle}">
+                    <h:panelGroup id="comparingblock">
+                        <p:commandButton id="b_comparing" value="Comparing"
+                                         rendered="#{series_User.comparingSeries.contains(serie)}"
+                                         action="#{series_User.removeComparing(serie)}"
+                                         style="font-size:8px; height: 25px; width: 70px"
+                                         update="seriesblock" >
+                            <p:ajax update=":mainform:growl"/>
+                        </p:commandButton>
+                        
+                        <p:commandButton id="b_compare" value="Compare"
+                                         rendered="#{!series_User.comparingSeries.contains(serie)}"
+                                         action="#{series_User.setComparing(serie)}"
+                                         style="font-size:8px; height: 25px; width: 70px"
+                                         update="seriesblock">
+                          <p:ajax update=":mainform:growl"/>
+                        </p:commandButton>
+                    </h:panelGroup >
+
+                    <h:panelGroup>
+                        <p:graphicImage value="#{series_User.getImage(serie)}" width="230" height="180" />
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
+                        <p:dataList value="#{serie.actors}" var="actor">
+                            <f:facet name="header">
+                                Actors
+                            </f:facet>
+                            #{actor.name}
+                        </p:dataList>
+
+                        <p>
+                            <p:outputLabel value="Release: "/>
+                            <p:outputLabel value="#{serie.yearOfRelease.toLocaleString()}" />
+                        </p>
+                        <p>
+                            <p:outputLabel value="Seasons: "/>
+                            <p:outputLabel value="#{serie.seasons.size()}" />
+                        </p>
+                        <p>
+                            <p:outputLabel value="Episodes: "/>
+                            <p:outputLabel value="#{series_User.getNumberOfEpisodes(serie)}" />
+                        </p>
+
+
+                    </h:panelGroup>
+
+
+                    <h:panelGroup>
+                        <p:dataList value="#{serie.directors}" var="director">
+                            <f:facet name="header">
+                                Directors
+                            </f:facet>
+                            #{director.name}
+                        </p:dataList>
+                        <p:media value="#{series_User.getPromoVideoLink(serie)}" width="250" height="150" player="flash"/>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+            </ui:repeat>
+        </h:form>
+    </h:body>
+</html>
+
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <head>
+        <title>TODO:Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+         <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <div>Under constract</div>
+            </ui:define>
+         </ui:composition>
+    </body>
+</html>
+>>>>>>> development
