@@ -24,7 +24,7 @@
     </session-config>
     <welcome-file-list>
         <!--<welcome-file>template/template.xhtml</welcome-file>-->
-        <welcome-file>admin/seriesEdit.xhtml</welcome-file>
+        <welcome-file>admin/actorEdit.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>

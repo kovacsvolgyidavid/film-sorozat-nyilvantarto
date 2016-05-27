@@ -10,23 +10,25 @@ import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Series.findSeriesByName", 
-        query = "SELECT s FROM Series s WHERE s.title = :title"),
-    @NamedQuery(name = "Series.findSeriesById", 
-        query = "SELECT s FROM Series s WHERE s.id = :id"),
-    @NamedQuery(name = "Series.findActorsBySeriesId", 
-        query = "SELECT s.actors FROM Series s WHERE s.id = :id"),
-    @NamedQuery(name = "Series.findDirectorsBySeriesId", 
-        query = "SELECT s.directors FROM Series s WHERE s.id = :id")
-}) 
+    @NamedQuery(name = "Series.findSeriesByName",
+            query = "SELECT s FROM Series s WHERE s.title = :title"),
+    @NamedQuery(name = "Series.findSeriesById",
+            query = "SELECT s FROM Series s WHERE s.id = :id"),
+    @NamedQuery(name = "Series.findActorsBySeriesId",
+            query = "SELECT s.actors FROM Series s WHERE s.id = :id"),
+    @NamedQuery(name = "Series.findDirectorsBySeriesId",
+            query = "SELECT s.directors FROM Series s WHERE s.id = :id"),
+    @NamedQuery(name = "Series.findAll",
+            query = "SELECT s FROM Series s")
+})
 public class Series extends Movie implements Serializable {
 
     @OneToMany(mappedBy = "series")
     private List<Season> seasons;
 
-    @Column(length=1000) 
+    @Column(length = 1000)
     private String description;
-    
+
     public List<Season> getSeasons() {
         return seasons;
     }
@@ -61,7 +63,5 @@ public class Series extends Movie implements Serializable {
     public Long getId() {
         return super.getId(); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
+
 }
