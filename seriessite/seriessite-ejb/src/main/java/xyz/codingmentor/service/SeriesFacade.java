@@ -64,16 +64,7 @@ public class SeriesFacade {
     }
 
     public List<Actor> getActorListNotInSeries(Long seriesId) {
-//        Query query = em.createNativeQuery("SELECT m.actor_id FROM movie_actor m WHERE m.movie_id != ?");
-//        query.setParameter(1, seriesId);
-//        List<Long> actorsId = query.getResultList();
-//
-//        LOG.info("getActorListNotInSeries Size of actorsID: " + actorsId.size());
-//
-//        List<Actor> actorsNotInSereis = new ArrayList<>();
-//        for (Long id : actorsId) {
-//            actorsNotInSereis.add(findActorsById(id));
-//        }
+
 
         TypedQuery<Actor> findAllActor = em.createNamedQuery("Actor.findAll", Actor.class);
         List<Actor> actorsAll = findAllActor.getResultList();
