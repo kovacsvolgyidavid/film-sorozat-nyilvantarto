@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
+
+    <h:head>
+        <title>Actor edit site</title>
+        <style type="text/css">
+            .ui-orderlist-list {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow:auto;
+                height:200px;
+                width:100%;
+            }
+
+            .ui-fileupload-content {
+                display: none;
+            }
+            .ui-fileupload-buttonbar.ui-widget-header {
+                background-color: transparent;
+                border: 0 none;
+            }
+            .ui-growl{
+                top:100px;
+            }
+        </style>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/internal-template.xhtml">
+            <ui:define name="content">
+                <!--<h:form id="actosSite">-->
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-3">
+                                <p:outputLabel value="Actor" />
+
+                            </div>
+                            <div class="ui-grid-col-6">
+
+
+                                <h:panelGrid columns="2" cellspacing="20" style="margin-top:60px;margin-left:40px;padding:20px">
+                                    <!--Series name-->
+                                    <p:outputLabel value="Name: "/>
+                                    <p:inputText id="name" value="#{actorEdit.actor.name}"
+                                                 title="Examples: &#13; -Szökés &#13; -Spongy Bob"/>
+
+                                    <!--Birthday-->
+                                    <p:outputLabel value="Birthday: " />
+                                    <p:calendar id="birthday" value="#{actorEdit.actor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                                title="Format: dd/MM/yyyy" />
+
+                                    <!--Birthplace-->
+                                    <p:outputLabel value="Birthplace: "/>
+                                    <p:inputText id="birthplace" value="#{actorEdit.actor.placeOfBirth}"
+                                                 title="Examples: &#13; -Szökés &#13; -Spongy Bob"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="ui-grid-col-3">
+                                <!--Picture-->
+                                <h:panelGrid columns="2" cellspacing="0">
+                                    <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{actorEdit.imageUpload}" update="gi" auto="true"/>
+                                    <p:commandButton value="Reset">
+                                        <p:ajax listener="#{actorEdit.resetPicture}" update="gi"/>
+                                    </p:commandButton>  
+                                </h:panelGrid> 
+                                <p:graphicImage id="gi" value="#{actorEdit.image}" width="230" height="180" cache="false"/>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Official website-->
+                    <h:panelGrid style="margin:0 auto;width: 250px">
+                        <h:outputText value="Official website:" />
+                        <p:inputText id="websiteurl" value="#{actorEdit.actor.officialWebsite}"></p:inputText>
+                    </h:panelGrid>
+
+                    <p:separator />
+
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4">
+                                4
+                            </div>
+                            <div class="ui-grid-col-4">
+                                4
+                            </div>
+                            <div class="ui-grid-col-4">
+                                4
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--List actors, directors, and seasons-->
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4">
+
+                                <p:dataTable id="seriesListId" var="seriesVar" value="#{actorEdit.actor.series}" style="width:250px;margin: 0 auto;margin-bottom: 10px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Series"/>
+                                    </f:facet>
+
+                                    <!--Actor title-->
+                                    <p:column >
+                                        <p:link outcome="seriesEdit.xhtml" value="#{seriesVar.title}">
+                                            <f:param name="actorId" value="#{seriesVar.id}" />
+                                        </p:link>
+                                    </p:column>
+
+                                    <!--Edit actor button-->
+                                    <p:column style="width:38px;">
+                                        <p:commandButton  action="#{actorEdit.goToSeriesEditSite()}" icon="ui-icon-edit" title="Edit">
+                                            <f:param name="actorId" value="#{seriesVar.id}" />
+                                        </p:commandButton>
+                                    </p:column>
+
+                                    <!--Remove actor button-->
+                                    <p:column style="width:38px;">
+                                        <p:commandButton icon="ui-icon-trash" title="Remove"   
+                                                         action="#{actorEdit.removeSeriesFromActor(seriesVar)}" update="seriesListId, form:addPanelActorEdit">
+
+                                        </p:commandButton>
+
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <!--Add panel-->
+                                <h:panelGrid id="addPanelActorEdit" columns="2" cellpadding="10" style="margin:0 auto" >
+                                    <p:selectOneMenu  id="btnSelect" value="#{actorEdit.selectedSeriesId}" style="width:150px">
+                                        <f:selectItem itemLabel="Choose Series" itemValue="#{null}" />
+                                        <f:selectItems value="#{actorEdit.seriesInWichActorDontPlay}" var="seriesVar" itemLabel="#{seriesVar.title}" itemValue="#{seriesVar.id}"/>
+                                        <!--<p:ajax event="change" update="@this" />-->
+                                    </p:selectOneMenu>
+                                    <p:commandButton value="Add" title="Add"
+                                                     action="#{actorEdit.addSeriesToActor}" update="addPanelActorEdit, seriesListId">
+                                    </p:commandButton>
+
+                                </h:panelGrid>
+
+                            </div>                                                  
+                        </div>
+                    </div>
+
+                    <p:separator />
+
+
+
+
+                    <!--Save panel-->
+                    <p:growl id="growl" life="2000" />
+                    <h:panelGrid>
+                        <p:commandButton action="#{actorEdit.saveActor}" actionListener="#{actorEdit.saveButtonAction}" value="Save" 
+                                         update="growl" icon="ui-icon-disk" title="Save" />
+                    </h:panelGrid>
+
+
+
+                <!--</h:form>-->
+
+
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+
+</html>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,6 +58,7 @@ public class Movie implements Serializable {
         //it is bean
     }
 
+    
     public Long getId() {
         return id;
     }
@@ -119,6 +121,7 @@ public class Movie implements Serializable {
 
     public void setDescription(String descreption) {
         this.description = descreption;
+    
     }
 
 }
