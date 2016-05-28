@@ -74,29 +74,35 @@
                     </div>
                 </div>
             </div>
-            
-            <p:accordionPanel style="margin-top:20px">
-                <p:tab title="Godfather Part I">
-                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
-                        <p:graphicImage name="demo/images/godfather/godfather1.jpg" />
-                        <h:outputText
-                            value="The story beginsly." />
-                    </p:panelGrid>
-                </p:tab>
-                <p:tab title="Godfather Part II">
-                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
-                        <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                        <h:outputText value="Franci." />
-                    </p:panelGrid>
-                </p:tab>
-                <p:tab title="Godfather Part III">
-                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
-                        <p:graphicImage name="demo/images/godfather/godfather3.jpg" />
-                        <h:outputText value="After a bre" />
-                    </p:panelGrid>
-                </p:tab>
-            </p:accordionPanel>
 
+
+            <p:dataTable var="episodeVar" value="#{seasonEdit.season.episodes}">
+                <!--<p:panelGrid columns="2"  var="episodeVar" style="margin-top:20px">-->
+                <p:column>
+                    <p:accordionPanel value="episodeVar" style="margin-top:20px">
+                        <p:tab title="#{episodeVar.title}">
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="Title: " />
+                                <h:inputText value="#{episodeVar.title}" />
+                                <p:outputLabel value="Release date: " />
+                                <h:inputText value="#{episodeVar.dateOfRelease}"/>
+                                <p:commandButton action="#{seasonEdit.saveEpisode(episodeVar)}" actionListener="#{actorEdit.saveButtonAction}" value="Save" 
+                                                 icon="ui-icon-disk" title="Save" />
+                                <!--update="growl"-->
+                                <!--pattern="dd/MM/yyyy"-->
+                                <p:commandButton action="#{seasonEdit.cancelEpisode(episodeVar)}" actionListener="#{actorEdit.cancelButtonAction}" value="Cancel" 
+                                                 icon="ui-icon-cancle" title="Cancel" />
+
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+                </p:column>
+                <p:column>
+
+                    <p:commandButton  action="#{seasonEdit.saveEpisode(episodeVar)}" value="Remove"  icon="ui-icon-remove" title="Revome" />
+                </p:column>
+                <!--</p:panelGrid>-->
+            </p:dataTable>
             <!--                    List actors, directors, and seasons
                                 <div class="ui-grid ui-grid-responsive">
                                     <div class="ui-grid-row">

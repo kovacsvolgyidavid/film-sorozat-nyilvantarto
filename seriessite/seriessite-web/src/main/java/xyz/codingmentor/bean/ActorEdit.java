@@ -102,7 +102,7 @@ public class ActorEdit implements Serializable {
 //        seriesAll.removeAll(actor.getSeries());
 //        LOG.info("in init()11 size: " + seriesInWichActorDontPlay.size());
 //          seriesInWichActorDontPlay = seriesAll;
-          seriesInWichActorDontPlay = actorFacade.findSeriesInWichActorDontPlay(idOfActor);
+        seriesInWichActorDontPlay = actorFacade.findSeriesInWichActorDontPlay(idOfActor);
 //        LOG.info(seriesAll.toString());
 
 //        LOG.info("in init()22 size: " + actor.getSeries().size());
@@ -208,12 +208,12 @@ public class ActorEdit implements Serializable {
         Series series = searchSeriesById(seriesInWichActorDontPlay, selectedSeriesId);
 
         LOG.info(" in addSeriesToActor  " + series.getId());
-        
+
         actor.getSeries().add(series);
         seriesInWichActorDontPlay.remove(series);
-        
-         printActorSeries(actor);
-         
+
+        printActorSeries(actor);
+
 //        actorFacade.addSeriesToActor(series.getId(), actor.getId());
     }
 
@@ -228,6 +228,12 @@ public class ActorEdit implements Serializable {
 
     public void saveButtonAction(ActionEvent actionEvent) {
         String text = "Successful save";
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void cancelButtonAction(ActionEvent actionEvent) {
+        String text = "WTF";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }

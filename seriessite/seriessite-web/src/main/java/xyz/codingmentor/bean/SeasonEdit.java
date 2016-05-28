@@ -51,27 +51,26 @@ public class SeasonEdit implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(SeasonEdit.class.getName());
     private Season season;
-    private Episode selectEpisode;
-    private List<Episode> episodeList;
+//    private Episode selectEpisode;
+//    private List<Episode> episodeList;
     private String seriestitle;
 
     @PostConstruct
     public void init() {
         season = new Season();
-        episodeList = new ArrayList<>();
-        selectEpisode = new Episode();
+//        episodeList = new ArrayList<>();
+//        selectEpisode = new Episode();
 
         Long idOfSeason = 1L;
         season = seasonFacade.findSeasonById(idOfSeason);
-        episodeList = seasonFacade.findAllEpisode();
-        
-        
-        Long seriesNameBySeasonId = seasonFacade.getSeriesNameBySeasonId(idOfSeason);
-        seriestitle = seriesNameBySeasonId.toString();
+//        season.getEpisodes();
+//        episodeList = season.getEpisodes();
 
+        String seriesTitleBySeasonId = seasonFacade.getSeriesTitleBySeasonId(idOfSeason);
+
+        seriestitle = seriesTitleBySeasonId;
     }
 
-    
 //    private Actor searchActorById(List<Actor> l, String actorId){
 //        Long id=Long.parseLong(actorId);
 //        
@@ -82,22 +81,24 @@ public class SeasonEdit implements Serializable {
 //        }
 //        return null;
 //    }
-
-
-
-        public void saveButtonAction(ActionEvent actionEvent) {
+    public void saveButtonAction(ActionEvent actionEvent) {
         String text = "Successful save";
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text,  null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-        
-        public void saveSeason(){
-            seasonFacade.saveSeason(season);
-        }
-        
-         public void saveEpisode(){
-            seasonFacade.saveEpisode(selectEpisode);
-        }
+
+    public void saveSeason() {
+        seasonFacade.saveSeason(season);
+    }
+
+    public void saveEpisode(Episode episode) {
+        seasonFacade.saveEpisode(episode);
+    }
+    
+    public void cancelEpisode(Episode episode) {
+//        seasonFacade.saveEpisode(episode);
+            LOG.info("Cancel?????");
+    }
 
     public Season getSeason() {
         return season;
@@ -107,22 +108,20 @@ public class SeasonEdit implements Serializable {
         this.season = season;
     }
 
-    public Episode getSelectEpisode() {
-        return selectEpisode;
-    }
-
-    public void setSelectEpisode(Episode selectEpisode) {
-        this.selectEpisode = selectEpisode;
-    }
-
-    public List<Episode> getEpisodeList() {
-        return episodeList;
-    }
-
-    public void setEpisodeList(List<Episode> episodeList) {
-        this.episodeList = episodeList;
-    }
-
+//    public Episode getSelectEpisode() {
+//        return selectEpisode;
+//    }
+//
+//    public void setSelectEpisode(Episode selectEpisode) {
+//        this.selectEpisode = selectEpisode;
+//    }
+//    public List<Episode> getEpisodeList() {
+//        return episodeList;
+//    }
+//
+//    public void setEpisodeList(List<Episode> episodeList) {
+//        this.episodeList = episodeList;
+//    }
     public String getSeriestitle() {
         return seriestitle;
     }
@@ -130,6 +129,5 @@ public class SeasonEdit implements Serializable {
     public void setSeriestitle(String seriestitle) {
         this.seriestitle = seriestitle;
     }
-         
-         
+
 }

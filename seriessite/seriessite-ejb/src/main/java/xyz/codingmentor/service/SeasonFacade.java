@@ -50,10 +50,14 @@ public class SeasonFacade {
 
     }
 
-    public Long getSeriesNameBySeasonId(Long idOfSeason) {
-        TypedQuery<Long> episode = em.createNamedQuery("Season.findSeriesIdBySeasonId", Long.class);
-        episode.setParameter("id", idOfSeason);
-        return episode.getSingleResult();
+    public String getSeriesTitleBySeasonId(Long idOfSeason) {
+        TypedQuery<Long> query = em.createNamedQuery("Season.findSeriesIdBySeasonId", Long.class);
+        query.setParameter("id", idOfSeason);
+        Long seriesId = query.getSingleResult();
+        
+         TypedQuery<Series> series = em.createNamedQuery("Series.findSeriesById", Series.class);
+        series.setParameter("id", seriesId);
+        return series.getSingleResult().getTitle();
     }
 
 //
