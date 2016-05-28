@@ -46,7 +46,8 @@ public class User implements Serializable {
     @Size(min = 1, message = "This field has to be filled.")
     @NameConstraint(message = "Wrong name format.")
     private String name;
-
+    
+    @NotNull(message = "One radio button has to be chosen.")
     private Sex sex;
 
     @Column(name = "DATE_OF_BIRTH")

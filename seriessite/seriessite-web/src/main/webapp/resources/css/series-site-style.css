@@ -1,0 +1,50 @@
+.ui-growl{
+    top:70px;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    font-family: Arial;
+    background: #00a8ea;
+}
+
+body {
+    padding-top: 50px;
+}
+
+.container-s {    
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto;
+    background: white;
+    padding-bottom: 50px;
+}
+
+@media only screen and (min-width: 600px) { 
+    .container-m {    
+        width: 70%;
+        min-height: 100%;
+        height: auto;
+        margin: 0 auto;
+        background: white;
+        padding-bottom: 50px;
+    }
+}
+
+.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
+    padding:0px 0px 0px 0px; height: 100%
+}
+
+.ui-fileupload-content {
+    display: none;
+}
+.ui-fileupload-buttonbar.ui-widget-header {
+    background-color: transparent;
+    border: 0 none;
+}
+
+.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
+    padding:0px 0px 0px 0px; height: 100%
+}

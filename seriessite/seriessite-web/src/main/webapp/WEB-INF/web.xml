@@ -77,7 +77,7 @@
         <realm-name>SecurityJDBCRealm</realm-name>
         <form-login-config>
             <form-login-page>/login.xhtml</form-login-page>
-            <form-error-page>/loginError.xhtml</form-error-page>
+            <form-error-page>/login.xhtml?fail=true</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>

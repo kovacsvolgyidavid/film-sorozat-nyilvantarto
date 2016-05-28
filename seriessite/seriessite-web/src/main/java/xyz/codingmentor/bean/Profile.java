@@ -28,6 +28,7 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import xyz.codingmentor.dto.UserDTO;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
@@ -42,7 +43,7 @@ public class Profile implements Serializable {
 
     @Inject
     private DatabaseQuery databaseQuery;
-    
+
     @Inject
     private Registration registration;
 
@@ -50,7 +51,7 @@ public class Profile implements Serializable {
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private User user;
-    private User myUsername;
+    private UserDTO userDTO;
     private String oldPassword;
     private final static Enum[] sexes = new Enum[2];
 
@@ -58,27 +59,22 @@ public class Profile implements Serializable {
     public void init() {
         sexes[0] = Sex.MALE;
         sexes[1] = Sex.FEMALE;
-        //modifiedUser = new Users();
+
+        userDTO = new UserDTO();
+        userDTO.setUser(new User());
+    }
+
+    public String getMyProfile() {
+        user = entityFacade.read(User.class, Usermanagement.getUsername());
+//        userDTO.setUser(user);
+        return "/user/profile?faces-redirect=true";
     }
 
     public String getUserProfile(User user) {
-        //originalUser = user;
-        //resetUser(modifiedUser, originalUser);
-        uploadedFile = null;
-        this.user = user; //resetelj a copy metódussal
-        return "/profile?faces-redirect=true";  
-    }
-    
-    public String getMyProfile() {
-        user = entityFacade.read(User.class, Usermanagement.getUsername());
-//        user = entityFacade.read(Users.class, myUsername);
-        return "/user/profile?faces-redirect=true";
-    }
-    
-    public String getUserProfile2(User user) {
         uploadedFile = null;
         this.user = user;
-        
+//        userDTO.setUser(user);
+
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String id = params.get("userId");
@@ -87,34 +83,37 @@ public class Profile implements Serializable {
         return "/user/profile.xhtml?faces-redirect=true";
 //        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
-    
+
     public void saveUserData() {
         uploadPicture();
         entityFacade.update(user);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The modification is successful."));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The modification was successful."));
     }
 
     public void saveUserPassword() {
-        //if(hashPassword(oldPassword).equals(entityFacade.read(Users.class, user.getUsername()).getPassword())){
         String oldPasswordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
-        hashPassword(oldPassword);
-        hashPassword(oldPassword);
-        
-        if(hashPassword(oldPassword).equals(oldPasswordFromTable)){   
-            user.setPassword(hashPassword(user.getPassword()));
+
+        if (hashPassword(oldPassword).equals(oldPasswordFromTable)) {
+            user.setPassword(hashPassword(userDTO.getPassword()));
             entityFacade.update(user);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Succes!", "The password has been changed."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The password has been changed."));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "The old password is incorrect."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The old password is incorrect.", "Error!"));
         }
     }
-    
+
     public void onTabChange(TabChangeEvent event) {
         try {
             uploadedFile = null;
-            //user = entityFacade.read(Users.class, user.getUsername());
-            image = new DefaultStreamedContent(new FileInputStream(user.getPathOfPhoto()));
+
+            if (user.getPathOfPhoto().equals("user.jpg")) {
+                ClassLoader classLoader = getClass().getClassLoader();
+                File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
+                image = new DefaultStreamedContent(new FileInputStream(noPicture));
+            } else {
+                image = new DefaultStreamedContent(new FileInputStream(user.getPathOfPhoto()));
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -122,7 +121,7 @@ public class Profile implements Serializable {
 
     public void uploadPicture() {
         createDirectory();
-        if(uploadedFile != null){
+        if (uploadedFile != null) {
             try {
                 InputStream inputstream = uploadedFile.getInputstream();
                 String fullFileName = uploadedFile.getFileName();
@@ -156,12 +155,12 @@ public class Profile implements Serializable {
         this.user = user;
     }
 
-    public User getMyUsername() {
-        return myUsername;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setMyUsername(User myUsername) {
-        this.myUsername = myUsername;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     public String getOldPassword() {
@@ -171,17 +170,17 @@ public class Profile implements Serializable {
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
     }
-    
+
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                if(user.getPathOfPhoto().equals("user.jpg")){
+                if (user.getPathOfPhoto().equals("user.jpg")) {
                     ClassLoader classLoader = getClass().getClassLoader();
                     File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
-                    image = new DefaultStreamedContent(new FileInputStream(noPicture));                    
-                } else{
+                    image = new DefaultStreamedContent(new FileInputStream(noPicture));
+                } else {
                     image = new DefaultStreamedContent(new FileInputStream(user.getPathOfPhoto()));
-                }    
+                }
             } else {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
@@ -208,10 +207,10 @@ public class Profile implements Serializable {
     public Enum[] getSexes() {
         return sexes;
     }
-    
-    public String hashPassword(String password){
+
+    public String hashPassword(String password) {
         String hashedPassword = null;
-        
+
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             String text = password;
@@ -220,10 +219,9 @@ public class Profile implements Serializable {
             BigInteger bigInt = new BigInteger(1, digest);
             hashedPassword = bigInt.toString(16);
 
-            
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return hashedPassword;     
+        return hashedPassword;
     }
 }
