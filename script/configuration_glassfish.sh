@@ -27,8 +27,8 @@
  ../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jms-resource --restype javax.jms.Queue jms/MovieQueue
 
 # Creating a JMS Destination Resource, whose JNDI name is jms/MovieTopic.
-../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jms-resource --restype javax.jms.Topic jms/CreateJMSEntity
-../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jms-resource --restype javax.jms.Topic jms/DeleteJMSEntity
+../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jms-resource --restype javax.jms.Topic jms/TopicForCreateJMSEntity
+../glassfish/glassfish4/bin/asadmin --echo --user admin --passwordfile passwords.txt create-jms-resource --restype javax.jms.Topic jms/TopicForDeleteJMSEntity
 
 #################################################
 

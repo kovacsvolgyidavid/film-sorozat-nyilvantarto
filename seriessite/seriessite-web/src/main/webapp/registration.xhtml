@@ -17,31 +17,40 @@
                     
                     <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
                     <p:outputLabel value="Name: *"/>
-                    <p:inputText id="name" value="#{registration.dtoUser.user.name}"
-                                 title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"/>
+                    <p:inputText id="name" value="#{registration.dtoUser.user.name}" required="true" requiredMessage="This field has to be filled."
+                                 validatorMessage="Wrong name format." title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy">
+                        <f:validateRegex pattern="^([\p{Lu}]{1}[\p{Ll}]{1,30}[- ]{0,1}|[\p{Lu}]{1}[- \']{1}[\p{Lu}]{0,1}[\p{Ll}]{1,30}[- ]{0,1}|[\p{Ll}]{1,2}[ -\']{1}[\p{Lu}]{1}[\p{Ll}]{1,30}){2,5}$" />
+                    </p:inputText>
                     <h:panelGroup/>
                     <p:message for="name" />
-
+                    
                     <p:outputLabel value="Username: *" />
-                    <p:inputText id="username" value="#{registration.dtoUser.user.username}" 
-                                 title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters."/>
+                    <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled."
+                                 validatorMessage="Wrong username format."
+                                 title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters.">
+                        <f:validateRegex pattern="^[\p{Ll}0-9_-]{3,15}$"/>
+                    </p:inputText>
                     <h:panelGroup/>
                     <p:message for="username"/>
 
-                    <p:outputLabel for="pwd1" value="Password: *" />
-                    <p:password id="pwd1" value="#{registration.dtoUser.password}" match="pwd2" 
-                                title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters."/>
+                    <p:outputLabel for="pwd1" value="Password: " />
+                    <p:password id="pwd1" value="#{registration.dtoUser.password}" match="pwd2" required="true" requiredMessage="This field has to be filled."                              
+                                validatorMessage="Password should match with Confirm Password."
+                                title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
+                        <f:validateRegex pattern="^((?=.*\d)(?=.*\p{Ll})(?=.*\p{Lu}).{6,20})$"/>
+                    </p:password>
                     <h:panelGroup/>
                     <p:message for="pwd1" />
-
-                    <p:outputLabel for="pwd2" value="Confirm Password: *" />
-                    <p:password id="pwd2" value="#{registration.dtoUser.password}"/>
+                    
+                    <p:outputLabel for="pwd2" value="Confirm Password: " />
+                    <p:password id="pwd2" value="#{registration.dtoUser.password}" required="true" requiredMessage="This field has to be filled."/>
                     <h:panelGroup/>
                     <p:message for="pwd2" />
 
                     <p:outputLabel value="Date of Birth: *" />
                     <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
-                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100" 
+                                required="true" requiredMessage="This field has to be filled."
                                 title="Format: dd/MM/yyyy" />
                     <h:panelGroup/>
                     <p:message for="date" />
