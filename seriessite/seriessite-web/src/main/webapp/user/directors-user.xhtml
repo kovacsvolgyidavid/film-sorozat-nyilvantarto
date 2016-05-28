@@ -10,7 +10,6 @@
 
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" type="text/css" href="stlye.css"/>
         <title>Series</title>
     </h:head>
 
@@ -24,9 +23,9 @@
 
                         <p:commandButton value="Movies" id="moviesbutton" ajax="false" action="movies-user.xhtml?faces-redirect=true" />
 
-                        <p:commandButton value="Series" id="seriesbutton" disabled="true" />
+                        <p:commandButton value="Series" id="seriesbutton" ajax="false" action="directors-user.xhtml?faces-redirect=true" />
 
-                        <p:commandButton value="Directors" id="directorsbutton" ajax="false" action="directors-user.xhtml?faces-redirect=true" />
+                        <p:commandButton value="Directors" id="directorsbutton" disabled="true" />
 
                         <p:commandButton value="Actors" id="actorsbutton" ajax="false" action="actors-user.xhtml?faces-redirect=true" />
 
@@ -48,10 +47,18 @@
                             </p:commandButton>
 
                             <p:commandButton id="b_compare" value="Compare"
-                                             rendered="#{!series_User.comparingSeries.contains(serie)}"
+                                             rendered="#{series_User.comparingSeries.size()== 0}"
                                              action="#{series_User.setComparing(serie)}"
                                              style="font-size:8px; height: 25px; width: 70px"
                                              update="seriesblock">
+                            </p:commandButton>
+
+                            <p:commandButton id="b_comparenav" value="Compare"
+                                             rendered="#{series_User.comparingSeries.size() == 1 and
+                                                         !series_User.comparingSeries.contains(serie)}"
+                                             action="#{series_User.setComparing(serie)}"
+                                             style="font-size:8px; height: 25px; width: 70px"
+                                             ajax="false">
                             </p:commandButton>
 
                         </h:panelGroup >
@@ -65,14 +72,15 @@
 
                         <h:panelGroup id="favourite">
                             <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
-                            <h:commandButton styleClass="favouriteicon"
-                                             rendered="#{!series_User.actualUser.favourites.contains(serie)}"
-                                             action="#{series_User.changeFavourites(serie)}"
-                                             />
-                            <h:commandButton styleClass="favouriteiconfilled"
-                                             rendered="#{series_User.actualUser.favourites.contains(serie)}"
-                                             action="#{series_User.changeFavourites(serie)}"
-                                             />
+                            <p:commandLink id="notfav"
+                                           action="#{series_User.changeFavourites(serie)}"
+                                           update="favourite">
+                                <p:graphicImage rendered="#{!series_User.actualUser.favourites.contains(serie)}"
+                                                value="#{series_User.favStarPath}" width="40" height="40" />
+                                <p:graphicImage rendered="#{series_User.actualUser.favourites.contains(serie)}"
+                                                value="#{series_User.favStarPath}" width="40" height="40" />
+                            </p:commandLink>
+
                             <p:dataList value="#{serie.actors}" var="actor">
                                 <f:facet name="header">
                                     Actors
@@ -130,4 +138,3 @@
     </h:body>
 
 </html>
-

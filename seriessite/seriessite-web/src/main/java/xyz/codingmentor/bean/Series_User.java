@@ -8,11 +8,7 @@ package xyz.codingmentor.bean;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,11 +20,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import xyz.codingmentor.entity.Actor;
-import xyz.codingmentor.entity.Director;
-import xyz.codingmentor.entity.Episode;
-import xyz.codingmentor.entity.Season;
 import xyz.codingmentor.entity.Series;
+import xyz.codingmentor.entity.User;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
@@ -47,17 +40,21 @@ public class Series_User implements Serializable {
     private DatabaseQuery databaseQuery;
 
     private List<Series> series;
+    private Series serie;
     private StreamedContent image;
     private List<Series> comparingSeries;
-    private String blockStyle = "margin: 0 auto;";
+    private String blockStyle = "margin: 0 auto";
+    private User actualUser;
 
     @PostConstruct
     public void init() {
         //TEST INPUT
-
+        String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+        actualUser = databaseQuery.findUserByUsername(username);
         comparingSeries = new ArrayList();
         databaseQuery.createTestSeries();
         series = entityFacade.findAll(Series.class);
+
     }
 
     public List<Series> getSeries() {
@@ -80,13 +77,18 @@ public class Series_User implements Serializable {
         return image;
     }
 
-    public void setComparing(Series serie) {
-        if (comparingSeries.size() < 2) {
-            comparingSeries.add(serie);
-            blockStyle = "margin: 0 auto; background-color: greenyellow";
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
-        }
+    public String setComparing(Series serie) {
+        
+            if (comparingSeries.isEmpty()) {
+                comparingSeries.add(serie);
+                blockStyle = "margin: 0 auto; background-color: greenyellow";
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
+            } else if (comparingSeries.size() == 1) {
+                comparingSeries.add(serie);
+                return "user.xhtml?faces-redirect=true";
+            }
+        return "series-user.xhtml?faces-redirect=true";
     }
 
     public void removeComparing(Series serie) {
@@ -113,4 +115,30 @@ public class Series_User implements Serializable {
     public String getPromoVideoLink(Series serie) {
         return serie.getSeasons().get(0).getLinkOfPromoVideo();
     }
+
+    public void changeFavourites(Series serie) {
+
+        if (!actualUser.getFavourites().contains(serie)) {
+            actualUser.getFavourites().add(serie);
+            entityFacade.update(actualUser);
+        } else {
+            actualUser.getFavourites().remove(serie);
+            entityFacade.update(actualUser);
+        }
+    }
+
+    public User getActualUser() {
+        return actualUser;
+    }
+
+    public void deleteSerie(Series serie) {
+        List<User> allusers = entityFacade.findAll(User.class);
+        for (User alluser : allusers) {
+            alluser.getFavourites().clear();
+            entityFacade.update(alluser);
+        }
+        series.remove(serie);
+        entityFacade.delete(serie);
+    }
+
 }

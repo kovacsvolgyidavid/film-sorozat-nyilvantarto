@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Series extends Movie implements Serializable {
 
-    @OneToMany(mappedBy = "series",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "series",cascade = CascadeType.ALL)
     private List<Season> seasons;
 
     public List<Season> getSeasons() {

@@ -47,8 +47,31 @@ public class DatabaseQuery {
         Actor actor3 = new Actor();
 
         actor1.setName("Johnie Depp");
+        DateFormat df = new SimpleDateFormat("yyyy");
+        try {
+            Date date = df.parse("2011");
+            actor1.setDateOfBirth(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         actor2.setName("Jack Sparrow");
+        df = new SimpleDateFormat("yyyy");
+        try {
+            Date date = df.parse("2011");
+            actor2.setDateOfBirth(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         actor3.setName("Penge Pityu");
+        df = new SimpleDateFormat("yyyy");
+        try {
+            Date date = df.parse("2011");
+            actor3.setDateOfBirth(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         List<Actor> actors1 = new ArrayList<>();
         actors1.add(actor1);
@@ -57,9 +80,27 @@ public class DatabaseQuery {
         //Directors for serie1
         Director director1 = new Director();
         director1.setName("Andy Vajna");
+        df = new SimpleDateFormat("yyyy");
+        try {
+            Date date = df.parse("1960");
+            director1.setDateOfBirth(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Director director2 = new Director();
+        director2.setName("Michael Bay");
+        df = new SimpleDateFormat("yyyy");
+        try {
+            Date date = df.parse("1970");
+            director2.setDateOfBirth(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         List<Director> directors1 = new ArrayList<>();
         directors1.add(director1);
+        directors1.add(director2);
         //Episodes for serie1 season
         Episode episode1 = new Episode();
         episode1.setSerialNumber("12345");
@@ -74,7 +115,7 @@ public class DatabaseQuery {
         episodes1.add(episode2);
         //Seasons for serie1
         Season season1 = new Season();
-        DateFormat df = new SimpleDateFormat("yyyy");
+        df = new SimpleDateFormat("yyyy");
         try {
             Date date = df.parse("2011");
             season1.setDateOfRelease(date);
@@ -82,7 +123,8 @@ public class DatabaseQuery {
             Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         season1.setEpisodes(episodes1);
-        
+        season1.setLinkOfPromoVideo("https://www.youtube.com/v/uE-1RPDqJAY");
+
         Season season2 = new Season();
         df = new SimpleDateFormat("yyyy");
         try {
@@ -92,10 +134,14 @@ public class DatabaseQuery {
             Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         season2.setEpisodes(episodes1);
-        
+        season2.setLinkOfPromoVideo("https://www.youtube.com/v/KaqC5FnvAEc");
+
         List<Season> seasons1 = new ArrayList<>();
         seasons1.add(season1);
         seasons1.add(season2);
+        
+        List<Season>seasons2 = new ArrayList<>();
+        seasons2.add(season2);
         //First serie
         Series serie1 = new Series();
         serie1.setActors(actors1);
@@ -113,14 +159,14 @@ public class DatabaseQuery {
         }
         entityManager.persist(serie1);
         //Second serie
-        /*
+        
         Series serie2 = new Series();
-        serie2.setActors(actors2);
+        serie2.setActors(actors1);
         serie2.setDescription("Example description of the serie2");
-        serie2.setDirectors(directors2);
-        serie2.setPathOfPhoto("C:\\path\\resources\\testpic.jpg");
-        serie1.setSeasons(seasons2);
-        serie1.setTitle("Test Title 2");
+        serie2.setDirectors(directors1);
+        serie2.setPathOfPhoto("C:\\path\\resources\\felev.jpg");
+        serie2.setSeasons(seasons2);
+        serie2.setTitle("Test Title 2");
         df = new SimpleDateFormat("yyyy");
         try {
             Date date = df.parse("1998");
@@ -128,7 +174,26 @@ public class DatabaseQuery {
         } catch (ParseException ex) {
             Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+        entityManager.persist(serie2);
+        
+        //Third serie
+        
+        Series serie3 = new Series();
+        serie3.setActors(actors1);
+        serie3.setDescription("Example description of the serie3");
+        serie3.setDirectors(directors1);
+        serie3.setPathOfPhoto("C:\\path\\resources\\felev.jpg");
+        serie3.setSeasons(seasons2);
+        serie3.setTitle("Test Title 3");
+        df = new SimpleDateFormat("yyyy");
+        try {
+            Date date = df.parse("1998");
+            serie3.setYearOfRelease(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DatabaseQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        entityManager.persist(serie3);
+         
     }
 
     @PreDestroy
