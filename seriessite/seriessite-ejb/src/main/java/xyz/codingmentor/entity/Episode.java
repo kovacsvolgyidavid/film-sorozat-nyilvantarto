@@ -9,10 +9,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+@NamedQueries({
+    @NamedQuery(name = "Episode.findEpisodeById",
+            query = "SELECT e FROM Episode e WHERE e.id = :id"),
+    @NamedQuery(name = "Episode.findAll",
+            query = "SELECT e FROM Episode e")
+})
 @Entity
 public class Episode implements Serializable {
 

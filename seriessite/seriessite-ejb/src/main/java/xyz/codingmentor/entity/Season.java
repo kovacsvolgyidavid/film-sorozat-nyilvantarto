@@ -10,10 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+@NamedQueries({
+    @NamedQuery(name = "Season.findSeasonById",
+            query = "SELECT s FROM Season s WHERE s.id = :id"),
+    @NamedQuery(name = "Season.findAll",
+            query = "SELECT s FROM Season s")
+})
 @Entity
 public class Season implements Serializable {
 
