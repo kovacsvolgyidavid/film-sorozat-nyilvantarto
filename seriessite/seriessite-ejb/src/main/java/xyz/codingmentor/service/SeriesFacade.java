@@ -6,6 +6,8 @@
 package xyz.codingmentor.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -13,8 +15,10 @@ import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
+import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Series;
 
 @Stateless
@@ -85,6 +89,30 @@ public class SeriesFacade {
         return actorsAll;
 
     }
+        
+    public List<Series> actorsFromSeriesAfterDate() {
+        Query q = em.createNamedQuery("actorsFromSeriesAfterDate");
+        q.setParameter("date", new Date(),TemporalType.DATE);
+        return q.getResultList();
+    }
+    
+    public List<Actor> actorsFromSeriesAfterDate2() {
+        Query q = em.createNamedQuery("actorsFromSeriesAfterDate2");
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2010, 10, 10);
+        
+        q.setParameter("date", calendar,TemporalType.DATE);
+        return q.getResultList();
+    }
+    
+        public List<Movie> seriesByDirectorOriginalName() {
+        Query q = em.createNamedQuery("seriesByDirectorOriginalName");
+        return q.getResultList();
+    }
+    
+    
+    
 
     public void saveSeries(Series series) {
         em.merge(series);

@@ -16,7 +16,19 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name = "Actor.findActorById",
             query = "SELECT a FROM Actor a WHERE a.id = :id"),
     @NamedQuery(name = "Actor.findSeriesByActorId",
-            query = "SELECT a.series FROM Actor a WHERE a.id = :id")
+            query = "SELECT a.series FROM Actor a WHERE a.id = :id"),
+    @NamedQuery(name = "actorsFromSeriesAfterDate",
+            query = "SELECT s FROM Series s WHERE s.yearOfRelease < :date"),
+    
+    
+    
+    @NamedQuery(name = "actorsFromSeriesAfterDate2",
+            query = "SELECT a FROM Actor a JOIN a.series s WHERE s.yearOfRelease > :date "
+    ),
+    
+    @NamedQuery(name = "seriesByDirectorOriginalName",
+            query = "SELECT DISTINCT s FROM  Series s JOIN s.directors d WHERE d.originalName LIKE d.name "
+    )
 
 })
 public class Actor extends Person implements Serializable {

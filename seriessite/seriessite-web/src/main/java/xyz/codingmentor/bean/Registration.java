@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,15 +24,21 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.dto.UserDTO;
+import xyz.codingmentor.entity.Actor;
+import xyz.codingmentor.entity.Movie;
+import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
+import xyz.codingmentor.service.SeriesFacade;
 
 @Named
 @SessionScoped
 public class Registration implements Serializable {
+    @Inject
+    private SeriesFacade seriesFacade;
 
     @Inject
     private EntityFacade entityFacade;
@@ -53,6 +57,20 @@ public class Registration implements Serializable {
         SEXES[0] = Sex.MALE;
         SEXES[1] = Sex.FEMALE;
         dtoUser = new UserDTO();
+        
+        for(Series s: seriesFacade.actorsFromSeriesAfterDate()){
+            System.out.println(s.getTitle() + "\n");
+        }
+        
+        System.out.println("\n\n");
+        for(Actor a: seriesFacade.actorsFromSeriesAfterDate2()){
+            System.out.println(a.getName() + "\n");
+        }
+        
+        System.out.println("\n\n");
+        for(Movie m: seriesFacade.seriesByDirectorOriginalName()){
+            System.out.println(m.getTitle() + "\n");
+        }
     }
 
     public String signIn() {
