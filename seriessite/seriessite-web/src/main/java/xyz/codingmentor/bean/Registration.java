@@ -57,20 +57,6 @@ public class Registration implements Serializable {
         SEXES[0] = Sex.MALE;
         SEXES[1] = Sex.FEMALE;
         dtoUser = new UserDTO();
-        
-        for(Series s: seriesFacade.actorsFromSeriesAfterDate()){
-            System.out.println(s.getTitle() + "\n");
-        }
-        
-        System.out.println("\n\n");
-        for(Actor a: seriesFacade.actorsFromSeriesAfterDate2()){
-            System.out.println(a.getName() + "\n");
-        }
-        
-        System.out.println("\n\n");
-        for(Movie m: seriesFacade.seriesByDirectorOriginalName()){
-            System.out.println(m.getTitle() + "\n");
-        }
     }
 
     public String signIn() {

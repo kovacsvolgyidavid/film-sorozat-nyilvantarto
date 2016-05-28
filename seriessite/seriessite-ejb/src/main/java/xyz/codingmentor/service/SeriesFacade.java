@@ -90,32 +90,32 @@ public class SeriesFacade {
 
     }
         
-    public List<Series> actorsFromSeriesAfterDate() {
-        Query q = em.createNamedQuery("actorsFromSeriesAfterDate");
-        q.setParameter("date", new Date(),TemporalType.DATE);
-        return q.getResultList();
-    }
+//    public List<Series> actorsFromSeriesAfterDate() {
+//        Query q = em.createNamedQuery("actorsFromSeriesAfterDate");
+//        q.setParameter("date", new Date(),TemporalType.DATE);
+//        return q.getResultList();
+//    }
     
-    public List<Actor> actorsFromSeriesAfterDate2() {
-        Query q = em.createNamedQuery("actorsFromSeriesAfterDate2");
-        
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2010, 10, 10);
-        
-        q.setParameter("date", calendar,TemporalType.DATE);
-        return q.getResultList();
-    }
-    
-        public List<Movie> seriesByDirectorOriginalName() {
-        Query q = em.createNamedQuery("seriesByDirectorOriginalName");
-        return q.getResultList();
-    }
-    
-    
-    
-
     public void saveSeries(Series series) {
         em.merge(series);
     }
-
+    
+     public List<Series> seriesByDirectorOriginalNameEqualsName() {
+        Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");
+        return q.getResultList();
+    }
+    
+    
+    public List<Series> seriesWithMoreEpisode(int episode) {
+        Query q = em.createNamedQuery("seriesWithMoreEpisode");
+        q.setParameter("number", episode);
+        return q.getResultList();
+    }
+    
+    public List<Series> seriesCommentedAfterGivenDate(Date date) {
+        Query q = em.createNamedQuery("seriesCommentedAfterGivenDate");
+        
+        q.setParameter("date", date,TemporalType.DATE);
+        return q.getResultList();
+    }
 }
