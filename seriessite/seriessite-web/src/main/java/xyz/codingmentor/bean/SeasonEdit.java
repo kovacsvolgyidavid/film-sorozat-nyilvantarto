@@ -65,7 +65,9 @@ public class SeasonEdit implements Serializable {
         season = seasonFacade.findSeasonById(idOfSeason);
         episodeList = seasonFacade.findAllEpisode();
         
-        seriestitle = seasonFacade.getSeriesNameBySeasonId(idOfSeason);
+        
+        Long seriesNameBySeasonId = seasonFacade.getSeriesNameBySeasonId(idOfSeason);
+        seriestitle = seriesNameBySeasonId.toString();
 
     }
 
@@ -119,6 +121,14 @@ public class SeasonEdit implements Serializable {
 
     public void setEpisodeList(List<Episode> episodeList) {
         this.episodeList = episodeList;
+    }
+
+    public String getSeriestitle() {
+        return seriestitle;
+    }
+
+    public void setSeriestitle(String seriestitle) {
+        this.seriestitle = seriestitle;
     }
          
          

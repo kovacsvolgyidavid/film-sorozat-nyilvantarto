@@ -20,7 +20,9 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Season.findSeasonById",
             query = "SELECT s FROM Season s WHERE s.id = :id"),
     @NamedQuery(name = "Season.findAll",
-            query = "SELECT s FROM Season s")
+            query = "SELECT s FROM Season s"),
+    @NamedQuery(name = "Season.findSeriesIdBySeasonId",
+            query = "SELECT e.series.id FROM Season e WHERE e.id = :id")
 })
 @Entity
 public class Season implements Serializable {

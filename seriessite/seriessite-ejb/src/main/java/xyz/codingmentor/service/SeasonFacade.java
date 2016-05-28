@@ -49,19 +49,19 @@ public class SeasonFacade {
         return episode.getSingleResult();
 
     }
-    
-    public String getSeriesNameBySeasonId(Long idOfSeason) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    public Long getSeriesNameBySeasonId(Long idOfSeason) {
+        TypedQuery<Long> episode = em.createNamedQuery("Season.findSeriesIdBySeasonId", Long.class);
+        episode.setParameter("id", idOfSeason);
+        return episode.getSingleResult();
     }
 
-    
 //
 //    public List<Actor> findActorsInSeries(Long seriesId) {
 //        TypedQuery<Actor> actors = em.createNamedQuery("Series.findActorsBySeriesId", Actor.class);
 //        actors.setParameter("id", seriesId);
 //        return actors.getResultList();
 //    }
-
 //    public List<Actor> findActorsNotInSeries(Long seriesId) {
 //        TypedQuery<Actor> actors = em.createNamedQuery("Series.findActorsNotInSeriesBySeriesId", Actor.class);
 //        actors.setParameter("id", seriesId);
@@ -109,8 +109,5 @@ public class SeasonFacade {
     public void saveSeason(Season season) {
         em.merge(season);
     }
-
-
- 
 
 }
