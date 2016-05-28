@@ -2,6 +2,7 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -15,7 +16,7 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name = "Actor.findActorById",
             query = "SELECT a FROM Actor a WHERE a.id = :id"),
     @NamedQuery(name = "Actor.findSeriesByActorId",
-            query = "SELECT a.movies FROM Actor a WHERE a.id = :id")
+            query = "SELECT a.series FROM Actor a WHERE a.id = :id")
 
 })
 public class Actor extends Person implements Serializable {
@@ -26,8 +27,8 @@ public class Actor extends Person implements Serializable {
     @Column(name = "OFFICIAL_WEBSITE")
     private String officialWebsite;
 
-    @ManyToMany(mappedBy = "actors")
-    private List<Movie> movies;
+    @ManyToMany(cascade=CascadeType.MERGE, mappedBy = "actors")
+    private List<Series> series;
 
     public Actor() {
         //it is bean
@@ -49,11 +50,13 @@ public class Actor extends Person implements Serializable {
         this.officialWebsite = officialWebsite;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
+    public List<Series> getSeries() {
+        return series;
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setSeries(List<Series> series) {
+        this.series = series;
     }
+
+
 }

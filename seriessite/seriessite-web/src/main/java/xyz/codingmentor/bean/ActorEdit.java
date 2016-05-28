@@ -54,20 +54,51 @@ public class ActorEdit implements Serializable {
     private String selectedSeriesId;
 //    private Series series;
     private static final Logger LOG = Logger.getLogger(ActorEdit.class.getName());
-    private List<Series> seriesList;
+//    private List<Series> seriesList;
     private List<Series> seriesInWichActorDontPlay;
 
     @PostConstruct
     public void init() {
         actor = new Actor();
         seriesInWichActorDontPlay = new ArrayList<>();
-        seriesList = new ArrayList<>();
+//        seriesList = new ArrayList<>();
 
         Long idOfActor = 1L;
         actor = actorFacade.findActorById(idOfActor);
-        seriesList = actorFacade.findSeriesByActorId(idOfActor);
-        seriesInWichActorDontPlay = actorFacade.findSeriesInWichActorDontPlay(idOfActor);
+//        LOG.info("in init()00 size: " + seriesList.size());
+//        seriesList = actorFacade.findSeriesByActorId(idOfActor);
+//        LOG.info("in inti()11 size: " + seriesList.size());
+//        LOG.info("in init()-0-0 size: " + actor.getSeries().size());
+        actor.getSeries().size();
+        LOG.info(String.valueOf(actor.getSeries().size()));
 
+        LOG.info(actor.getSeries().toString());
+
+        List<Series> seriesAll = actorFacade.findAllSeries();
+        LOG.info(String.valueOf(seriesAll.size()));
+//        LOG.info("in init()00 size: " + seriesAll.size());
+        LOG.info(seriesAll.toString());
+
+        int flag = 0;
+        for (Series ser1 : seriesAll) {
+            for (Series ser2 : actor.getSeries()) {
+                if (ser1.getId() != ser2.getId()) {
+                    flag = 1;
+                }
+            }
+            if (flag == 1) {
+                seriesInWichActorDontPlay.add(ser1);
+                flag = 0;
+            }
+        }
+
+//        seriesAll.removeAll(actor.getSeries());
+        LOG.info("in init()11 size: " + seriesInWichActorDontPlay.size());
+//        seriesInWichActorDontPlay = seriesAll;
+//        LOG.info(seriesAll.toString());
+
+//        LOG.info("in init()22 size: " + actor.getSeries().size());
+//        LOG.info(actor.getSeries().toString());
     }
 
     public String goToSeriesEditSite() {
@@ -168,18 +199,22 @@ public class ActorEdit implements Serializable {
     public void addSeriesToActor() {
         Series series = searchSeriesById(seriesInWichActorDontPlay, selectedSeriesId);
 
-        LOG.info(" in addSeriesToActor" + series.getId());
-        seriesList.add(series);
+        LOG.info(" in addSeriesToActor  " + series.getId());
+        
+        actor.getSeries().add(series);
         seriesInWichActorDontPlay.remove(series);
-        actorFacade.addSeriesToActor(series.getId(), actor.getId());
+        
+         printActorSeries(actor);
+         
+//        actorFacade.addSeriesToActor(series.getId(), actor.getId());
     }
 
     public void removeSeriesFromActor(Series series) {
 //        LOG.info("removeActorFromSeries");
 
-        seriesList.remove(series);
+        actor.getSeries().remove(series);
         seriesInWichActorDontPlay.add(series);
-        actorFacade.deleteSeriesFromActor(series.getId(), actor.getId());
+//        actorFacade.deleteSeriesFromActor(Long.parseLong(selectedSeriesId), actor.getId());
 
     }
 
@@ -189,8 +224,16 @@ public class ActorEdit implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    
-    public void saveSeries() {
+    private void printActorSeries(Actor actor) {
+        LOG.info("printActorSeries. Actor id:" + actor.getId());
+        for (Series series : actor.getSeries()) {
+            LOG.info(series.toString());
+        }
+    }
+
+    public void saveActor() {
+        LOG.info("In saveActor ");
+        printActorSeries(actor);
         actorFacade.saveActor(actor);
     }
 
@@ -218,14 +261,13 @@ public class ActorEdit implements Serializable {
         this.selectedSeriesId = selectedSeriesId;
     }
 
-    public List<Series> getSeriesList() {
-        return seriesList;
-    }
-
-    public void setSeriesList(List<Series> seriesList) {
-        this.seriesList = seriesList;
-    }
-
+//    public List<Series> getSeriesList() {
+//        return seriesList;
+//    }
+//
+//    public void setSeriesList(List<Series> seriesList) {
+//        this.seriesList = seriesList;
+//    }
     public List<Series> getSeriesInWichActorDontPlay() {
         return seriesInWichActorDontPlay;
     }
@@ -233,7 +275,5 @@ public class ActorEdit implements Serializable {
     public void setSeriesInWichActorDontPlay(List<Series> seriesInWichActorDontPlay) {
         this.seriesInWichActorDontPlay = seriesInWichActorDontPlay;
     }
-    
-    
-    
+
 }

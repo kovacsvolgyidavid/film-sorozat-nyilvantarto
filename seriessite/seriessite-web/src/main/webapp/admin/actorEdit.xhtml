@@ -79,7 +79,7 @@
             </div>
 
             <!--Official website-->
-            <h:panelGrid style="margin:0 auto">
+            <h:panelGrid style="margin:0 auto;width: 250px">
                 <h:outputText value="Official website:" />
                 <p:inputText id="websiteurl" value="#{actorEdit.actor.officialWebsite}"></p:inputText>
             </h:panelGrid>
@@ -105,7 +105,7 @@
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-4">
 
-                        <p:dataTable id="seriesListId" var="seriesVar" value="#{actorEdit.seriesList}" style="width:250px;margin: 0 auto;margin-bottom: 10px;">
+                        <p:dataTable id="seriesListId" var="seriesVar" value="#{actorEdit.actor.series}" style="width:250px;margin: 0 auto;margin-bottom: 10px;">
                             <f:facet name="header">
                                 <h:outputText value="Series"/>
                             </f:facet>
@@ -127,7 +127,7 @@
                             <!--Remove actor button-->
                             <p:column style="width:38px;">
                                 <p:commandButton icon="ui-icon-trash" title="Remove"   
-                                                 action="#{actorEdit.removeSeriesFromActor(series)}" update="seriesListId, actosSite:addPanel">
+                                                 action="#{actorEdit.removeSeriesFromActor(seriesVar)}" update="seriesListId, actosSite:addPanel">
 
                                 </p:commandButton>
 
@@ -160,7 +160,7 @@
             <!--Save panel-->
             <p:growl id="growl" life="2000" />
             <h:panelGrid>
-                <p:commandButton action="#{actorEdit.saveSeries}" actionListener="#{actorEdit.saveButtonAction}" value="Save" 
+                <p:commandButton action="#{actorEdit.saveActor}" actionListener="#{actorEdit.saveButtonAction}" value="Save" 
                                  update="growl" icon="ui-icon-disk" title="Save" />
             </h:panelGrid>
 
