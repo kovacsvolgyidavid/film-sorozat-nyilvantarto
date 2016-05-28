@@ -49,6 +49,12 @@ public class SeasonFacade {
         return episode.getSingleResult();
 
     }
+    
+    public String getSeriesNameBySeasonId(Long idOfSeason) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 //
 //    public List<Actor> findActorsInSeries(Long seriesId) {
 //        TypedQuery<Actor> actors = em.createNamedQuery("Series.findActorsBySeriesId", Actor.class);
@@ -103,5 +109,8 @@ public class SeasonFacade {
     public void saveSeason(Season season) {
         em.merge(season);
     }
+
+
+ 
 
 }

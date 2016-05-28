@@ -53,6 +53,7 @@ public class SeasonEdit implements Serializable {
     private Season season;
     private Episode selectEpisode;
     private List<Episode> episodeList;
+    private String seriestitle;
 
     @PostConstruct
     public void init() {
@@ -63,6 +64,8 @@ public class SeasonEdit implements Serializable {
         Long idOfSeason = 1L;
         season = seasonFacade.findSeasonById(idOfSeason);
         episodeList = seasonFacade.findAllEpisode();
+        
+        seriestitle = seasonFacade.getSeriesNameBySeasonId(idOfSeason);
 
     }
 

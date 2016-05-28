@@ -19,7 +19,9 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Episode.findEpisodeById",
             query = "SELECT e FROM Episode e WHERE e.id = :id"),
     @NamedQuery(name = "Episode.findAll",
-            query = "SELECT e FROM Episode e")
+            query = "SELECT e FROM Episode e"),
+    @NamedQuery(name = "Episode.findSeriesIdBySeasonId",
+            query = "SELECT e.series_id FROM Episode e WHERE e.id = :id")
 })
 @Entity
 public class Episode implements Serializable {
