@@ -3,8 +3,12 @@ package xyz.codingmentor.entity;
 import xyz.codingmentor.enums.Groups;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -144,4 +148,5 @@ public class User implements Serializable {
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
+    
 }

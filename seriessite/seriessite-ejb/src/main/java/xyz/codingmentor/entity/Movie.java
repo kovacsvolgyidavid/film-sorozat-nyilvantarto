@@ -3,6 +3,7 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,21 +42,18 @@ public class Movie implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
     private List<Director> directors;
 
-    @ManyToMany
-    @JoinTable(name = "MOVIE_ACTOR",
-            joinColumns = @JoinColumn(name = "MOVIE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
-    private List<Actor> actors;
+
 
     @OneToMany(mappedBy = "show")
     private List<Comment> comments;
 
-    private String descreption;
+
 
     public Movie() {
         //it is bean
     }
 
+    
     public Long getId() {
         return id;
     }
@@ -88,14 +86,6 @@ public class Movie implements Serializable {
         this.directors = directors;
     }
 
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -112,12 +102,5 @@ public class Movie implements Serializable {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public String getDescreption() {
-        return descreption;
-    }
-
-    public void setDescreption(String descreption) {
-        this.descreption = descreption;
-    }
-
+    
 }
