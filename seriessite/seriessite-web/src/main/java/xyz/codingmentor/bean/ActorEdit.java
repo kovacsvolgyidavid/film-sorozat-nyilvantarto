@@ -69,32 +69,40 @@ public class ActorEdit implements Serializable {
 //        seriesList = actorFacade.findSeriesByActorId(idOfActor);
 //        LOG.info("in inti()11 size: " + seriesList.size());
 //        LOG.info("in init()-0-0 size: " + actor.getSeries().size());
-        actor.getSeries().size();
-        LOG.info(String.valueOf(actor.getSeries().size()));
-
-        LOG.info(actor.getSeries().toString());
-
-        List<Series> seriesAll = actorFacade.findAllSeries();
-        LOG.info(String.valueOf(seriesAll.size()));
-//        LOG.info("in init()00 size: " + seriesAll.size());
-        LOG.info(seriesAll.toString());
-
-        int flag = 0;
-        for (Series ser1 : seriesAll) {
-            for (Series ser2 : actor.getSeries()) {
-                if (ser1.getId() != ser2.getId()) {
-                    flag = 1;
-                }
-            }
-            if (flag == 1) {
-                seriesInWichActorDontPlay.add(ser1);
-                flag = 0;
-            }
-        }
+//        actor.getSeries().size();
+//        LOG.info(String.valueOf(actor.getSeries().size()));
+//
+//        LOG.info(actor.getSeries().toString());
+//
+//        List<Series> seriesAll = actorFacade.findAllSeries();
+//        LOG.info(String.valueOf(seriesAll.size()));
+////        LOG.info("in init()00 size: " + seriesAll.size());
+//        LOG.info(seriesAll.toString());
+//
+//        int flag = 0;
+//        for (Series ser1 : seriesAll) {
+////            if( ! actor.getSeries().contains(ser) ){
+////                seriesInWichActorDontPlay.add(ser);
+////            }
+//            
+//            for (Series ser2 : actor.getSeries()) {
+//                if (ser1.getId() != ser2.getId()) {
+//                    flag = 1;
+//                }
+//            }
+//            if (flag == 1) {
+//                seriesInWichActorDontPlay.add(ser1);
+//                flag = 0;
+//            }
+//        LOG.info("----------");
+//        
+//
+//        }
 
 //        seriesAll.removeAll(actor.getSeries());
-        LOG.info("in init()11 size: " + seriesInWichActorDontPlay.size());
-//        seriesInWichActorDontPlay = seriesAll;
+//        LOG.info("in init()11 size: " + seriesInWichActorDontPlay.size());
+//          seriesInWichActorDontPlay = seriesAll;
+          seriesInWichActorDontPlay = actorFacade.findSeriesInWichActorDontPlay(idOfActor);
 //        LOG.info(seriesAll.toString());
 
 //        LOG.info("in init()22 size: " + actor.getSeries().size());

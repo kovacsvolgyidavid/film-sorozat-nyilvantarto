@@ -81,21 +81,26 @@ public class ActorFacade {
 //        Actor actor = em.find(Actor.class, actorId);
 //        actor.getSeries().add(series);
 //    }
-//    public List<Series> findSeriesInWichActorDontPlay(Long actorId) {
-//
-//        TypedQuery<Series> findAllSeries = em.createNamedQuery("Series.findAll", Series.class);
-//        List<Series> seriesAll = findAllSeries.getResultList();
-//
-////        List<Series> series = findSeriesByActorId(actorId);
-//        Actor findActorById = findActorById(actorId);
-//        List<Series> series = findActorById.getSeries();
-//
-//        // Remove all elements in firstList from secondList
-//        seriesAll.removeAll(series);
-//
-//        return seriesAll;
-//
-//    }
+
+    
+    public List<Series> findSeriesInWichActorDontPlay(Long actorId) {
+
+        TypedQuery<Series> findAllSeries = em.createNamedQuery("Series.findAll", Series.class);
+        List<Series> seriesAll = findAllSeries.getResultList();
+//        printActorSeriessss(findActorInDataBase);
+
+
+//        List<Series> series = findSeriesByActorId(actorId);
+        Actor findActorById = findActorById(actorId);
+        List<Series> series = findActorById.getSeries();
+
+        // Remove all elements in firstList from secondList
+        seriesAll.removeAll(series);
+
+        return seriesAll;
+
+    }
+    
     private void printActorSeriessss(Actor actor) {
         LOG.info("printActorSeriessss. Actor id:" + actor.getId());
         for (Series series : actor.getSeries()) {
