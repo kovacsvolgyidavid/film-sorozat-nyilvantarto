@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Series Site</title>
 
@@ -47,7 +48,9 @@
                                                immediate="true" class="glyphicon glyphicon-log-out"/></li>
 
                             <li><p:commandLink value=" #{usermanagement.actualUser}" action="#{profile.getMyProfile()}" style="height:50px;" 
-                                               immediate="true" class="glyphicon glyphicon-user"/></li>
+                                               immediate="true" class="glyphicon glyphicon-user">
+                                    <f:param name="username" value="#{usermanagement.actualUser}" />
+                                </p:commandLink></li>
 
                             <li><p:commandLink value=" Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px;" 
                                                immediate="true" class="glyphicon glyphicon-search"/></li>

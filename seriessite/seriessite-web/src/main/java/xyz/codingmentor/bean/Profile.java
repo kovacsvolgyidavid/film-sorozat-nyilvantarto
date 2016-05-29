@@ -66,8 +66,13 @@ public class Profile implements Serializable {
 
     public String getMyProfile() {
         user = entityFacade.read(User.class, Usermanagement.getUsername());
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String username = params.get("username");
+        
+        
 //        userDTO.setUser(user);
-        return "/user/profile?faces-redirect=true";
+        return "/user/profile?username=" + username + ";faces-redirect=true";
     }
 
     public String getUserProfile(User user) {
@@ -75,12 +80,12 @@ public class Profile implements Serializable {
         this.user = user;
 //        userDTO.setUser(user);
 
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String username = params.get("username");
-        System.out.println("Here go to user side. UserID: " + username);
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+//        String username = params.get("username");
+//        System.out.println("Here go to user side. UserID: " + username);
 //        1 is Actor edit it
-        return "/user/profile.xhtml?username=" + username + ";faces-redirect=true";
+        return "/user/profile.xhtml?username=" + user.getUsername() + ";faces-redirect=true";
 //        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
 
