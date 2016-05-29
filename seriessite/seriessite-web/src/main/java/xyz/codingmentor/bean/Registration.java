@@ -1,10 +1,13 @@
 package xyz.codingmentor.bean;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,14 +56,8 @@ public class Registration implements Serializable {
     }
 
     public String signIn() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        TypedQuery<User> username = entityFacade.getEntityManager().createNamedQuery("findUserByUsername", User.class);
-//        username.setParameter("username", user.getUsername());
-
-//        try {
-//            username.getSingleResult();//TODO: query.beanbe át kell tenni, ott kell majda named queryket meghívni
-        if (databaseQuery.findUserByUsername(dtoUser.getUser().getUsername()) != null) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));
+        if (entityFacade.read(User.class, dtoUser.getUser().getUsername()) != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));           
         } else {
             if (uploadedFile == null) {
                 dtoUser.getUser().setPathOfPhoto("user.jpg");
@@ -72,11 +69,10 @@ public class Registration implements Serializable {
             entityFacade.create(dtoUser.makeUser());
             dtoUser.setUser(new User());
             uploadedFile = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration is successful."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration was successful."));
+            return "/login.xhtml";
         }
-//        } catch (NoResultException noResultException) {
-        //} TODO: query-be kell átpakolni
-        return "/login.xhtml";
+        return "";
     }
 
     public void uploadPicture() {
@@ -177,5 +173,4 @@ public class Registration implements Serializable {
     public void setDtoUser(UserDTO dtoUser) {
         this.dtoUser = dtoUser;
     }
-
 }

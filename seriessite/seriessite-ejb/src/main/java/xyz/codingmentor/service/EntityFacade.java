@@ -2,15 +2,18 @@ package xyz.codingmentor.service;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
+import xyz.codingmentor.interceptror.MethodInterceptor;
 
 @Stateless
+@Interceptors(MethodInterceptor.class)
 public class EntityFacade {
 
     @PersistenceContext(unitName = "MoviePU")
-    private EntityManager em;
+    protected EntityManager em;
 
     public EntityFacade() {
     }
