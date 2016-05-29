@@ -66,6 +66,11 @@ public class SeriesFacade {
         TypedQuery<Actor> actor = em.createNamedQuery("Actor.findActorsById", Actor.class);
         actor.setParameter("id", actorId);
         return actor.getSingleResult();
+
+//        Query q = em.createNamedQuery("Actor.findActorsById");
+//        q.setParameter("id", actorId);
+//        return (Actor) q.getSingleResult();
+
     }
 
     public List<Actor> getActorListNotInSeries(Long seriesId) {
@@ -74,48 +79,43 @@ public class SeriesFacade {
         List<Actor> actorsAll = findAllActor.getResultList();
 
 //        LOG.info("getActorListNotInSeries Size of actorsAll: " + actorsAll.size());
-
         TypedQuery<Actor> findActorsInSeries = em.createNamedQuery("Series.findActorsBySeriesId", Actor.class);
         findActorsInSeries.setParameter("id", seriesId);
         List<Actor> actorsInSeries = findActorsInSeries.getResultList();
 
 //        LOG.info("getActorListNotInSeries Size of actorsInSeries: " + actorsInSeries.size());
-
         // Remove all elements in firstList from secondList
         actorsAll.removeAll(actorsInSeries);
 
 //        LOG.info("getActorListNotInSeries Size of : " + actorsAll.size());
-
         return actorsAll;
 
     }
-        
+
 //    public List<Series> actorsFromSeriesAfterDate() {
 //        Query q = em.createNamedQuery("actorsFromSeriesAfterDate");
 //        q.setParameter("date", new Date(),TemporalType.DATE);
 //        return q.getResultList();
 //    }
-    
     public void saveSeries(Series series) {
         em.merge(series);
     }
-    
-     public List<Series> seriesByDirectorOriginalNameEqualsName() {
+
+    public List<Series> seriesByDirectorOriginalNameEqualsName() {
         Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");
         return q.getResultList();
     }
-    
-    
+
     public List<Series> seriesWithMoreEpisode(int episode) {
         Query q = em.createNamedQuery("seriesWithMoreEpisode");
         q.setParameter("number", episode);
         return q.getResultList();
     }
-    
+
     public List<Series> seriesCommentedAfterGivenDate(Date date) {
         Query q = em.createNamedQuery("seriesCommentedAfterGivenDate");
-        
-        q.setParameter("date", date,TemporalType.DATE);
+
+        q.setParameter("date", date, TemporalType.DATE);
         return q.getResultList();
     }
 }

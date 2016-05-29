@@ -38,6 +38,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ComponentSystemEvent;
 
 @Named
 @SessionScoped
@@ -49,66 +50,62 @@ public class SeriesEdit implements Serializable {
     private static final String PATH = "/series/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
-//    private Actor actor;
-    private String actorId; 
+    private String actorId;
     private Series series;
     private static final Logger LOG = Logger.getLogger(SeriesEdit.class.getName());
     private List<Actor> actorList;
     private List<Actor> actorListNotInSeries;
+    private String idOfSeries;
+
+    public String getIdOfSeries() {
+        return idOfSeries;
+    }
+
+    public void setIdOfSeries(String idOfSeries) {
+        this.idOfSeries = idOfSeries;
+
+    }
 
     @PostConstruct
     public void init() {
-//        actor = new Actor();
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
         actorList = new ArrayList<>();
-
-        Long idOfSeries = 1L;
-        series = seriesFacade.findSeriesById(idOfSeries);
-        actorList = seriesFacade.findActorsInSeries(idOfSeries);
-        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries);
-//        LOG.info("Size: " + actorListNotInSeries.size());
-//        LOG.info("Name: " + actorListNotInSeries.get(0).getName());
-
-        //        series.setTitle("Title of title");
-//        actorList = null;
-//        actorListNotInSeries = null;
-//        Actor s1 = new Actor();
-//        s1.setId(1L);
-//        s1.setName("Béla");
-//
-//        Actor s2 = new Actor();
-//        s2.setId(2L);
-//        s2.setName("János");
-//
-//        Actor s3 = new Actor();
-//        s3.setId(3L);
-//        s3.setName("Pisti");
-//
-//        
-//        actorList.add(s1);
-//        actorList.add(s2);
-//        actorList.add(s3);
-//
-//        Actor s12 = new Actor();
-//        s12.setId(4L);
-//        s12.setName("Zoli");
-//
-//        Actor s22 = new Actor();
-//        s22.setId(5L);
-//        s22.setName("Zita");
-//
-//        Actor s32 = new Actor();
-//        s32.setId(6L);
-//        s32.setName("Zsombor");
-//
-//        
-//        actorListNotInSeries.add(s12);
-//        actorListNotInSeries.add(s22);
-//        actorListNotInSeries.add(s32);
-//        actorListNotInSeries = null;
-//        actorList = null;
     }
+
+    public void loadDatabaseData(ComponentSystemEvent event) {
+        if (idOfSeries != null) {
+            Long id = (Long) Long.parseLong(idOfSeries);
+            
+            Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
+
+            LOG.info("idd: " + idOfSeries2);
+
+            series = seriesFacade.findSeriesById(idOfSeries2);
+            actorList = seriesFacade.findActorsInSeries(idOfSeries2);
+            actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
+        }
+    }
+//
+//    public void enterSeries(Long id) {
+////        FacesContext context = FacesContext.getCurrentInstance();
+////
+////        Map<String, String> params
+////                = context.getExternalContext().getRequestParameterMap();
+////        String id = params.get("seriesId");
+////        series = newSeries;
+//
+//        Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
+//
+//        LOG.info("idd: " + idOfSeries2);
+////        series = seriesInput;
+//
+//        series = seriesFacade.findSeriesById(idOfSeries2);
+//        actorList = seriesFacade.findActorsInSeries(idOfSeries2);
+//        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
+//
+////        return "seriesEdit.xhtml/?id=" + series.getId() + ";faces-redirect=true";
+//    }
 
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -220,8 +217,6 @@ public class SeriesEdit implements Serializable {
         this.image = image;
     }
 
-
-
     public String getActorId() {
         return actorId;
     }
@@ -231,7 +226,6 @@ public class SeriesEdit implements Serializable {
         this.actorId = actorId;
     }
 
-
     public List<Actor> getActorList() {
         return actorList;
     }
@@ -239,12 +233,12 @@ public class SeriesEdit implements Serializable {
     public void setActorList(List<Actor> actorList) {
         this.actorList = actorList;
     }
-    
-    private Actor searchActorById(List<Actor> l, String actorId){
-        Long id=Long.parseLong(actorId);
-        
+
+    private Actor searchActorById(List<Actor> l, String actorId) {
+        Long id = Long.parseLong(actorId);
+
         for (Actor next : actorListNotInSeries) {
-            if(Objects.equals(next.getId(), id)){
+            if (Objects.equals(next.getId(), id)) {
                 return next;
             }
         }
@@ -253,10 +247,9 @@ public class SeriesEdit implements Serializable {
 
     public void addActorToSeries() {
         Actor actor = searchActorById(actorListNotInSeries, actorId);
-        
+
 //        LOG.info("addActorToSeries");
 //        LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
-        
         actorList.add(actor);
         actorListNotInSeries.remove(actor);
         seriesFacade.addActorToSeries(series.getId(), actor.getId());
@@ -265,22 +258,20 @@ public class SeriesEdit implements Serializable {
     public void removeActorFromSeries(Actor actor) {
 //        LOG.info("removeActorFromSeries");
 
-
         actorList.remove(actor);
         actorListNotInSeries.add(actor);
         seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());
 
 //        LOG.info("Remove " + actor.getId() + " id of actor from " + series.getTitle());
-
     }
 
-        public void saveButtonAction(ActionEvent actionEvent) {
+    public void saveButtonAction(ActionEvent actionEvent) {
         String text = "Successful save";
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text,  null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-        
-        public void saveSeries(){
-            seriesFacade.saveSeries(series);
-        }
+
+    public void saveSeries() {
+        seriesFacade.saveSeries(series);
+    }
 }
