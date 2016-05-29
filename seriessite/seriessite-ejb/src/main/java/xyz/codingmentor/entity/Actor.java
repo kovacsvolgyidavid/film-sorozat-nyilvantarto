@@ -29,6 +29,10 @@ public class Actor extends Person implements Serializable {
 
     @ManyToMany(cascade=CascadeType.MERGE, mappedBy = "actors")
     private List<Series> series;
+    
+  
+    @ManyToMany(cascade=CascadeType.MERGE, mappedBy = "movieactors")
+    private List<Movie> movies;
 
     public Actor() {
         //it is bean
@@ -43,7 +47,9 @@ public class Actor extends Person implements Serializable {
     }
 
     public String getOfficialWebsite() {
+        if(officialWebsite!=null)
         return officialWebsite;
+        else return "null";
     }
 
     public void setOfficialWebsite(String officialWebsite) {
@@ -57,6 +63,15 @@ public class Actor extends Person implements Serializable {
     public void setSeries(List<Series> series) {
         this.series = series;
     }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
+    
     
     
     

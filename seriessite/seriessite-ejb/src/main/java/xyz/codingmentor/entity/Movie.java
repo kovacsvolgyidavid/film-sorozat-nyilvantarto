@@ -47,7 +47,7 @@ public class Movie implements Serializable {
     @JoinTable(name = "MOVIE_ACTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
-    private List<Actor> actors;
+    private List<Actor> movieactors;
 
     @OneToMany(mappedBy = "show")
     private List<Comment> comments;
@@ -91,13 +91,18 @@ public class Movie implements Serializable {
         this.directors = directors;
     }
 
-    public List<Actor> getActors() {
-        return actors;
+    public List<Actor> getMovieactors() {
+        return movieactors;
     }
 
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
+    public void setMovieactors(List<Actor> movieactors) {
+        this.movieactors = movieactors;
     }
+
+  
+
+   
+
 
     public List<Comment> getComments() {
         return comments;

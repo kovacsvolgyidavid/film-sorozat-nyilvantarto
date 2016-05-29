@@ -45,6 +45,9 @@ public class Series_User implements Serializable {
     private List<Series> comparingSeries;
     private String blockStyle = "margin: 0 auto";
     private User actualUser;
+    private static final Logger LOG = Logger.getLogger(Series_User.class.getName());
+    
+    
 
     @PostConstruct
     public void init() {
@@ -54,7 +57,7 @@ public class Series_User implements Serializable {
         comparingSeries = new ArrayList();
         databaseQuery.createTestSeries();
         series = entityFacade.findAll(Series.class);
-
+        
     }
 
     public List<Series> getSeries() {
@@ -81,7 +84,7 @@ public class Series_User implements Serializable {
         
             if (comparingSeries.isEmpty()) {
                 comparingSeries.add(serie);
-                blockStyle = "margin: 0 auto; background-color: greenyellow";
+                //blockStyle = "margin: 0 auto; background-color: greenyellow";
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
             } else if (comparingSeries.size() == 1) {
@@ -137,6 +140,13 @@ public class Series_User implements Serializable {
             alluser.getFavourites().clear();
             entityFacade.update(alluser);
         }
+        /*List<Actor> actors = entityFacade.findAll(Actor.class);
+        for (Actor actor : actors) {
+            actor.getSeries().remove(serie);
+            entityFacade.update(actor);
+        }
+        serie.getActors().clear();
+        entityFacade.update(serie); */
         series.remove(serie);
         entityFacade.delete(serie);
     }

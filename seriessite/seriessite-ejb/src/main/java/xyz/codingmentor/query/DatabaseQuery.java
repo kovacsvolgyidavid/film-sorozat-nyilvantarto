@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import xyz.codingmentor.entity.User;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.entity.Director;
 import xyz.codingmentor.entity.Episode;
@@ -38,7 +39,13 @@ public class DatabaseQuery {
             return null;
         }
     }
-
+    
+    public List<Actor> findActorsForSerie(Series serie){
+        query = entityManager.createQuery("SELECT s.actors FROM Series s WHERE s.id LIKE :sid");
+        query.setParameter("sid", serie);
+        return query.getResultList();
+    }
+    
     //Test input
     public void createTestSeries() {
         //Actors for serie1

@@ -35,15 +35,21 @@ public class Series extends Movie implements Serializable {
     @Column(length = 1000)
     private String description;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "SERIES_ACTOR", 
             joinColumns = @JoinColumn(name = "SERIES_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> actors;
+    
+    @ManyToMany
+    private List<Director> seriesdirectors;
 
+
+    
     public List<Actor> getActors() {
         return actors;
     }
+
 
     public void setActors(List<Actor> actors) {
         this.actors = actors;
@@ -68,10 +74,12 @@ public class Series extends Movie implements Serializable {
     }
   
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
