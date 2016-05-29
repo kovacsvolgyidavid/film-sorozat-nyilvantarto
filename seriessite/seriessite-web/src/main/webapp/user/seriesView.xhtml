@@ -18,100 +18,108 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="/template/template.xhtml">
             <ui:define name="content">
-        <table>
-            <tr>
-                <td rowspan="4">
-                    <p:graphicImage id="gi" value="#{seriesView.image}" width="230" height="180" cache="false"/>
-                </td>
+                <table>
+                    <tr>
+                        <td rowspan="4">
+                            <p:graphicImage id="gi" value="#{seriesView.image}" width="230" height="180" cache="false"/>
+                        </td>
 
-                <td>
-                    <h1><h:outputText value="#{seriesView.title}"/></h1>    
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h:outputText value="Release date:"/>    
-                </td>
-                <td>
-                    <h:outputText value="#{seriesView.series.yearOfRelease}">
-                        <f:convertDateTime pattern="yyyy"/>
-                    </h:outputText>  
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h:outputText value="Seasons:"/>    
-                </td>
-                <td>
-                    <h:outputText value="#{seriesView.seasonNumber}"/>    
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h:outputText value="Episodes:"/>    
-                </td>
-                <td>
-                    <h:outputText value="#{seriesView.episodeNumber}"/>    
-                </td>
-            </tr>
-        </table>
-        <h:outputText style="size: A4" value="Seasons:">
+                        <td>
+                            <h1><h:outputText value="#{seriesView.title}"/></h1>    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="Release date:"/>    
+                        </td>
+                        <td>
+                            <h:outputText value="#{seriesView.series.yearOfRelease}">
+                                <f:convertDateTime pattern="yyyy"/>
+                            </h:outputText>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="Seasons:"/>    
+                        </td>
+                        <td>
+                            <h:outputText value="#{seriesView.seasonNumber}"/>    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="Episodes:"/>    
+                        </td>
+                        <td>
+                            <h:outputText value="#{seriesView.episodeNumber}"/>    
+                        </td>
+                    </tr>
+                </table>
+                
+                <h:outputText style="size: A4" value="Seasons:">
 
-        </h:outputText>
-        <c:set var="upperLimit" value="#{seriesView.seasonNumber}"/>
-        <h:form id="season_form">
-            <c:forEach var="i" begin="0" end="#{upperLimit-1}">
-                <c:choose>
-                    <c:when test="#{i==seriesView.actualSeason}">
-                        <p:commandButton value="#{i+1}" disabled="true"/>
-                    </c:when>
-                    <c:otherwise>
-                        <p:commandButton value="#{i+1}" update="season_form">
-                            <p:ajax listener="#{seriesView.setActualSeason(i)}" update="season_form"/>
-                        </p:commandButton>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
-            <p:dataTable value="#{seriesView.actualSeasonEpisodes}" var="episode" style="text-align: center">
-                <p:column headerText="Nu." style="size: 30px">
+                </h:outputText>
+                <c:set var="upperLimit" value="#{seriesView.seasonNumber}"/>
 
-                    #{seriesView.actualSeasonEpisodes.indexOf(episode)+1}
-                </p:column>
-                <p:column headerText="Title">
+                <c:forEach var="i" begin="0" end="#{upperLimit-1}">
+                    <c:choose>
+                        <c:when test="#{i==seriesView.actualSeason}">
+                            <p:commandButton value="#{i+1}" disabled="true"/>
+                        </c:when>
+                        <c:otherwise>
+                            <p:commandButton value="#{i+1}" update="form">
+                                <p:ajax listener="#{seriesView.setActualSeason(i)}" update="form"/>
+                            </p:commandButton>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
 
-                    #{episode.title}
-                </p:column>
-                <p:column headerText="Release Date">
+                <p:dataTable id="seson_form" value="#{seriesView.actualSeasonEpisodes}" var="episode" 
+                             style="text-align: center" rendered="#{seriesView.actualSeason!=null}">
+                    <p:column headerText="Nu." style="size: 30px">
 
-                    <h:outputText value="#{episode.dateOfRelease}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </h:outputText>
+                        #{seriesView.actualSeasonEpisodes.indexOf(episode)+1}
+                    </p:column>
+                    <p:column headerText="Title">
 
-                </p:column>
-            </p:dataTable>
-        </h:form>
-        <p:dataTable value="#{seriesView.actors}" var="actor" style="text-align: center" class="col-3">
-            <p:column headerText="Actors">
-                #{actor.name}
-            </p:column>
-        </p:dataTable>
-        <p:dataTable value="#{seriesView.directors}" var="director" style="text-align: center" class="col-3">
-            <p:column headerText="Directors">
-                #{director.name}
-            </p:column>
-        </p:dataTable>
-        <h:form>
-            <h:inputTextarea value="#{seriesView.comment}" />
-            <p:commandButton value="Submit" update="comment" action="#{seriesView.addComment()}">
-                <p:ajax update="comment"/>
-            </p:commandButton>
-            <p:commandButton value="Clear" update="comment">
-                <p:ajax listener="#{seriesView.setComment('')}" update="comment"/>
-            </p:commandButton>
-            </h:form>
-            <h:form id="comment">
-        </h:form>
-       
+                        #{episode.title}
+                    </p:column>
+                    <p:column headerText="Release Date">
+
+                        <h:outputText value="#{episode.dateOfRelease}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+
+                    </p:column>
+                </p:dataTable>
+
+                <p:dataTable value="#{seriesView.actors}" var="actor" style="text-align: center" class="col-3">
+                    <p:column headerText="Actors">
+                        #{actor.name}
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable value="#{seriesView.directors}" var="director" style="text-align: center" class="col-3">
+                    <p:column headerText="Directors">
+                        #{director.name}
+                    </p:column>
+                </p:dataTable>
+                <ui:repeat value="#{seriesView.series.comments}" var="comment">
+                    <p:panelGrid columns="2" >
+                        <p:graphicImage id="gi" value="#{seriesView.getUserImage(comment.user)}" width="60" height="48" cache="false"/>
+                        <p:outputLabel value="#{comment.user.name}"/>
+                         
+                    </p:panelGrid>
+                    <p:panelGrid columns="1">
+                        <h:outputText value="#{comment.content}"/>
+                    </p:panelGrid>
+                </ui:repeat>
+                <p:inputTextarea value="#{seriesView.comment}" maxlength="255" cols="60"/>
+                <p:commandButton value="Submit" update="form" action="#{seriesView.addComment()}" ajax="false">
+                    <p:ajax update="form"/>
+                </p:commandButton>
+                <p:commandButton value="Clear" update="form">
+                    <p:ajax listener="#{seriesView.setComment('')}" update="form"/>
+                </p:commandButton>
             </ui:define>
         </ui:composition>
     </h:body>

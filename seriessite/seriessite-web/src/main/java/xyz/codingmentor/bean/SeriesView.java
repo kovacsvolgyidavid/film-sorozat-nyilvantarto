@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,53 +37,16 @@ import xyz.codingmentor.service.EntityFacade;
 public class SeriesView implements Serializable {
 
     private Series series;
-    private static final String PATH = "/path/resources";
+    private static final String PATH = "\\path\\resources\\";
     private Season actualSeason;
     private String comment;
     @Inject
     private EntityFacade entityFacade;
     User user;
     
+
     @PostConstruct
     public void init() {//TODO: delete this
-        series = new Series();
-        series.setTitle("Breaking Bad");
-        series.setPathOfPhoto(PATH + "/breakingbad.jpg");
-        series.setYearOfRelease(Calendar.getInstance().getTime());
-        series.setSeasons(new ArrayList<Season>());
-        Season season1 = new Season();
-        Season season2 = new Season();
-        Season season3 = new Season();
-        Episode episode1 = new Episode();
-        episode1.setDateOfRelease(Calendar.getInstance().getTime());
-        episode1.setTitle("Kill with fire");
-        season1.setEpisodes(new ArrayList<Episode>());
-        season1.getEpisodes().add(episode1);
-        Episode episode2 = new Episode();
-        episode2.setDateOfRelease(Calendar.getInstance().getTime());
-        episode2.setTitle("Carrot on a stick");
-        season1.getEpisodes().add(episode2);
-        series.getSeasons().add(season1);
-        series.getSeasons().add(season2);
-        series.getSeasons().add(season3);
-        series.setActors(new ArrayList<Actor>());
-        Actor actor1 = new Actor();
-        actor1.setName("Leonardo Caprio");
-        actor1.setDateOfBirth(Calendar.getInstance().getTime());
-        series.getActors().add(actor1);
-        Director director1 = new Director();
-        director1.setName("Tar Béla");
-        director1.setDateOfBirth(Calendar.getInstance().getTime());
-        series.setDirectors(new ArrayList<Director>());
-        series.getDirectors().add(director1);
-        entityFacade.create(actor1);
-        entityFacade.create(episode1);
-        entityFacade.create(episode2);
-        entityFacade.create(season1);
-        entityFacade.create(season2);
-        entityFacade.create(season3);
-        entityFacade.create(director1);
-        entityFacade.create(series);
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
     }
 
@@ -113,6 +77,14 @@ public class SeriesView implements Serializable {
         return Integer.toString(series.getSeasons().size());
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     public String getEpisodeNumber() {
         int episodeNum = 0;
         if (series.getSeasons() == null) {
@@ -150,13 +122,14 @@ public class SeriesView implements Serializable {
         return series.getDirectors();
     }
 
-    public void addComment() {//TODO:lepusholni adatbázisba
+    public void addComment() {
         Comment addComment = new Comment();
         addComment.setContent(comment);
         addComment.setDateOfComment(Calendar.getInstance().getTime());
         addComment.setUser(user);
         addComment.setShow(series);
-        entityFacade.create(addComment);
+        series.getComments().add(addComment);
+//        entityFacade.create(addComment); //TODO
         comment = "";
     }
 
@@ -173,8 +146,19 @@ public class SeriesView implements Serializable {
     }
 
     public String callStringView(Series series) {
-        this.series=series;
+        this.series = series;
         return "/user/seriesView.xhtml?faces-redirect=true";
+    }
 
+    public StreamedContent getUserImage(User user) {
+        StreamedContent image;
+        try {
+            String userPhotoPath=user.getPathOfPhoto();
+            image = new DefaultStreamedContent(new FileInputStream(userPhotoPath));
+        } catch (Exception ex) {
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+            image = null;
+        }
+        return image;
     }
 }

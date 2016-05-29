@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -47,7 +48,7 @@ public class Movie implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> actors;
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show", fetch = FetchType.LAZY )
     private List<Comment> comments;
 
     private String descreption;
