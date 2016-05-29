@@ -78,8 +78,8 @@
 
             <p:dataTable var="episodeVar" value="#{seasonEdit.season.episodes}">
                 <!--<p:panelGrid columns="2"  var="episodeVar" style="margin-top:20px">-->
-                <p:column>
-                    <p:accordionPanel value="episodeVar" style="margin-top:20px">
+                <p:column style="width: 500px; margin:0 auto;">
+                    <p:accordionPanel value="episodeVar" style="margin-top:20px" >
                         <p:tab title="#{episodeVar.title}">
                             <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
                                 <p:outputLabel value="Title: " />
@@ -97,7 +97,7 @@
                         </p:tab>
                     </p:accordionPanel>
                 </p:column>
-                <p:column>
+                <p:column style="width: 100px">
 
                     <p:commandButton  action="#{seasonEdit.saveEpisode(episodeVar)}" value="Remove"  icon="ui-icon-remove" title="Revome" />
                 </p:column>

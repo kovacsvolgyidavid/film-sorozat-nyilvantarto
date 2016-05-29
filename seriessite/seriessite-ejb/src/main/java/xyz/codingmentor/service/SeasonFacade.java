@@ -31,6 +31,7 @@ public class SeasonFacade {
     }
 
     public Season findSeasonById(Long seasonId) {
+        LOG.info("id: " + seasonId);
         TypedQuery<Season> season = em.createNamedQuery("Season.findSeasonById", Season.class);
         season.setParameter("id", seasonId);
         return season.getSingleResult();

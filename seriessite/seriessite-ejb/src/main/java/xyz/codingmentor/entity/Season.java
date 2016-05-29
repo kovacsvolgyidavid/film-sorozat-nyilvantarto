@@ -109,4 +109,6 @@ public class Season implements Serializable {
     public void setLinkOfPromoVideo(String linkOfPromoVideo) {
         this.linkOfPromoVideo = linkOfPromoVideo;
     }
+    
+    
 }
