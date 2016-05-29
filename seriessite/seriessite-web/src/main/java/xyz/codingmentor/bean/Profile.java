@@ -77,10 +77,10 @@ public class Profile implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String id = params.get("userId");
-        System.out.println("Here go to user side. UserID: " + id);
+        String username = params.get("username");
+        System.out.println("Here go to user side. UserID: " + username);
 //        1 is Actor edit it
-        return "/user/profile.xhtml?faces-redirect=true";
+        return "/user/profile.xhtml?username=" + username + ";faces-redirect=true";
 //        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
 
