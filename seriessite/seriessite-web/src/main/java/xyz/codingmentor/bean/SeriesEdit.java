@@ -39,6 +39,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
+import xyz.codingmentor.bean.picture.PictureHandler;
 
 @Named
 @SessionScoped
@@ -47,16 +48,24 @@ public class SeriesEdit implements Serializable {
     @Inject
     private SeriesFacade seriesFacade;
 
-    private static final String PATH = "/series/";
-    private UploadedFile uploadedFile;
-    private StreamedContent image;
+
     private String actorId;
     private Series series;
     private static final Logger LOG = Logger.getLogger(SeriesEdit.class.getName());
     private List<Actor> actorList;
     private List<Actor> actorListNotInSeries;
     private String idOfSeries;
+    private PictureHandler pictureHandler;
 
+    public PictureHandler getPictureHandler() {
+        return pictureHandler;
+    }
+
+    public void setPictureHandler(PictureHandler pictureHandler) {
+        this.pictureHandler = pictureHandler;
+    }
+
+    
     public String getIdOfSeries() {
         return idOfSeries;
     }
@@ -139,82 +148,6 @@ public class SeriesEdit implements Serializable {
 
     public void setActorListNotInSeries(List<Actor> actorListNotInSeries) {
         this.actorListNotInSeries = actorListNotInSeries;
-    }
-
-    public void saveImageToDirectory(String nameOfImage) {
-        createDirectory();
-
-        try {
-            InputStream inputstream = uploadedFile.getInputstream();
-//            String fullFileName = uploadedFile.getFileName();
-            Path file = Paths.get(PATH + nameOfImage);
-
-            Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException ex) {
-            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
-    }
-
-    public void createDirectory() {
-        File directory = new File(PATH);
-
-        if (!directory.exists()) {
-            try {
-                directory.mkdirs();
-            } catch (SecurityException se) {
-                //handle it
-            }
-        }
-    }
-
-    public void imageUpload(FileUploadEvent event) {
-        uploadedFile = event.getFile();
-
-        try {
-            image = new DefaultStreamedContent(uploadedFile.getInputstream());
-        } catch (IOException ex) {
-            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void setUploadedFile(UploadedFile uploadedFile) {
-        this.uploadedFile = uploadedFile;
-    }
-
-    public StreamedContent getImage() {
-//        LOG.info("in getImage function");
-        try {
-            if (uploadedFile == null) {
-//                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
-                ClassLoader classLoader = getClass().getClassLoader();
-                File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
-//                LOG.info("after image load");
-                image = new DefaultStreamedContent(new FileInputStream(noPicture));
-            } else {
-                LOG.info(this.getClass().getCanonicalName() + "else ag in getImage function");
-                image = new DefaultStreamedContent(uploadedFile.getInputstream());
-            }
-        } catch (Exception ex) {
-//            LOG.info("Not found image. Exceptin in getImage function");
-//            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return image;
-    }
-
-    public void resetPicture(AjaxBehaviorEvent event) {
-        uploadedFile = null;
-    }
-
-    public UploadedFile getUploadedFile() {
-        return uploadedFile;
-    }
-
-    public void setImage(StreamedContent image) {
-        this.image = image;
     }
 
     public String getActorId() {
