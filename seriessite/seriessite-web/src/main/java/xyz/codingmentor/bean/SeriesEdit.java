@@ -40,6 +40,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
 import xyz.codingmentor.bean.picture.PictureHandler;
+import xyz.codingmentor.service.ActorFacade;
 
 @Named
 @SessionScoped
@@ -48,75 +49,49 @@ public class SeriesEdit implements Serializable {
     @Inject
     private SeriesFacade seriesFacade;
 
+    @Inject
+    private ActorFacade actorFacade;
 
     private String actorId;
     private Series series;
     private static final Logger LOG = Logger.getLogger(SeriesEdit.class.getName());
-    private List<Actor> actorList;
+//    private List<Actor> actorList;
     private List<Actor> actorListNotInSeries;
     private String idOfSeries;
     private PictureHandler pictureHandler;
-
-    public PictureHandler getPictureHandler() {
-        return pictureHandler;
-    }
-
-    public void setPictureHandler(PictureHandler pictureHandler) {
-        this.pictureHandler = pictureHandler;
-    }
-
-    
-    public String getIdOfSeries() {
-        return idOfSeries;
-    }
-
-    public void setIdOfSeries(String idOfSeries) {
-        this.idOfSeries = idOfSeries;
-
-    }
+    private Actor newActor;
 
     @PostConstruct
     public void init() {
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
-        actorList = new ArrayList<>();
-        idOfSeries="1";
+//        actorList = new ArrayList<>();
+        newActor = new Actor();
+        idOfSeries = "1";
         loadDatabaseData();
+//        loadDatabaseData(new ActionEvent());
     }
 
 //    public void loadDatabaseData(ComponentSystemEvent event) {
     public void loadDatabaseData() {
         if (idOfSeries != null) {
+            idOfSeries = "1";
             Long id = (Long) Long.parseLong(idOfSeries);
-            
+
             Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
 
             LOG.info("idd: " + idOfSeries2);
 
             series = seriesFacade.findSeriesById(idOfSeries2);
-            actorList = seriesFacade.findActorsInSeries(idOfSeries2);
+//            actorList = seriesFacade.findActorsInSeries(idOfSeries2);
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
     }
-//
-//    public void enterSeries(Long id) {
-////        FacesContext context = FacesContext.getCurrentInstance();
-////
-////        Map<String, String> params
-////                = context.getExternalContext().getRequestParameterMap();
-////        String id = params.get("seriesId");
-////        series = newSeries;
-//
-//        Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
-//
-//        LOG.info("idd: " + idOfSeries2);
-////        series = seriesInput;
-//
-//        series = seriesFacade.findSeriesById(idOfSeries2);
-//        actorList = seriesFacade.findActorsInSeries(idOfSeries2);
-//        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
-//
-////        return "seriesEdit.xhtml/?id=" + series.getId() + ";faces-redirect=true";
+
+//    public void newLine() {
+//        LOG.info(String.valueOf(actorList.size()));
+//        actorList.add(new Actor());
+//        LOG.info(String.valueOf(actorList.size()));
 //    }
 
     public String goToActorEditSite() {
@@ -161,14 +136,14 @@ public class SeriesEdit implements Serializable {
 //        LOG.info("setActor function");
         this.actorId = actorId;
     }
-
-    public List<Actor> getActorList() {
-        return actorList;
-    }
-
-    public void setActorList(List<Actor> actorList) {
-        this.actorList = actorList;
-    }
+//
+//    public List<Actor> getActorList() {
+//        return actorList;
+//    }
+//
+//    public void setActorList(List<Actor> actorList) {
+//        this.actorList = actorList;
+//    }
 
     private Actor searchActorById(List<Actor> l, String actorId) {
         Long id = Long.parseLong(actorId);
@@ -181,24 +156,38 @@ public class SeriesEdit implements Serializable {
         return null;
     }
 
-    public void addActorToSeries() {
+    public void addExistingActorToSeries() {
         Actor actor = searchActorById(actorListNotInSeries, actorId);
 
 //        LOG.info("addActorToSeries");
 //        LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
-        actorList.add(actor);
+//        actorList.add(actor);
+
+        
         actorListNotInSeries.remove(actor);
-        seriesFacade.addActorToSeries(series.getId(), actor.getId());
+        
+        series.getActors().add(actor);
+        seriesFacade.updateSeries(series);
+
+//        seriesFacade.addActorToSeries(series.getId(), actor.getId());
+    }
+
+    public void addNewActorToSeries() {
+//        actorFacade.create(newActor);
+//        actorFacade.
+//        Series findSeriesById = seriesFacade.findSeriesById(series.getId());
+        
+        
+//        actorList.add(newActor);
+
+        series.getActors().add(newActor);
+        seriesFacade.updateSeries(series);
     }
 
     public void removeActorFromSeries(Actor actor) {
-//        LOG.info("removeActorFromSeries");
-
-        actorList.remove(actor);
+        series.getActors().remove(actor);
         actorListNotInSeries.add(actor);
         seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());
-
-//        LOG.info("Remove " + actor.getId() + " id of actor from " + series.getTitle());
     }
 
     public void saveButtonAction(ActionEvent actionEvent) {
@@ -210,4 +199,32 @@ public class SeriesEdit implements Serializable {
     public void saveSeries() {
         seriesFacade.saveSeries(series);
     }
+
+    public PictureHandler getPictureHandler() {
+        return pictureHandler;
+    }
+
+    public void setPictureHandler(PictureHandler pictureHandler) {
+        this.pictureHandler = pictureHandler;
+    }
+
+    public String getIdOfSeries() {
+        return idOfSeries;
+    }
+
+    public void setIdOfSeries(String idOfSeries) {
+        LOG.info("setIdOfSeries");
+        this.idOfSeries = idOfSeries;
+        loadDatabaseData();
+
+    }
+
+    public Actor getNewActor() {
+        return newActor;
+    }
+
+    public void setNewActor(Actor newActor) {
+        this.newActor = newActor;
+    }
+
 }

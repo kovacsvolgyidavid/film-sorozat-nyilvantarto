@@ -9,8 +9,7 @@
 
     <f:metadata>
         <f:viewParam name="seriesid" value="#{seriesEdit.idOfSeries}" />
-        <f:event type="preRenderView" listener="#{seriesEdit.loadDatabaseData}" />
-
+        <!--<f:event type="postAddToView" listener="#{seriesEdit.loadDatabaseData}" />-->
     </f:metadata>
 
     <h:head>
@@ -39,15 +38,34 @@
             .ui-growl{
                 top:100px;
             }
+            .ui-panelgrid td, .ui-panelgrid tr
+            {
+                border-style: none !important
+            }
             .actor-table{
-                width:100%;
+                width:75%;
                 margin: 0 auto;
                 margin-bottom: 20px;
+            }
+            .icon-row{
+                width:38px;
+            }
+            .description{
+                margin:0 auto;
+                width:500px;
+            }
+            .save-button{
+                margin-right: 100px;
             }
         </style>
 
     </h:head>
     <h:body>
+        <script type="text/javascript">
+            function addRowOnComplete() {
+                jQuery('#supercoolnewrow').trigger('click');
+            }
+        </script>
         <!--        <ui:composition template="/template/internal-template.xhtml">
                     <ui:define name="content">-->
         <h:form id="form2">
@@ -82,95 +100,150 @@
             </div>
 
             <p:separator />
-            <div class="ui-grid ui-grid-responsive">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-4">
-                        4
-                    </div>
-                    <div class="ui-grid-col-4">
-                        4
-                    </div>
-                    <div class="ui-grid-col-4">
-                        4
-                    </div>
-                </div>
-            </div>
 
             <!--List actors, directors, and seasons-->
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-12">
                         <form id="actorFrom">
-                            <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.actorList}" class="actor-table" editable="true">
+                            <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.series.actors}" class="actor-table" editable="true">
                                 <f:facet name="header">
                                     Actors               
                                 </f:facet>
 
+
                                 <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update="actorListId" />
                                 <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update="actorListId" />
 
-                                <!--Actor title-->
-                                <!--                                <p:column >
-                                                                    <p:link outcome="actorEdit.xhtml" value="#{actorVar.name}">
-                                                                        <f:param name="actorId" value="#{actorVar.id}" />
-                                                                    </p:link>
-                                                                </p:column>-->
 
-                                <p:column headerText="Name" footerText="Name">
+                                <p:column style="width:16px">
+                                    <p:rowToggler />
+                                </p:column>
+
+                                <!--Actor title-->
+                                <p:column headerText="Name">
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{actorVar.name}" /></f:facet>
                                         <f:facet name="input"><p:inputText id="modelInput" value="#{actorVar.name}" style="width:100%"/></f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Birthplace" footerText="Birthplace">
+                                <!--Actor birthplace-->
+                                <p:column headerText="Birthplace">
+
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{actorVar.placeOfBirth}" /></f:facet>
                                         <f:facet name="input"><p:inputText value="#{actorVar.placeOfBirth}" style="width:100%"/></f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
-                                <!--Edit actor button-->
-                                <p:column style="width:38px;">
-                                    <p:commandButton  action="#{seriesEdit.goToActorEditSite()}" icon="ui-icon-edit" title="Edit">
-                                        <f:param name="actorId" value="#{actorVar.id}" />
-                                    </p:commandButton>
+                                <!--Actor sex-->
+                                <p:column headerText="Sex">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{actorVar.sex}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{actorVar.sex}" style="width:100%"/></f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
-                                <!--Remove actor button-->
-                                <p:column style="width:38px;">
-                                    <p:commandButton icon="ui-icon-trash" title="Remove"   
-                                                     action="#{seriesEdit.removeActorFromSeries(actorVar)}" update="actorListId,form2:addPanel">
 
-                                    </p:commandButton>
-
-                                </p:column>
-
-                                <p:column>
+                                <!--Trash-->
+                                <p:column class="icon-row">
                                     <h:commandLink value="" action="#{seriesEdit.removeActorFromSeries(actorVar)}"  >
                                         <i class="fa fa-trash" ></i>
                                         <f:ajax render="actorListId" execute="actorListId"></f:ajax>
                                     </h:commandLink>
                                 </p:column>
 
-                                <p:column style="width:32px">
-                                    <p:rowEditor />
-                                </p:column>
+                                <p:rowExpansion>
+                                    <p:panelGrid  columns="3"  style="width:80%;margin:0 auto;">
+                                        <f:facet name="header">
+                                            <p:graphicImage name="actor/#{actorVar.id}.jpg"/> 
+                                        </f:facet>
+
+                                        <!--Actor name-->
+                                        <p:outputLabel value="Name: "/>
+                                        <p:inputText id="name" value="#{actorEdit.actor.name}"/>
+                                        <h:panelGroup />
+
+                                        <!--Birthday-->
+                                        <p:outputLabel value="Birthday: " />
+                                        <p:calendar id="birthday" value="#{actorEdit.actor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                                    navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                                    title="Format: dd/MM/yyyy" />
+                                        <h:panelGroup />
+
+                                        <!--Birthplace-->
+                                        <p:outputLabel value="Birthplace: "/>
+                                        <p:inputText id="birthplace" value="#{actorEdit.actor.placeOfBirth}"/>
+                                        <h:panelGroup />
+
+                                        <!--Official website-->
+                                        <h:outputText value="Official website:" style="text-align: right"/>
+                                        <p:inputText id="websiteurl" value="#{actorEdit.actor.officialWebsite}"></p:inputText>
+                                        <h:panelGroup />
+                                        <!--</p:panelGrid>-->
+
+                                        <!--Picture-->
+                                        <p:outputLabel value="Picutre: "/>
+                                        <p:inputText value="#{actorEdit.actor.pathOfPhoto}"/>
+                                        <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{actorEdit.imageUpload}" auto="true"/>
+
+                                    </p:panelGrid>
+
+                                </p:rowExpansion>
 
                             </p:dataTable>
 
+                            <p:commandButton value="Add new actor" onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
+
+
                             <!--Add panel-->
-                            <h:panelGrid id="addPanel" columns="2" cellpadding="10" style="margin:0 auto" >
-                                <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" style="width:150px">
-                                    <f:selectItem itemLabel="Choose Actor" itemValue="#{null}" />
+                            <h:panelGrid id="addPanel" columns="3" cellpadding="10" style="margin:0 auto" >
+                                <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" style="width:250px">
+                                    <f:selectItem itemLabel="Choose existing actor" itemValue="#{null}" />
                                     <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actorVar" itemLabel="#{actorVar.name}" itemValue="#{actorVar.id}"/>
                                     <p:ajax event="change" update="@this" />
                                 </p:selectOneMenu>
-                                <p:commandButton value="Add" title="Add"
-                                                 action="#{seriesEdit.addActorToSeries}" update="addPanel, actorListId">
+                                <p:commandButton value="Add selected actor" title="Add"
+                                                 action="#{seriesEdit.addExistingActorToSeries}" update="addPanel, actorListId">
                                 </p:commandButton>
 
+
+
                             </h:panelGrid>
+
+
+                            <!--New actor dialog-->
+                            <p:dialog header="Add actor" widgetVar="dlg">
+                                <p:panelGrid  columns="2"  style="width:80%;margin:0 auto;">
+
+                                    <!--Actor name-->
+                                    <p:outputLabel value="Name: "/>
+                                    <p:inputText id="name" value="#{seriesEdit.newActor.name}"/>
+
+                                    <!--Birthday-->
+                                    <p:outputLabel value="Birthday: " />
+                                    <p:calendar id="birthday" value="#{seriesEdit.newActor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                                title="Format: dd/MM/yyyy" />
+
+                                    <!--Birthplace-->
+                                    <p:outputLabel value="Birthplace: "/>
+                                    <p:inputText id="birthplace" value="#{seriesEdit.newActor.placeOfBirth}"/>
+
+                                    <!--Official website-->
+                                    <h:outputText value="Official website:" style="text-align: right"/>
+                                    <p:inputText id="websiteurl" value="#{seriesEdit.newActor.officialWebsite}"></p:inputText>
+
+                                    <!--Picture-->
+                                    <p:outputLabel value="Picutre: "/>
+                                    <p:inputText value="#{seriesEdit.newActor.pathOfPhoto}"/>
+
+                                    <p:commandButton value="Save" action="#{seriesEdit.addNewActorToSeries()}" oncomplete="dlg.hide();" />
+                                    <p:commandButton value="Cancel" onclick="dlg.hide()"/> 
+
+                                </p:panelGrid>
+                            </p:dialog>
                         </form>
                     </div>                                                  
                 </div>
@@ -179,7 +252,7 @@
             <p:separator />
 
             <!--Description panel-->
-            <h:panelGrid style="margin:0 auto">
+            <h:panelGrid class="description">
                 <h:outputText value="Desctiption" />
                 <p:inputTextarea rows="10" cols="60" value="#{seriesEdit.series.description}" 
                                  queryDelay="750" minQueryLength="4"  autoResize="true"/>
@@ -188,7 +261,7 @@
 
             <!--Save panel-->
             <p:growl id="growl" life="2000" />
-            <h:panelGrid>
+            <h:panelGrid class="save-button">
                 <p:commandButton action="#{seriesEdit.saveSeries}" actionListener="#{seriesEdit.saveButtonAction}" value="Save" 
                                  update="growl" icon="ui-icon-disk" title="Save" />
             </h:panelGrid>

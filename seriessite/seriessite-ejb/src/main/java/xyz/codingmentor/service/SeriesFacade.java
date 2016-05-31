@@ -100,6 +100,10 @@ public class SeriesFacade {
     public void saveSeries(Series series) {
         em.merge(series);
     }
+    
+    public void updateSeries(Series series) {
+        em.merge(series);
+    }
 
     public List<Series> seriesByDirectorOriginalNameEqualsName() {
         Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");

@@ -157,4 +157,12 @@ public class ActorFacade {
         q.setParameter("date", date, TemporalType.DATE);
         return q.getResultList();
     }
+    
+    public void create(Actor actor){
+        em.persist(actor);
+    }
+    
+    public Actor read(Long id) {
+        return em.find(Actor.class, id);
+    }
 }
