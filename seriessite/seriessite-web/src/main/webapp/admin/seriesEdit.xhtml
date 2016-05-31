@@ -16,7 +16,8 @@
     <h:head>
         <title>Series edit site</title>
 
-        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/resources/font-awesome/css/font-awesome.min.css"/>
+
 
         <style type="text/css">
             .ui-orderlist-list {
@@ -146,8 +147,9 @@
                                 </p:column>
 
                                 <p:column>
-                                    <h:commandLink value="" action="#{seriesEdit.removeActorFromSeries(actorVar)}">
-                                        <i class="fa fa-trash"></i>
+                                    <h:commandLink value="" action="#{seriesEdit.removeActorFromSeries(actorVar)}"  >
+                                        <i class="fa fa-trash" ></i>
+                                        <f:ajax render="actorListId" execute="actorListId"></f:ajax>
                                     </h:commandLink>
                                 </p:column>
 

@@ -80,9 +80,12 @@ public class SeriesEdit implements Serializable {
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
         actorList = new ArrayList<>();
+        idOfSeries="1";
+        loadDatabaseData();
     }
 
-    public void loadDatabaseData(ComponentSystemEvent event) {
+//    public void loadDatabaseData(ComponentSystemEvent event) {
+    public void loadDatabaseData() {
         if (idOfSeries != null) {
             Long id = (Long) Long.parseLong(idOfSeries);
             
