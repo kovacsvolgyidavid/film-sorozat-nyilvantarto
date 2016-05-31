@@ -39,6 +39,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
+import org.apache.commons.lang3.SystemUtils;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+import xyz.codingmentor.bean.picture.NewClass;
 import xyz.codingmentor.bean.picture.PictureHandler;
 import xyz.codingmentor.service.ActorFacade;
 
@@ -83,17 +86,11 @@ public class SeriesEdit implements Serializable {
             LOG.info("idd: " + idOfSeries2);
 
             series = seriesFacade.findSeriesById(idOfSeries2);
-//            actorList = seriesFacade.findActorsInSeries(idOfSeries2);
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
     }
 
-//    public void newLine() {
-//        LOG.info(String.valueOf(actorList.size()));
-//        actorList.add(new Actor());
-//        LOG.info(String.valueOf(actorList.size()));
-//    }
-
+    
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -120,7 +117,6 @@ public class SeriesEdit implements Serializable {
     }
 
     public List<Actor> getActorListNotInSeries() {
-//        LOG.info("actorListNotInSeries size is " + actorListNotInSeries.size());
         return actorListNotInSeries;
     }
 
@@ -133,17 +129,10 @@ public class SeriesEdit implements Serializable {
     }
 
     public void setActorId(String actorId) {
-//        LOG.info("setActor function");
+        LOG.info("setActor function");
         this.actorId = actorId;
     }
-//
-//    public List<Actor> getActorList() {
-//        return actorList;
-//    }
-//
-//    public void setActorList(List<Actor> actorList) {
-//        this.actorList = actorList;
-//    }
+
 
     private Actor searchActorById(List<Actor> l, String actorId) {
         Long id = Long.parseLong(actorId);
@@ -157,15 +146,12 @@ public class SeriesEdit implements Serializable {
     }
 
     public void addExistingActorToSeries() {
+         LOG.info("addExistingActorToSeries");
+         
         Actor actor = searchActorById(actorListNotInSeries, actorId);
 
-//        LOG.info("addActorToSeries");
-//        LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
-//        actorList.add(actor);
-
-        
         actorListNotInSeries.remove(actor);
-        
+
         series.getActors().add(actor);
         seriesFacade.updateSeries(series);
 
@@ -173,15 +159,10 @@ public class SeriesEdit implements Serializable {
     }
 
     public void addNewActorToSeries() {
-//        actorFacade.create(newActor);
-//        actorFacade.
-//        Series findSeriesById = seriesFacade.findSeriesById(series.getId());
-        
-        
-//        actorList.add(newActor);
-
+        LOG.info("addNewActorToSeries");
         series.getActors().add(newActor);
         seriesFacade.updateSeries(series);
+        newActor = new Actor();
     }
 
     public void removeActorFromSeries(Actor actor) {
@@ -196,8 +177,18 @@ public class SeriesEdit implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void resetNewActor(Long actorId) {
+        Actor findActorById = actorFacade.findActorById(actorId);
+        newActor = findActorById;
+    }
+
     public void saveSeries() {
         seriesFacade.saveSeries(series);
+//        NewClass n = new NewClass();
+//        LOG.info("Itt vagyok: " + n.fg());
+        LOG.info("linux? " + SystemUtils.IS_OS_LINUX); 
+        LOG.info("windows? " + SystemUtils.IS_OS_WINDOWS); 
+                
     }
 
     public PictureHandler getPictureHandler() {

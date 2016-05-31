@@ -27,13 +27,12 @@
                 height:200px;
                 width:100%;
             }
-
-            .ui-fileupload-content {
-                display: none;
+            .ui-fileupload-buttonbar {      /*important*/
+                background: transparent none;
+                border: none;
             }
-            .ui-fileupload-buttonbar.ui-widget-header {
-                background-color: transparent;
-                border: 0 none;
+            .ui-fileupload-content {      /*important*/
+                display: none;
             }
             .ui-growl{
                 top:100px;
@@ -57,6 +56,23 @@
             .save-button{
                 margin-right: 100px;
             }
+            .name-and-date-release{
+                margin:0 auto;
+                padding:20px;
+
+            }
+            .top-labels{
+                font-weight:bold;
+                font-size:24px;
+            }
+            .color{
+                background-color: rgb(224,224,224);
+            }
+            .start-header{
+                margin-left: 100px;
+                margin-right: 100px;
+                margin-top: 0px;
+            }
         </style>
 
     </h:head>
@@ -68,21 +84,22 @@
         </script>
         <!--        <ui:composition template="/template/internal-template.xhtml">
                     <ui:define name="content">-->
+        <h1>Series editing slide</h1>
         <h:form id="form2">
             <div class="ui-grid ui-grid-responsive">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-8"> 
-                        <h:panelGrid columns="2" cellspacing="20" style="margin-top:60px;margin-left:40px;padding:20px">
+                <div class="ui-grid-row color start-header" >
+                    <div class="ui-grid-col-8" > 
+                        <h:panelGrid columns="2" cellspacing="20" class="name-and-date-release">
                             <!--Series name-->
-                            <p:outputLabel value="Series name: "/>
-                            <p:inputText id="name" value="#{seriesEdit.series.title}"
-                                         title="Examples: &#13; -Szökés &#13; -Spongy Bob"/>
+                            <p:outputLabel value="Series name: " class="top-labels"/>
+                            <p:inputText id="name" value="#{seriesEdit.series.title}" class="color" 
+                                         title="Examples: &#13; -Szökés &#13; -Spongy Bob" />
 
                             <!--Release date-->
-                            <p:outputLabel value="Release date of series: " />
+                            <p:outputLabel value="Release date of series: " class="top-labels color"/>
                             <p:calendar id="date" value="#{seriesEdit.series.yearOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                        title="Format: dd/MM/yyyy" />
+                                        title="Format: dd/MM/yyyy" class="color/>
                         </h:panelGrid>
                     </div>
                     <div class="ui-grid-col-4">
@@ -188,6 +205,13 @@
                                         <p:inputText value="#{actorEdit.actor.pathOfPhoto}"/>
                                         <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{actorEdit.imageUpload}" auto="true"/>
 
+                                        <p:growl id="growl" life="2000" />
+                                        <h:panelGrid columns="2" cellpadding="20px">
+                                            <p:commandButton action="#{seriesEdit.addNewActorToSeries}" actionListener="#{seriesEdit.saveButtonAction}" value="Save" 
+                                                             update="growl" icon="ui-icon-disk" title="Save" />
+                                            <p:commandButton value="Reset" action="#{seriesEdit.resetNewActor(actorVar.id)}"/> 
+
+                                        </h:panelGrid>
                                     </p:panelGrid>
 
                                 </p:rowExpansion>
