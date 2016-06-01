@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/internal-template.xhtml">
+            <ui:define name="content">
+                <br/><h1 style="text-align: center">Products</h1><br/><br/><br/>
+
+                <p:panelGrid columns="2" style="margin: 0 auto" styleClass="ui-noborder">
+                
+                    <p:outputLabel value="Price: *"/>
+                    <p:inputText id="price" value="#{messageManagement.product.price}" required="true"/>
+
+                    <p:outputLabel value="Type: *"/>
+                    <p:selectOneMenu value="#{messageManagement.product.type}" style="width: 100%">
+                        <f:selectItems value="#{messageManagement.types}" var="type" itemLabel="#{type}" itemValue="#{type}" />
+                    </p:selectOneMenu><br/>
+
+                    <p:commandButton value="Create" action="#{messageManagement.addProduct()}" update="form"
+                                     style="width: 70%"/>
+                </p:panelGrid>
+                <br/><br/><br/>
+
+                <p:dataTable id="table" var="product" value="#{messageManagement.products}" widgetVar="productTable" 
+                             style="width: 60%; margin: 0 auto; padding: 0px; text-align: center" resizableColumns="true"
+                             rows="10" paginator="true" rowsPerPageTemplate="10, 20, 50, 100"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                    <p:column headerText="Price" sortBy="#{product.price}" style="width: 35%;">
+                        <h:outputText value="#{product.price}" />
+                    </p:column>  
+
+                    <p:column headerText="Type" sortBy="#{product.type}" style="padding-bottom: 7px; padding-top: 7px;
+                              width: 35%;">
+                        <h:outputText value="#{product.type}" />
+                    </p:column>
+
+                    <p:column headerText="Delete" style="padding: 0px 0px 0px 0px; width: 30%;">
+                        <p:commandButton style="width:100%; height: 100%; border-width: 0px; background-color: darkorange"
+                                         icon="ui-icon-trash" action="#{messageManagement.deleteProduct(product)}" update="form" immediate="true">
+
+                        </p:commandButton>
+                    </p:column> 
+
+                </p:dataTable>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+
+

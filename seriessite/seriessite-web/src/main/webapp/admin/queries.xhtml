@@ -55,9 +55,10 @@
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}" >
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, " >
                                         <f:param name="seriesid" value="#{s.id}" />
-                                    </p:link>                                </ui:repeat>
+                                    </p:link>
+                                </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
                     </p:tab>
@@ -80,9 +81,10 @@
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, ">
                                         <f:param name="seriesid" value="#{s.id}" />
-                                    </p:link>                                </ui:repeat>
+                                    </p:link>
+                                </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
                     </p:tab>
@@ -109,7 +111,7 @@
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, ">
                                         <f:param name="seriesid" value="#{s.id}" />
                                     </p:link>
                                 </ui:repeat>

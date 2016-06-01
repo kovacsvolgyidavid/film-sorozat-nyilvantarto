@@ -23,6 +23,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import xyz.codingmentor.collective.dtio.ProductDTO;
 import xyz.codingmentor.dto.UserDTO;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.entity.Movie;
@@ -30,6 +31,7 @@ import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.enums.Sex;
+import xyz.codingmentor.jms.TopicService;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 import xyz.codingmentor.service.SeriesFacade;
@@ -51,12 +53,21 @@ public class Registration implements Serializable {
     private StreamedContent image;
     private final static Enum[] SEXES = new Enum[2];
     private UserDTO dtoUser;
+    
+//    private ProductDTO productDTO;
+//    
+//    @Inject
+//    TopicService topicService;
 
     @PostConstruct
     public void init() {
         SEXES[0] = Sex.MALE;
         SEXES[1] = Sex.FEMALE;
         dtoUser = new UserDTO();
+        
+//        productDTO = new ProductDTO(111L, "BICIKLI");
+//        
+//        topicService.sendMessageToEntityDeleteTopic(productDTO);
     }
 
     public String signIn() {
@@ -75,6 +86,7 @@ public class Registration implements Serializable {
             uploadedFile = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration was successful."));
             return "/login.xhtml";
+            //"/user/profile.xhtml?username=" + user.getUsername() + ";faces-redirect=true";
         }
         return "";
     }
