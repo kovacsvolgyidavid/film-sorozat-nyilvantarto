@@ -45,7 +45,7 @@
             .tables{
                 width:75%;
                 margin: 0 auto;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
             }
             .icon-row{
                 width:38px;
@@ -85,7 +85,7 @@
         </script>
         <!--        <ui:composition template="/template/internal-template.xhtml">
                     <ui:define name="content">-->
-        <h1 style="margin:0 auto">Series editing slide</h1>
+        <h1 style="text-align: center">Series editing slide</h1>
         <h:form id="form2">
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row color start-header" >
@@ -120,7 +120,8 @@
             <p:separator />
             <p:separator />
 
-            <p:tabView id="myTabView">
+            <!--Episode tabs-->
+            <p:tabView id="seasonTabs">
                 <c:forEach var="season" items="#{seriesEdit.series.seasons}">
                     <p:tab title="#{season.title}">
 
@@ -130,14 +131,14 @@
                             </f:facet>
 
 
-                            <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update="form2:myTabView:episodeDateTable" />
-                            <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update="form2:myTabView:episodeDateTable" />
+                            <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update="form2:seasonTabs:episodeDateTable" />
+                            <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update="form2:seasonTabs:episodeDateTable" />
 
-
-                            <p:column headerText="Id">
+                            <!--Episode id-->
+                            <p:column headerText="Id" style="width:40px;">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{episode.id}" /></f:facet>
-                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.id}" style="width:100%"/></f:facet>
+                                    <f:facet name="input"><p:inputText id="epId" value="#{episode.id}" style="width:100%"/></f:facet>
                                 </p:cellEditor>
                             </p:column>
 
@@ -145,23 +146,32 @@
                             <p:column headerText="Title">
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{episode.title}" /></f:facet>
-                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.title}" style="width:100%"/></f:facet>
+                                    <f:facet name="input"><p:inputText id="epTitle" value="#{episode.title}" style="width:100%"/></f:facet>
                                 </p:cellEditor>
                             </p:column>
 
                             <!--Episode dateOfRelease-->
                             <p:column headerText="Release date">
                                 <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{episode.dateOfRelease}" /></f:facet>
-                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.dateOfRelease}" style="width:100%"/></f:facet>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{episode.dateOfRelease}" >
+                                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                                        </h:outputText>
+
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar value="#{episode.dateOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                                    navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                                    title="Format: dd/MM/yyyy" />
+                                    </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
                             <!--Episode serialnumber-->
-                            <p:column headerText="Serialnumber">
+                            <p:column headerText="Serialnumber" style="width:40px;" >
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{episode.serialNumber}" /></f:facet>
-                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.serialNumber}" style="width:100%"/></f:facet>
+                                    <f:facet name="input"><p:inputText id="epSeri" value="#{episode.serialNumber}" style="width:100%"/></f:facet>
                                 </p:cellEditor>
                             </p:column>
 
@@ -170,7 +180,7 @@
                             <p:column class="icon-row">
                                 <h:commandLink value="" action="#{seriesEdit.removeEpisodeFromSeason(season,episode)}"  >
                                     <i class="fa fa-trash" ></i>
-                                    <f:ajax render="form2:myTabView:episodeDateTable" execute="form2:myTabView:episodeDateTable"></f:ajax>
+                                    <f:ajax render="form2:myTabView:episodeDateTable" execute="form2:seasonTabs:episodeDateTable"></f:ajax>
                                 </h:commandLink>
                             </p:column>
 
@@ -180,11 +190,14 @@
 
                         </p:dataTable>
 
+                        <!--Delete Season-->
+                        <p:commandButton value="Delete season" action="#{seriesEdit.deleteSeasion(seasion)}" update="seasonTabs" />
                     </p:tab>
                 </c:forEach>
             </p:tabView>
 
-
+            <!--New season button-->
+            <p:commandButton value="Add season" oncomplete="PF('episodeDlg').show();" icon="ui-icon-extlink"  process="@this" update="form2:seasonTabs"/>
 
 
 
@@ -277,13 +290,13 @@
                                         <!--Picture-->
                                         <p:outputLabel value="Picutre: "/>
                                         <p:inputText value="#{actorVar.pathOfPhoto}"/>
-                                        <p:fileUpload id="uploadInRE" mode="advanced" skinSimple="true" fileUploadListener="#{actorEdit.imageUpload}" auto="true"/>
+                                        <p:fileUpload id="uploadInRE" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.pictureHandler.imageUpload(event)}" auto="true"/>
 
                                         <p:growl id="growlInRE" life="2000" />
                                         <h:panelGrid columns="2" cellpadding="20px">
-                                            <p:commandButton action="#{seriesEdit.saveSeries()}" actionListener="#{seriesEdit.saveButtonListener}" value="Save" 
+                                            <p:commandButton action="#{seriesEdit.saveActor(actorVar)}" actionListener="#{seriesEdit.saveButtonListener}" value="Save" 
                                                              update="growlInRE" icon="ui-icon-disk" title="Save" />
-                                            <p:commandButton value="Reset" action="#{seriesEdit.resetSeries}"/> 
+                                            <p:commandButton value="Reset" action="#{seriesEdit.resetActor(actorVar)}"/> 
 
                                         </h:panelGrid>
                                     </p:panelGrid>
@@ -321,13 +334,6 @@
             </div>
 
             <p:separator />
-
-
-
-
-
-
-
 
 
             <p:separator />
@@ -380,6 +386,31 @@
 
 
                 </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <!--Episode dialog-->
+        <p:dialog header="Episode title" widgetVar="episodeDlg" >
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <!--Season name-->
+                    <p:outputLabel value="Name: "/>
+                    <p:inputText value="#{seriesEdit.newSeason.title}"/>
+
+                    <!--dateOfRelease-->
+                    <p:outputLabel value="Release date: " />
+                    <p:calendar value="#{seriesEdit.newSeason.dateOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                title="Format: dd/MM/yyyy" />
+
+                    <!--Season linkOfPromoVideo-->
+                    <p:outputLabel value="Promovideo link: "/>
+                    <p:inputText value="#{seriesEdit.newSeason.linkOfPromoVideo}"/>
+
+
+                    <p:commandButton value="Save" action="#{seriesEdit.addNewSeason()}" oncomplete="PF('dlg').hide();" process="@form" update="form2:seasonTabs"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('episodeDlg').hide();" /> 
+                </h:panelGrid>
             </h:form>
         </p:dialog>
 

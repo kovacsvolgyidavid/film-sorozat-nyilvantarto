@@ -59,25 +59,28 @@ public class SeriesEdit implements Serializable {
     @Inject
     private ActorFacade actorFacade;
 
-    
     private Series series;
     private String idOfSeries;
-    
+
     private static final Logger LOG = Logger.getLogger(SeriesEdit.class.getName());
     private PictureHandler pictureHandler;
-    
+
     private Actor newActor;
     private List<Actor> actorListNotInSeries;
     private String actorId;
     
-    
+        private Season newSeason;
+
+
     @PostConstruct
     public void init() {
         LOG.info("init() function");
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
         newActor = new Actor();
+        newSeason = new Season();
         idOfSeries = "1";
+        
         loadDatabaseData();
 //        loadDatabaseData(new ActionEvent());
     }
@@ -97,16 +100,8 @@ public class SeriesEdit implements Serializable {
         }
     }
 
-    
-    public void addNewSeason(){
-        
-        LOG.info("Size: " + series.getSeasons().size());
-    }
-    
-    
-    
-    
-    
+
+
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -175,6 +170,10 @@ public class SeriesEdit implements Serializable {
         LOG.info("addNewActorToSeries end");
 
     }
+    
+    public void saveActor(Actor actor){
+        actorFacade.update(actor);
+    }
 
     public void initialNewActor() {
         LOG.info("initalNewActor");
@@ -192,8 +191,17 @@ public class SeriesEdit implements Serializable {
         LOG.info("windows? " + SystemUtils.IS_OS_WINDOWS);
     }
 
-    public void resetSeries() {
-        series = seriesFacade.findSeriesById(series.getId());
+    public void resetActor(Actor actor) {
+        Actor findActorById = actorFacade.findActorById(actor.getId());
+        
+        List<Actor> actors = series.getActors();
+        for (int i = 0; i < actors.size(); i++) {
+            Actor a = actors.get(i);
+            if(a.getId() == actor.getId()){
+                actors.add(i, findActorById);
+            }
+            
+        }
     }
 
     public void saveButtonListener(ActionEvent actionEvent) {
@@ -229,15 +237,43 @@ public class SeriesEdit implements Serializable {
     public void setNewActor(Actor newActor) {
         this.newActor = newActor;
     }
-    
-    public void removeEpisodeFromSeason(Season season, Episode episode){
-        for (Season s :  series.getSeasons()) {
-            if(s.equals(season)){
+
+    public void removeEpisodeFromSeason(Season season, Episode episode) {
+        for (Season s : series.getSeasons()) {
+            if (s.equals(season)) {
                 s.getEpisodes().remove(episode);
                 return;
             }
-            
+
         }
         LOG.info("Error in removeEpisodeFromSeason. Not found episode in season");
     }
+
+    public void deleteSeasion(Season season) {
+        for (Season s : series.getSeasons()) {
+            if (s.equals(season)) {
+                series.getSeasons().remove(season);
+                return;
+            }
+
+        }
+        LOG.info("Error in deleteSeasion. Not found season in series");
+    }
+
+
+    public Season getNewSeason() {
+        return newSeason;
+    }
+
+    public void setNewSeason(Season newSeason) {
+        this.newSeason = newSeason;
+    }
+
+
+
+    public void addNewSeason() {
+        LOG.info("addSeason fg");
+        series.getSeasons().add(newSeason);
+    }
+
 }
