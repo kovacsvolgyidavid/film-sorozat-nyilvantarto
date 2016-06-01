@@ -9,12 +9,13 @@ import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
@@ -42,12 +43,13 @@ public class SeriesView implements Serializable {
     private String comment;
     @Inject
     private EntityFacade entityFacade;
-    User user;
-    
+    private User user;
+    private Long seriesId;
 
     @PostConstruct
-    public void init() {//TODO: delete this
+    public void init() {
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
+        
     }
 
     public String getTitle() {
@@ -62,7 +64,6 @@ public class SeriesView implements Serializable {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             image = null;
         }
-
         return image;
     }
 
@@ -84,7 +85,7 @@ public class SeriesView implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-    
+
     public String getEpisodeNumber() {
         int episodeNum = 0;
         if (series.getSeasons() == null) {
@@ -129,7 +130,7 @@ public class SeriesView implements Serializable {
         addComment.setUser(user);
         addComment.setShow(series);
         series.getComments().add(addComment);
-//        entityFacade.create(addComment); //TODO
+        entityFacade.create(addComment); //TODO
         comment = "";
     }
 
@@ -145,15 +146,23 @@ public class SeriesView implements Serializable {
         return series.getComments();
     }
 
-    public String callStringView(Series series) {
-        this.series = series;
-        return "/user/seriesView.xhtml?faces-redirect=true";
+    public String goToSeriesViewSite() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        Map<String, String> params
+                = context.getExternalContext().getRequestParameterMap();
+        String id = params.get("seriesid");
+//        LOG.info("Here go to actor side. ActorID: " + id);
+
+//        1 is Actor edit it
+        return "/user/seriesView.xhtml;faces-redirect=true";
+//        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
 
     public StreamedContent getUserImage(User user) {
         StreamedContent image;
         try {
-            String userPhotoPath=user.getPathOfPhoto();
+            String userPhotoPath = user.getPathOfPhoto();
             image = new DefaultStreamedContent(new FileInputStream(userPhotoPath));
         } catch (Exception ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
@@ -161,4 +170,37 @@ public class SeriesView implements Serializable {
         }
         return image;
     }
+
+    public Long getSeriesId() {
+        return seriesId;
+    }
+
+    public void setSeriesId(Long SeriesId) {
+        this.seriesId = SeriesId;
+    }
+    
+    public void loadDatabaseData(){
+        if(this.seriesId==null){
+            throw new IllegalArgumentException("Error while trying to find your series");
+        }
+       series=entityFacade.read(Series.class, this.seriesId);
+       if(series==null){
+           throw new IllegalArgumentException("There is no such Series");
+       }
+    }
+    public String deleteSeries(){
+        this.entityFacade.delete(series);
+        return "/user/series-user.xhtml;faces-redirect=true";
+    }
+    public boolean isNoSeasonSelected(){
+        return this.actualSeason!=null;
+    }
+    public String goToSeriesView(Series series){
+        this.series=series;
+        return "/user/seriesView.xhtml;faces-redirect=true";
+    }
+    public Series returnSeries(){
+        return entityFacade.read(Series.class, 1L);
+    }
+    
 }
