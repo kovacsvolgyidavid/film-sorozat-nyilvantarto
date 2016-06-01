@@ -45,6 +45,8 @@ import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 import org.primefaces.context.RequestContext;
 import xyz.codingmentor.bean.picture.NewClass;
 import xyz.codingmentor.bean.picture.PictureHandler;
+import xyz.codingmentor.entity.Episode;
+import xyz.codingmentor.entity.Season;
 import xyz.codingmentor.service.ActorFacade;
 
 @Named
@@ -57,22 +59,24 @@ public class SeriesEdit implements Serializable {
     @Inject
     private ActorFacade actorFacade;
 
-    private String actorId;
+    
     private Series series;
-    private static final Logger LOG = Logger.getLogger(SeriesEdit.class.getName());
-//    private List<Actor> actorList;
-    private List<Actor> actorListNotInSeries;
     private String idOfSeries;
+    
+    private static final Logger LOG = Logger.getLogger(SeriesEdit.class.getName());
     private PictureHandler pictureHandler;
+    
     private Actor newActor;
-
+    private List<Actor> actorListNotInSeries;
+    private String actorId;
+    
+    
     @PostConstruct
     public void init() {
         LOG.info("init() function");
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
         newActor = new Actor();
-//        actorList = new ArrayList<>();
         idOfSeries = "1";
         loadDatabaseData();
 //        loadDatabaseData(new ActionEvent());
@@ -93,6 +97,16 @@ public class SeriesEdit implements Serializable {
         }
     }
 
+    
+    public void addNewSeason(){
+        
+        LOG.info("Size: " + series.getSeasons().size());
+    }
+    
+    
+    
+    
+    
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -156,40 +170,17 @@ public class SeriesEdit implements Serializable {
 
     public void addNewActorToSeries() {
         LOG.info("addNewActorToSeries ");
-//        LOG.info("addNewActorToSeries NewActor: " + newActor.toString());
-
-//        Actor a = newActor;
-//        Actor a = new Actor();
-//        a.setName(newActor.getName());
-//        a.setDateOfBirth(newActor.getDateOfBirth());
-//        a.setOfficialWebsite(newActor.getOfficialWebsite());
-//
-
         actorFacade.create(newActor);
-//        actorFacade.
-            LOG.info("addNewActorToSeries end");
-
-//        LOG.info("addNewActorToSeries " + newActor.getId());
         series.getActors().add(newActor);
-//        saveSeries();
-//        newActor = new Actor();
-//        refreshDialog();
+        LOG.info("addNewActorToSeries end");
+
     }
 
-//    public void resetNewActor() {
-//        LOG.info("resetNewActor");
-//        newActor = new Actor();
-//        refreshDialog();
-//    }
     public void initialNewActor() {
         LOG.info("initalNewActor");
         newActor = new Actor();
     }
 
-//    private void refreshDialog(){
-//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("form2:newActorDialog");
-//        RequestContext.getCurrentInstance().update("form2:newActorDialog");
-//    }
     public void removeActorFromSeries(Actor actor) {
         series.getActors().remove(actor);
         actorListNotInSeries.add(actor);
@@ -237,5 +228,16 @@ public class SeriesEdit implements Serializable {
 
     public void setNewActor(Actor newActor) {
         this.newActor = newActor;
+    }
+    
+    public void removeEpisodeFromSeason(Season season, Episode episode){
+        for (Season s :  series.getSeasons()) {
+            if(s.equals(season)){
+                s.getEpisodes().remove(episode);
+                return;
+            }
+            
+        }
+        LOG.info("Error in removeEpisodeFromSeason. Not found episode in season");
     }
 }

@@ -45,11 +45,6 @@ public class SeriesFacade {
         return actors.getResultList();
     }
 
-//    public List<Actor> findActorsNotInSeries(Long seriesId) {
-//        TypedQuery<Actor> actors = em.createNamedQuery("Series.findActorsNotInSeriesBySeriesId", Actor.class);
-//        actors.setParameter("id", seriesId);
-//        return actors.getResultList();
-//    }
     public void deleteActorFromSeries(Long seriesId, Long actorId) {
         Series series = em.find(Series.class, seriesId);
         Actor actor = em.find(Actor.class, actorId);
@@ -66,11 +61,6 @@ public class SeriesFacade {
         TypedQuery<Actor> actor = em.createNamedQuery("Actor.findActorsById", Actor.class);
         actor.setParameter("id", actorId);
         return actor.getSingleResult();
-
-//        Query q = em.createNamedQuery("Actor.findActorsById");
-//        q.setParameter("id", actorId);
-//        return (Actor) q.getSingleResult();
-
     }
 
     public List<Actor> getActorListNotInSeries(Long seriesId) {
@@ -89,14 +79,9 @@ public class SeriesFacade {
 
 //        LOG.info("getActorListNotInSeries Size of : " + actorsAll.size());
         return actorsAll;
-
     }
 
-//    public List<Series> actorsFromSeriesAfterDate() {
-//        Query q = em.createNamedQuery("actorsFromSeriesAfterDate");
-//        q.setParameter("date", new Date(),TemporalType.DATE);
-//        return q.getResultList();
-//    }
+
     public void saveSeries(Series series) {
         em.merge(series);
     }
@@ -105,6 +90,21 @@ public class SeriesFacade {
         em.merge(series);
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public List<Series> seriesByDirectorOriginalNameEqualsName() {
         Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");
         return q.getResultList();

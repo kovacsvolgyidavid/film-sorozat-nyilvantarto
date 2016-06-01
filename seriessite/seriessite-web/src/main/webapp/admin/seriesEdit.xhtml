@@ -5,7 +5,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      >
+
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <f:metadata>
         <f:viewParam name="seriesid" value="#{seriesEdit.idOfSeries}" />
@@ -41,7 +42,7 @@
             {
                 border-style: none !important
             }
-            .actor-table{
+            .tables{
                 width:75%;
                 margin: 0 auto;
                 margin-bottom: 20px;
@@ -117,13 +118,86 @@
             </div>
 
             <p:separator />
+            <p:separator />
+
+            <p:tabView id="myTabView">
+                <c:forEach var="season" items="#{seriesEdit.series.seasons}">
+                    <p:tab title="#{season.title}">
+
+                        <p:dataTable id="episodeDateTable" var="episode" value="#{season.episodes}" class="tables" editable="true">
+                            <f:facet name="header">
+                                Episode               
+                            </f:facet>
+
+
+                            <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update="form2:myTabView:episodeDateTable" />
+                            <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update="form2:myTabView:episodeDateTable" />
+
+
+                            <p:column headerText="Id">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.id}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.id}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <!--Episode title-->
+                            <p:column headerText="Title">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.title}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.title}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <!--Episode dateOfRelease-->
+                            <p:column headerText="Release date">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.dateOfRelease}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.dateOfRelease}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <!--Episode serialnumber-->
+                            <p:column headerText="Serialnumber">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.serialNumber}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="modelInput" value="#{episode.serialNumber}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+
+                            <!--Trash-->
+                            <p:column class="icon-row">
+                                <h:commandLink value="" action="#{seriesEdit.removeEpisodeFromSeason(season,episode)}"  >
+                                    <i class="fa fa-trash" ></i>
+                                    <f:ajax render="form2:myTabView:episodeDateTable" execute="form2:myTabView:episodeDateTable"></f:ajax>
+                                </h:commandLink>
+                            </p:column>
+
+                            <p:column style="width:32px">
+                                <p:rowEditor />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </p:tab>
+                </c:forEach>
+            </p:tabView>
+
+
+
+
+
+            <p:separator />
+
+            <p:separator />
 
             <!--List actors, directors, and seasons-->
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-12">
                         <form id="actorFrom">
-                            <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.series.actors}" class="actor-table" editable="true">
+                            <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.series.actors}" class="tables" editable="true">
                                 <f:facet name="header">
                                     Actors               
                                 </f:facet>
@@ -245,6 +319,16 @@
                     </div>                                                  
                 </div>
             </div>
+
+            <p:separator />
+
+
+
+
+
+
+
+
 
             <p:separator />
 
