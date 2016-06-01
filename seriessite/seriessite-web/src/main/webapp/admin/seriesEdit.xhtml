@@ -92,14 +92,14 @@
                         <h:panelGrid columns="2" cellspacing="20" class="name-and-date-release">
                             <!--Series name-->
                             <p:outputLabel value="Series name: " class="top-labels"/>
-                            <p:inputText id="name" value="#{seriesEdit.series.title}" class="color" 
+                            <p:inputText id="seriesName" value="#{seriesEdit.series.title}" class="color" 
                                          title="Examples: &#13; -Szökés &#13; -Spongy Bob" />
 
                             <!--Release date-->
                             <p:outputLabel value="Release date of series: " class="top-labels color"/>
                             <p:calendar id="date" value="#{seriesEdit.series.yearOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
-                                        navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                        title="Format: dd/MM/yyyy" class="color/>
+                                        navigator="true" mindate="01/01/1920" maxdate="31/12/2016" yearRange="c-100:c+100"
+                                        title="Format: dd/MM/yyyy" style="background-color: rgb(224,224,224) !important;" />
                         </h:panelGrid>
                     </div>
                     <div class="ui-grid-col-4">
@@ -171,7 +171,7 @@
                                     </h:commandLink>
                                 </p:column>
 
-                                <p:rowExpansion>
+                                <p:rowExpansion id="actorRowExpansion">
                                     <p:panelGrid  columns="3"  style="width:80%;margin:0 auto;">
                                         <f:facet name="header">
                                             <p:graphicImage name="actor/#{actorVar.id}.jpg"/> 
@@ -179,37 +179,37 @@
 
                                         <!--Actor name-->
                                         <p:outputLabel value="Name: "/>
-                                        <p:inputText id="name" value="#{actorEdit.actor.name}"/>
+                                        <p:inputText id="nameInRE" value="#{actorVar.name}"/>
                                         <h:panelGroup />
 
                                         <!--Birthday-->
                                         <p:outputLabel value="Birthday: " />
-                                        <p:calendar id="birthday" value="#{actorEdit.actor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                        <p:calendar id="birthdayInRE" value="#{actorVar.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                                     navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
                                                     title="Format: dd/MM/yyyy" />
                                         <h:panelGroup />
 
                                         <!--Birthplace-->
                                         <p:outputLabel value="Birthplace: "/>
-                                        <p:inputText id="birthplace" value="#{actorEdit.actor.placeOfBirth}"/>
+                                        <p:inputText id="birthplaceInRE" value="#{actorVar.placeOfBirth}"/>
                                         <h:panelGroup />
 
                                         <!--Official website-->
                                         <h:outputText value="Official website:" style="text-align: right"/>
-                                        <p:inputText id="websiteurl" value="#{actorEdit.actor.officialWebsite}"></p:inputText>
+                                        <p:inputText id="websiteurlInRE" value="#{actorVar.officialWebsite}"></p:inputText>
                                         <h:panelGroup />
                                         <!--</p:panelGrid>-->
 
                                         <!--Picture-->
                                         <p:outputLabel value="Picutre: "/>
-                                        <p:inputText value="#{actorEdit.actor.pathOfPhoto}"/>
-                                        <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{actorEdit.imageUpload}" auto="true"/>
+                                        <p:inputText value="#{actorVar.pathOfPhoto}"/>
+                                        <p:fileUpload id="uploadInRE" mode="advanced" skinSimple="true" fileUploadListener="#{actorEdit.imageUpload}" auto="true"/>
 
-                                        <p:growl id="growl" life="2000" />
+                                        <p:growl id="growlInRE" life="2000" />
                                         <h:panelGrid columns="2" cellpadding="20px">
-                                            <p:commandButton action="#{seriesEdit.addNewActorToSeries}" actionListener="#{seriesEdit.saveButtonAction}" value="Save" 
-                                                             update="growl" icon="ui-icon-disk" title="Save" />
-                                            <p:commandButton value="Reset" action="#{seriesEdit.resetNewActor(actorVar.id)}"/> 
+                                            <p:commandButton action="#{seriesEdit.saveSeries()}" actionListener="#{seriesEdit.saveButtonListener}" value="Save" 
+                                                             update="growlInRE" icon="ui-icon-disk" title="Save" />
+                                            <p:commandButton value="Reset" action="#{seriesEdit.resetSeries}"/> 
 
                                         </h:panelGrid>
                                     </p:panelGrid>
@@ -218,7 +218,6 @@
 
                             </p:dataTable>
 
-                            <p:commandButton value="Add new actor" onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
 
 
                             <!--Add panel-->
@@ -226,48 +225,23 @@
                                 <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" style="width:250px">
                                     <f:selectItem itemLabel="Choose existing actor" itemValue="#{null}" />
                                     <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actorVar" itemLabel="#{actorVar.name}" itemValue="#{actorVar.id}"/>
+                                    <!--<p:ajax event="change" update="@this" />-->
                                     <p:ajax event="change" update="@this" />
                                 </p:selectOneMenu>
                                 <p:commandButton value="Add selected actor" title="Add"
-                                                 action="#{seriesEdit.addExistingActorToSeries}" update="addPanel, actorListId">
-                                </p:commandButton>
-
-
-
+                                                 action="#{seriesEdit.addExistingActorToSeries}" update="addPanel actorListId" process="@this" />
+                                                 <!--action="#{seriesEdit.addExistingActorToSeries}" update="addPanel, actorListId" />-->
                             </h:panelGrid>
 
-
+                            <p:commandButton value="Add new actor" action="#{seriesEdit.initialNewActor()}" oncomplete="PF('dlg').show();" icon="ui-icon-extlink"  process="@this" update="newActorDialog"/>
+                            <!--oncomplete="dlg.show()"-->
+                            <!--onclick="PF('dlg').show();"-->
+                            <!--update="form2:newActorDialog"-->
                             <!--New actor dialog-->
-                            <p:dialog header="Add actor" widgetVar="dlg">
-                                <p:panelGrid  columns="2"  style="width:80%;margin:0 auto;">
+                            <!--<h:form >-->
 
-                                    <!--Actor name-->
-                                    <p:outputLabel value="Name: "/>
-                                    <p:inputText id="name" value="#{seriesEdit.newActor.name}"/>
 
-                                    <!--Birthday-->
-                                    <p:outputLabel value="Birthday: " />
-                                    <p:calendar id="birthday" value="#{seriesEdit.newActor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
-                                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                                title="Format: dd/MM/yyyy" />
-
-                                    <!--Birthplace-->
-                                    <p:outputLabel value="Birthplace: "/>
-                                    <p:inputText id="birthplace" value="#{seriesEdit.newActor.placeOfBirth}"/>
-
-                                    <!--Official website-->
-                                    <h:outputText value="Official website:" style="text-align: right"/>
-                                    <p:inputText id="websiteurl" value="#{seriesEdit.newActor.officialWebsite}"></p:inputText>
-
-                                    <!--Picture-->
-                                    <p:outputLabel value="Picutre: "/>
-                                    <p:inputText value="#{seriesEdit.newActor.pathOfPhoto}"/>
-
-                                    <p:commandButton value="Save" action="#{seriesEdit.addNewActorToSeries()}" oncomplete="dlg.hide();" />
-                                    <p:commandButton value="Cancel" onclick="dlg.hide()"/> 
-
-                                </p:panelGrid>
-                            </p:dialog>
+                            <!--</h:form>-->
                         </form>
                     </div>                                                  
                 </div>
@@ -286,15 +260,48 @@
             <!--Save panel-->
             <p:growl id="growl" life="2000" />
             <h:panelGrid class="save-button">
-                <p:commandButton action="#{seriesEdit.saveSeries}" actionListener="#{seriesEdit.saveButtonAction}" value="Save" 
+                <p:commandButton action="#{seriesEdit.saveSeries}" actionListener="#{seriesEdit.saveButtonListener(actionEvent)}" value="Save" 
                                  update="growl" icon="ui-icon-disk" title="Save" />
             </h:panelGrid>
 
-
-
-
-
         </h:form>
+
+        <p:dialog id="newActorDialog" header="Add new actor" widgetVar="dlg" >
+            <h:form>
+                <p:panelGrid  columns="2"  style="width:80%;margin:0 auto;">
+
+                    <!--Actor name-->
+                    <p:outputLabel value="Name: "/>
+                    <p:inputText id="nameInDl" value="#{seriesEdit.newActor.name}"/>
+
+                    <!--Birthday-->
+                    <p:outputLabel value="Birthday: " />
+                    <p:calendar id="birthdayInDl" value="#{seriesEdit.newActor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                title="Format: dd/MM/yyyy" />
+
+                    <!--Birthplace-->
+                    <p:outputLabel value="Birthplace: "/>
+                    <p:inputText id="birthplaceInDl" value="#{seriesEdit.newActor.placeOfBirth}"/>
+
+                    <!--Official website-->
+                    <h:outputText value="Official website:" style="text-align: right"/>
+                    <p:inputText id="websiteurlInDl" value="#{seriesEdit.newActor.officialWebsite}"></p:inputText>
+
+                    <!--Picture-->
+                    <p:outputLabel value="Picutre: "/>
+                    <p:inputText id="pictureInDl" value="#{seriesEdit.newActor.pathOfPhoto}"/>
+
+                    <p:commandButton value="Save" action="#{seriesEdit.addNewActorToSeries()}" oncomplete="PF('dlg').hide();" process="@form" update="form2:actorListId"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('dlg').hide();" /> 
+
+
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+
         <!--            </ui:define>
                 </ui:composition>-->
 

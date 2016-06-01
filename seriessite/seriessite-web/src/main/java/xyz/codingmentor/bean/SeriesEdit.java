@@ -41,6 +41,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
 import org.apache.commons.lang3.SystemUtils;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+import org.primefaces.context.RequestContext;
 import xyz.codingmentor.bean.picture.NewClass;
 import xyz.codingmentor.bean.picture.PictureHandler;
 import xyz.codingmentor.service.ActorFacade;
@@ -66,10 +67,11 @@ public class SeriesEdit implements Serializable {
 
     @PostConstruct
     public void init() {
+        LOG.info("init() function");
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
-//        actorList = new ArrayList<>();
         newActor = new Actor();
+//        actorList = new ArrayList<>();
         idOfSeries = "1";
         loadDatabaseData();
 //        loadDatabaseData(new ActionEvent());
@@ -90,7 +92,6 @@ public class SeriesEdit implements Serializable {
         }
     }
 
-    
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -129,13 +130,12 @@ public class SeriesEdit implements Serializable {
     }
 
     public void setActorId(String actorId) {
-        LOG.info("setActor function");
+        LOG.info("setActorId function");
         this.actorId = actorId;
     }
 
-
     private Actor searchActorById(List<Actor> l, String actorId) {
-        Long id = Long.parseLong(actorId);
+        Long id = (Long) Long.parseLong(actorId);
 
         for (Actor next : actorListNotInSeries) {
             if (Objects.equals(next.getId(), id)) {
@@ -146,49 +146,55 @@ public class SeriesEdit implements Serializable {
     }
 
     public void addExistingActorToSeries() {
-         LOG.info("addExistingActorToSeries");
-         
+        LOG.info("addExistingActorToSeries");
         Actor actor = searchActorById(actorListNotInSeries, actorId);
-
         actorListNotInSeries.remove(actor);
-
         series.getActors().add(actor);
-        seriesFacade.updateSeries(series);
 
-//        seriesFacade.addActorToSeries(series.getId(), actor.getId());
     }
 
     public void addNewActorToSeries() {
-        LOG.info("addNewActorToSeries");
+        LOG.info("addNewActorToSeries " + newActor.getName());
         series.getActors().add(newActor);
-        seriesFacade.updateSeries(series);
+//        newActor = new Actor();
+//        refreshDialog();
+    }
+
+//    public void resetNewActor() {
+//        LOG.info("resetNewActor");
+//        newActor = new Actor();
+//        refreshDialog();
+//    }
+    
+    public void initialNewActor(){
+        LOG.info("initalNewActor");
         newActor = new Actor();
     }
+    
+//    private void refreshDialog(){
+//        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("form2:newActorDialog");
+//        RequestContext.getCurrentInstance().update("form2:newActorDialog");
+//    }
 
     public void removeActorFromSeries(Actor actor) {
         series.getActors().remove(actor);
         actorListNotInSeries.add(actor);
-        seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());
-    }
-
-    public void saveButtonAction(ActionEvent actionEvent) {
-        String text = "Successful save";
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text, null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    public void resetNewActor(Long actorId) {
-        Actor findActorById = actorFacade.findActorById(actorId);
-        newActor = findActorById;
     }
 
     public void saveSeries() {
         seriesFacade.saveSeries(series);
-//        NewClass n = new NewClass();
-//        LOG.info("Itt vagyok: " + n.fg());
-        LOG.info("linux? " + SystemUtils.IS_OS_LINUX); 
-        LOG.info("windows? " + SystemUtils.IS_OS_WINDOWS); 
-                
+        LOG.info("linux? " + SystemUtils.IS_OS_LINUX);
+        LOG.info("windows? " + SystemUtils.IS_OS_WINDOWS);
+    }
+
+    public void resetSeries() {
+        series = seriesFacade.findSeriesById(series.getId());
+    }
+
+    public void saveButtonListener(ActionEvent actionEvent) {
+        String text = "Successful save";
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, text, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public PictureHandler getPictureHandler() {
@@ -211,11 +217,11 @@ public class SeriesEdit implements Serializable {
     }
 
     public Actor getNewActor() {
+        LOG.info("getNewActor name: " + newActor.getName());
         return newActor;
     }
 
     public void setNewActor(Actor newActor) {
         this.newActor = newActor;
     }
-
 }
