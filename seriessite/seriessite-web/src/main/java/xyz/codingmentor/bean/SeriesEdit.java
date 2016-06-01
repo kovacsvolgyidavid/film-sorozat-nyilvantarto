@@ -22,6 +22,7 @@ import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.service.EntityFacade;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -154,8 +155,23 @@ public class SeriesEdit implements Serializable {
     }
 
     public void addNewActorToSeries() {
-        LOG.info("addNewActorToSeries " + newActor.getName());
+        LOG.info("addNewActorToSeries ");
+//        LOG.info("addNewActorToSeries NewActor: " + newActor.toString());
+
+//        Actor a = newActor;
+//        Actor a = new Actor();
+//        a.setName(newActor.getName());
+//        a.setDateOfBirth(newActor.getDateOfBirth());
+//        a.setOfficialWebsite(newActor.getOfficialWebsite());
+//
+
+        actorFacade.create(newActor);
+//        actorFacade.
+            LOG.info("addNewActorToSeries end");
+
+//        LOG.info("addNewActorToSeries " + newActor.getId());
         series.getActors().add(newActor);
+//        saveSeries();
 //        newActor = new Actor();
 //        refreshDialog();
     }
@@ -165,17 +181,15 @@ public class SeriesEdit implements Serializable {
 //        newActor = new Actor();
 //        refreshDialog();
 //    }
-    
-    public void initialNewActor(){
+    public void initialNewActor() {
         LOG.info("initalNewActor");
         newActor = new Actor();
     }
-    
+
 //    private void refreshDialog(){
 //        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("form2:newActorDialog");
 //        RequestContext.getCurrentInstance().update("form2:newActorDialog");
 //    }
-
     public void removeActorFromSeries(Actor actor) {
         series.getActors().remove(actor);
         actorListNotInSeries.add(actor);
@@ -217,7 +231,7 @@ public class SeriesEdit implements Serializable {
     }
 
     public Actor getNewActor() {
-        LOG.info("getNewActor name: " + newActor.getName());
+//        LOG.info("getNewActor name: " + newActor.getName());
         return newActor;
     }
 

@@ -84,7 +84,7 @@
         </script>
         <!--        <ui:composition template="/template/internal-template.xhtml">
                     <ui:define name="content">-->
-        <h1>Series editing slide</h1>
+        <h1 style="margin:0 auto">Series editing slide</h1>
         <h:form id="form2">
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row color start-header" >
@@ -225,15 +225,14 @@
                                 <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" style="width:250px">
                                     <f:selectItem itemLabel="Choose existing actor" itemValue="#{null}" />
                                     <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actorVar" itemLabel="#{actorVar.name}" itemValue="#{actorVar.id}"/>
-                                    <!--<p:ajax event="change" update="@this" />-->
                                     <p:ajax event="change" update="@this" />
                                 </p:selectOneMenu>
                                 <p:commandButton value="Add selected actor" title="Add"
                                                  action="#{seriesEdit.addExistingActorToSeries}" update="addPanel actorListId" process="@this" />
                                                  <!--action="#{seriesEdit.addExistingActorToSeries}" update="addPanel, actorListId" />-->
+                                <p:commandButton value="Add new actor" action="#{seriesEdit.initialNewActor()}" oncomplete="PF('dlg').show();" icon="ui-icon-extlink"  process="@this" update="newActorDialog"/>
                             </h:panelGrid>
 
-                            <p:commandButton value="Add new actor" action="#{seriesEdit.initialNewActor()}" oncomplete="PF('dlg').show();" icon="ui-icon-extlink"  process="@this" update="newActorDialog"/>
                             <!--oncomplete="dlg.show()"-->
                             <!--onclick="PF('dlg').show();"-->
                             <!--update="form2:newActorDialog"-->
