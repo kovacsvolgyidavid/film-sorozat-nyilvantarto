@@ -69,14 +69,14 @@
                     </p:column>  
 
                     <p:column headerText="Edit" style="padding: 0px 0px 0px 0px;">
-                        <p:commandButton style="width:100%; height: 100%; border-width: 0px; background-color: deepskyblue"
+                        <p:commandButton style="width:100%; height: 100%; border-width: 0px;"
                                          icon="ui-icon-pencil" action="#{profile.getUserProfile(user)}">   
                             <f:param name="username" value="#{user.username}" />
                         </p:commandButton>
                     </p:column>
 
                     <p:column headerText="Delete" style="padding: 0px 0px 0px 0px;">
-                        <p:commandButton style="width:100%; height: 100%; border-width: 0px; background-color: darkorange" icon="ui-icon-trash"
+                        <p:commandButton style="width:100%; height: 100%; border-width: 0px;" icon="ui-icon-trash"
                                          action="#{admin.deleteUser(user)}" update="form" disabled="#{usermanagement.actualUser eq user.username}">
                             <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                         </p:commandButton>

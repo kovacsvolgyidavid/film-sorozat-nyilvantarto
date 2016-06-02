@@ -45,7 +45,7 @@ public class Admin implements Serializable {
         ranks[0] = Groups.ADMIN;
         ranks[1] = Groups.USER;
 
-        //createUsers(); //TODO: generálni adatbázist
+        createUsers(); //TODO: generálni adatbázist
         users = entityFacade.findAll(User.class);
     }
 
@@ -165,11 +165,59 @@ public class Admin implements Serializable {
         entityFacade.create(user);
 
         user = new User();
-        user.setName("Zsófia Horváth");
+        user.setName("Zsofia Horvath");
         user.setPassword(hashPassword("ZsH200"));
         user.setUsername("zsofi");
 //        user.setSex("Female");
         user.setSex(Sex.FEMALE);
+        user.setPathOfPhoto("user.jpg");
+        user.setDateOfBirth(new Date());
+        user.setMoviePerPage(50);
+        user.setGroups(Groups.USER);
+        entityFacade.create(user);
+        
+        user = new User();
+        user.setName("Gabor Szabo");
+        user.setPassword(hashPassword("Gabor500"));
+        user.setUsername("gabor");
+//        user.setSex("Female");
+        user.setSex(Sex.MALE);
+        user.setPathOfPhoto("user.jpg");
+        user.setDateOfBirth(new Date());
+        user.setMoviePerPage(50);
+        user.setGroups(Groups.USER);
+        entityFacade.create(user);
+        
+        user = new User();
+        user.setName("Anett Kovacs");
+        user.setPassword(hashPassword("Anett200"));
+        user.setUsername("netti");
+//        user.setSex("Female");
+        user.setSex(Sex.FEMALE);
+        user.setPathOfPhoto("user.jpg");
+        user.setDateOfBirth(new Date());
+        user.setMoviePerPage(50);
+        user.setGroups(Groups.USER);
+        entityFacade.create(user);
+        
+        user = new User();
+        user.setName("Krisztian Farkas");
+        user.setPassword(hashPassword("Krisztian100"));
+        user.setUsername("krisztian");
+//        user.setSex("Female");
+        user.setSex(Sex.FEMALE);
+        user.setPathOfPhoto("user.jpg");
+        user.setDateOfBirth(new Date());
+        user.setMoviePerPage(50);
+        user.setGroups(Groups.USER);
+        entityFacade.create(user);
+        
+        user = new User();
+        user.setName("David Major");
+        user.setPassword(hashPassword("David200"));
+        user.setUsername("david");
+//        user.setSex("Female");
+        user.setSex(Sex.MALE);
         user.setPathOfPhoto("user.jpg");
         user.setDateOfBirth(new Date());
         user.setMoviePerPage(50);

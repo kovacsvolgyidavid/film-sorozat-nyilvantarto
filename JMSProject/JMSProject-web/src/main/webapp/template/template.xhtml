@@ -18,35 +18,36 @@
 
     </h:head>
     <h:body>
-        <h:form id="form">
+        <h:form id="form" style="height: 100%">
             <p:growl id="grow" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Series Site</a>
+                        <a class="navbar-brand" href="#">JMS</a>
                     </div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><p:commandLink value=" Login" action="/login.xhtml?faces-redirect=true" style="height:50px;" 
+                            <li><p:commandLink value=" Subscription" action="/index.xhtml?faces-redirect=true" style="height:50px;" 
                                                immediate="true" class="glyphicon glyphicon-log-in"/></li>
-                            <li><p:commandLink value=" Registration" action="/registration.xhtml?faces-redirect=true" style="height:50px;" 
+
+                            <li><p:commandLink value=" Messages" action="/result.xhtml?faces-redirect=true" style="height:50px;" 
                                                immediate="true" class="glyphicon glyphicon-pencil"/></li>                                                                    
                         </ul>
                     </div>
                 </div>
             </nav>
-        </h:form>
+        
         <div class="container-s container-m">
             <ui:insert name="content">
                 Content
             </ui:insert>
         </div>
-
+</h:form>
         <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>
     </h:body>
 </html>

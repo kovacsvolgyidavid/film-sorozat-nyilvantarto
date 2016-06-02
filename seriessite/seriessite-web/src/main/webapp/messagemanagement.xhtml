@@ -19,9 +19,9 @@
                     <p:inputText id="price" value="#{messageManagement.product.price}" required="true"/>
 
                     <p:outputLabel value="Type: *"/>
-                    <p:selectOneMenu value="#{messageManagement.product.type}" style="width: 100%">
+                    <h:selectOneMenu value="#{messageManagement.product.type}" style="width: 100%; height: 32px">
                         <f:selectItems value="#{messageManagement.types}" var="type" itemLabel="#{type}" itemValue="#{type}" />
-                    </p:selectOneMenu><br/>
+                    </h:selectOneMenu><br/>
 
                     <p:commandButton value="Create" action="#{messageManagement.addProduct()}" update="form"
                                      style="width: 70%"/>
@@ -33,7 +33,7 @@
                              rows="10" paginator="true" rowsPerPageTemplate="10, 20, 50, 100"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                    <p:column headerText="Price" sortBy="#{product.price}" style="width: 35%;">
+                    <p:column headerText="Price ($)" sortBy="#{product.price}" style="width: 35%;">
                         <h:outputText value="#{product.price}" />
                     </p:column>  
 
@@ -43,7 +43,7 @@
                     </p:column>
 
                     <p:column headerText="Delete" style="padding: 0px 0px 0px 0px; width: 30%;">
-                        <p:commandButton style="width:100%; height: 100%; border-width: 0px; background-color: darkorange"
+                        <p:commandButton style="width:100%; height: 100%; border-width: 0px;"
                                          icon="ui-icon-trash" action="#{messageManagement.deleteProduct(product)}" update="form" immediate="true">
 
                         </p:commandButton>

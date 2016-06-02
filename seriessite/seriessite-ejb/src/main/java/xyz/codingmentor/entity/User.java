@@ -31,7 +31,6 @@ import xyz.codingmentor.enums.Sex;
 @NamedQuery(name = "findUserByUsername",
         query = "SELECT u FROM User u WHERE u.username = :username")
 public class User implements Serializable {
-
     @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
