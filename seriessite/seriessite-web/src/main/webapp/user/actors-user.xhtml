@@ -33,7 +33,10 @@
 
 
 
-                <ui:repeat value="#{actors.actors}" var="actor" >
+                <p:dataTable var="actor" value="#{actors.actors}" paginator="true" rows="#{series_User.actualUser.moviePerPage}"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="10,50,100" id="actorsTable" lazy="true">
+                    <p:column headerText="Search and Sort By Id" sortBy="#{actor.id}" filterBy="#{actor.id}">
                     <h:panelGrid id="actorsblock" columns="4">
 
 
@@ -62,13 +65,10 @@
                                 <p:outputLabel value="Birth place: "/>
                                 <p:outputLabel value="#{actor.placeOfBirth}" style="font-style: italic"/>
                             </p>
-
                         </h:panelGroup>
 
 
                         <h:panelGroup>
-
-
                             <p:dataList value="#{actor.series}" var="serie">
                                 <f:facet name="header">
                                     Series
@@ -97,7 +97,8 @@
                         </h:panelGroup>
 
                     </h:panelGrid>
-                </ui:repeat>
+                        </p:column>
+                </p:dataTable>
             </ui:define>
         </ui:composition>
     </h:body>

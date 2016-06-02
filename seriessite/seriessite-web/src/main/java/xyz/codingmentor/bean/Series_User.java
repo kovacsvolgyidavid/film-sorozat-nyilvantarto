@@ -5,19 +5,21 @@
  */
 package xyz.codingmentor.bean;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.lang3.SystemUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import xyz.codingmentor.entity.Series;
@@ -41,23 +43,18 @@ public class Series_User implements Serializable {
 
     private List<Series> series;
     private Series serie;
-    private StreamedContent image;
     private List<Series> comparingSeries;
     private String blockStyle = "margin: 0 auto";
+    private String PATH = "/series/";
     private User actualUser;
     private static final Logger LOG = Logger.getLogger(Series_User.class.getName());
-    
-    
 
     @PostConstruct
     public void init() {
-        //TEST INPUT
         String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         actualUser = databaseQuery.findUserByUsername(username);
         comparingSeries = new ArrayList();
-        databaseQuery.createTestSeries();
         series = entityFacade.findAll(Series.class);
-        
     }
 
     public List<Series> getSeries() {
@@ -68,29 +65,35 @@ public class Series_User implements Serializable {
         this.series = series;
     }
 
-    public StreamedContent getImage(Series serie) {
+    public StreamedContent getImage(Series serie) throws FileNotFoundException {
         if (serie != null) {
-            try {
-                image = new DefaultStreamedContent(new FileInputStream(serie.getPathOfPhoto()));
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Series_User.class.getName()).log(Level.SEVERE, null, ex);
+           // FacesContext context = FacesContext.getCurrentInstance();
+            if (serie.getPathOfPhoto() != null) {
+                if (SystemUtils.IS_OS_WINDOWS) {
+                    return new DefaultStreamedContent(new FileInputStream("C:" + serie.getPathOfPhoto()));
+                } else if (SystemUtils.IS_OS_LINUX) {
+                    return new DefaultStreamedContent(new FileInputStream("/home" + serie.getPathOfPhoto()));
+                }
             }
-
+            return new DefaultStreamedContent(new FileInputStream(PATH + "noimages.png"));
         }
-        return image;
+        return null;
     }
 
     public String setComparing(Series serie) {
-        
-            if (comparingSeries.isEmpty()) {
-                comparingSeries.add(serie);
-                //blockStyle = "margin: 0 auto; background-color: greenyellow";
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
-            } else if (comparingSeries.size() == 1) {
-                comparingSeries.add(serie);
-                return "user.xhtml?faces-redirect=true";
-            }
+
+        if (comparingSeries.isEmpty()) {
+            comparingSeries.add(serie);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage
+            ("Comparing " + serie.getTitle() + " to... Please select another item!"));
+          
+        }
+        else if (comparingSeries.size() == 1) {
+            comparingSeries.add(serie);
+            
+            return "user.xhtml?faces-redirect=true";
+        }
         return "series-user.xhtml?faces-redirect=true";
     }
 

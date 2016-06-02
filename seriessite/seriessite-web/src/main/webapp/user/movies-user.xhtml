@@ -35,53 +35,24 @@
 
 
 
-                <ui:repeat value="#{series_User.series}" var="serie" >
-                    <h:panelGrid id="seriesblock" columns="4" style="#{series_User.blockStyle}">
-                        <h:panelGroup id="comparingblock">
-                            <p:growl id="gr" showDetail="false" sticky="false" rendered="#{series_User.comparingSeries.size() == 1}"/>
-                            <p:commandButton id="b_comparing" value="Comparing"
-                                             rendered="#{series_User.comparingSeries.contains(serie)}"
-                                             action="#{series_User.removeComparing(serie)}"
-                                             style="font-size:8px; height: 25px; width: 70px"
-                                             update="seriesblock" >
-                            </p:commandButton>
+                <p:dataTable var="movie" value="#{movies.movies}" paginator="true" rows="#{series_User.actualUser.moviePerPage}"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="10,50,100" id="moviesTable" lazy="true">
+                    <p:column headerText="Search and Sort By Id" sortBy="#{movie.id}" filterBy="#{movie.id}">
+                    <h:panelGrid id="moviesblock" columns="4">
 
-                            <p:commandButton id="b_compare" value="Compare"
-                                             rendered="#{series_User.comparingSeries.size()== 0}"
-                                             action="#{series_User.setComparing(serie)}"
-                                             style="font-size:8px; height: 25px; width: 70px"
-                                             update="seriesblock">
-                            </p:commandButton>
-
-                            <p:commandButton id="b_comparenav" value="Compare"
-                                             rendered="#{series_User.comparingSeries.size() == 1 and
-                                                         !series_User.comparingSeries.contains(serie)}"
-                                             action="#{series_User.setComparing(serie)}"
-                                             style="font-size:8px; height: 25px; width: 70px"
-                                             ajax="false">
-                            </p:commandButton>
-
-                        </h:panelGroup >
 
                         <h:panelGroup>
-                            <p:graphicImage id="serieimage" value="#{series_User.getImage(serie)}" width="230" height="180" />
-
+                            <p:graphicImage id="movieimage" value="#{movies.getImage(movie)}" width="230" height="180" />
                         </h:panelGroup>
 
 
 
-                        <h:panelGroup id="favourite">
-                            <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
-                            <p:commandLink id="notfav"
-                                           action="#{series_User.changeFavourites(serie)}"
-                                           update="favourite">
-                                <p:graphicImage rendered="#{!series_User.actualUser.favourites.contains(serie)}"
-                                                value="#{series_User.favStarPath}" width="40" height="40" />
-                                <p:graphicImage rendered="#{series_User.actualUser.favourites.contains(serie)}"
-                                                value="#{series_User.favStarPath}" width="40" height="40" />
-                            </p:commandLink>
+                        <h:panelGroup>
+                            <h:outputText value="#{movie.title}"
+                                          style="font-size: xx-large; text-decoration: underline #00a8ea" />
 
-                            <p:dataList value="#{serie.actors}" var="actor">
+                            <p:dataList value="#{movie.movieactors}" var="actor">
                                 <f:facet name="header">
                                     Actors
                                 </f:facet>
@@ -90,49 +61,43 @@
 
                             <p>
                                 <p:outputLabel value="Release: "/>
-                                <p:outputLabel value="#{serie.yearOfRelease.toLocaleString()}" style="font-style: italic" />
+                                <p:outputLabel value="#{movie.yearOfRelease.year+1900}" style="font-style: italic" />
                             </p>
-                            <p>
-                                <p:outputLabel value="Seasons: "/>
-                                <p:outputLabel value="#{serie.seasons.size()}" style="font-style: italic"/>
-                            </p>
-                            <p>
-                                <p:outputLabel value="Episodes: "/>
-                                <p:outputLabel value="#{series_User.getNumberOfEpisodes(serie)}" style="font-style: italic"/>
-                            </p>
-
-
+                          
                         </h:panelGroup>
 
+
+                        <h:panelGroup>
+                            <p:dataList value="#{movie.directors}" var="director">
+                                <f:facet name="header">
+                                    Series
+                                </f:facet>
+                                #{director.name}
+                            </p:dataList>
+                            
+                        </h:panelGroup>
 
                         <h:panelGroup>
                             <p:commandButton 
                                 ajax ="false"
                                 rendered="#{request.isUserInRole('Admin')}"
-                                action="/admin/seriesEdit.xhtml?faces-redirect=true"
+                                action="/admin/actorEdit.xhtml?faces-redirect=true"
                                 id="editIcon" icon="ui-icon-pencil"
                                 title="Edit" />
 
 
                             <p:commandButton 
                                 ajax="false" 
-                                action="#{series_User.deleteSerie(serie)}" 
+                                action="#{actors.deleteActor(actor)}" 
                                 id="deleteIcon" icon="ui-icon-trash"  
                                 rendered="#{request.isUserInRole('Admin')}"
                                 title="Delete"
                                 update="cont"/>
-
-                            <p:dataList value="#{serie.directors}" var="director">
-                                <f:facet name="header">
-                                    Directors
-                                </f:facet>
-                                #{director.name}
-                            </p:dataList>
-                            <p:media value="#{series_User.getPromoVideoLink(serie)}" width="250" height="150" player="flash"/>
                         </h:panelGroup>
 
                     </h:panelGrid>
-                </ui:repeat>
+                        </p:column>
+                </p:dataTable>
             </ui:define>
         </ui:composition>
     </h:body>
