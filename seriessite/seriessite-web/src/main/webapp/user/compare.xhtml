@@ -18,12 +18,20 @@ and open the template in the editor.
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.css"/>
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap-theme.min.css"/>
+        <style>
+            .gridtop td{
+            vertical-align: top;
+        }
+        .alignTop{
+            vertical-align: top;
+        }
+        </style>
     </head>
     <body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
-                <p:panelGrid columns="2" style="margin: 0 auto; width: 100%">
-                    <h:panelGrid style="width: 100%">
+                <p:panelGrid columns="2" style="margin: 0 auto; width: 100%" class="alignTop">
+                    <h:panelGrid style="width: 100%; padding-top: auto; vertical-align: top">
                         <h:outputText value="#{compare.series1.title}" style="font-size: 30px; font-weight: bold"/>
                         <p:graphicImage id="gi" value="#{compare.series1Image}" width="230" height="180" cache="false"/>
                         <h:panelGroup>
@@ -47,17 +55,17 @@ and open the template in the editor.
                         <h:outputText style="font-size: 25px; font-weight: bold" value="Seasons:">
                         </h:outputText>
                         <p:tabView value="#{compare.series1.seasons}" var="season" 
-                                   style="border: transparent; background: transparent; height: 200px">
+                                   style="border: transparent; background: transparent; height: 100%">
                             <p:tab title="#{compare.series1.seasons.indexOf(season)+1}">
                                 <p:dataTable value="#{season.episodes}" var="episode" 
                                              style="text-align: center; width: 100%">
-                                    <p:column headerText="Nu." style="width: 30px">
+                                    <p:column headerText="Nu." style="width: 5%">
                                         #{season.episodes.indexOf(episode)+1}
                                     </p:column>
                                     <p:column headerText="Title">
                                         #{episode.title}
                                     </p:column>
-                                    <p:column headerText="Release Date" style="width: 150px">
+                                    <p:column headerText="Release Date" style="width: 35%">
                                         <h:outputText value="#{episode.dateOfRelease}">
                                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                                         </h:outputText>
@@ -67,7 +75,7 @@ and open the template in the editor.
                         </p:tabView>
 
                         <br/><br/>
-                        <p:panelGrid columns="2" style="width: 100%">
+                        <p:panelGrid columns="2" style="width: 100%; border-style: none">
                             <h:panelGroup>
                                 <p:dataTable value="#{compare.series1.actors}" var="actor" style="text-align: center; align-self: baseline">
                                     <p:column headerText="Actors">
@@ -84,7 +92,7 @@ and open the template in the editor.
                             </h:panelGroup>
                         </p:panelGrid>
                     </h:panelGrid>
-                    <h:panelGrid style="width: 100%">
+                    <h:panelGrid style="width: 100%; vertical-align: top" styleClass="gridtop">
                         <h:outputText value="#{compare.series2.title}" style="font-size: 30px; font-weight: bold"/>
                         <p:graphicImage id="gi" value="#{compare.series2Image}" width="230" height="180" cache="false"/>
                         <h:panelGroup>

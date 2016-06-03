@@ -37,13 +37,11 @@ public class Movie implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "MOVIE_DIRECTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
     private List<Director> directors;
-
-
 
     @OneToMany(mappedBy = "show", fetch = FetchType.LAZY )
     private List<Comment> comments;
