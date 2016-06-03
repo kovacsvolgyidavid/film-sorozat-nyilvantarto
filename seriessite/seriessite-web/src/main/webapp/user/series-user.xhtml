@@ -13,7 +13,8 @@
          <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
                 <div>
-                    <p:commandButton action="#{seriesView.goToSeriesView(seriesView.returnSeries())}" value="Friends"/>                  
+                    <p:commandButton action="#{seriesView.goToSeriesView(seriesView.returnSeries())}" value="Friends"/>
+                    <p:commandButton action="/user/compare.xhtml;faces-redirect=true" value="Compare"/>
                 </div>
             </ui:define>
          </ui:composition>

@@ -59,14 +59,14 @@ public class SeriesEdit implements Serializable {
     @PostConstruct
     public void init() {
 //        actor = new Actor();
-        series = new Series();
-        actorListNotInSeries = new ArrayList<>();
-        actorList = new ArrayList<>();
-
-        Long idOfSeries = 1L;
-        series = seriesFacade.findSeriesById(idOfSeries);
-        actorList = seriesFacade.findActorsInSeries(idOfSeries);
-        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries);
+//        series = new Series();
+//        actorListNotInSeries = new ArrayList<>();
+//        actorList = new ArrayList<>();
+//
+//        Long idOfSeries = 1L;
+//        series = seriesFacade.findSeriesById(idOfSeries);
+//        actorList = seriesFacade.findActorsInSeries(idOfSeries);
+//        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries);
 //        LOG.info("Size: " + actorListNotInSeries.size());
 //        LOG.info("Name: " + actorListNotInSeries.get(0).getName());
 

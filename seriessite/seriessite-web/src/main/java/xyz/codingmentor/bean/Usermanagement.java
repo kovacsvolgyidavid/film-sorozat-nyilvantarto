@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.service.VisitorCounter;
 
 @Named
@@ -49,5 +50,6 @@ public class Usermanagement implements Serializable {
     public static String getUsername() {
         String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         return user;
-    }    
+    }   
+    
 }

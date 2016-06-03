@@ -49,7 +49,7 @@ public class SeriesView implements Serializable {
     @PostConstruct
     public void init() {
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
-        
+
     }
 
     public String getTitle() {
@@ -63,7 +63,7 @@ public class SeriesView implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             image = null;
-        }
+        }     
         return image;
     }
 
@@ -162,7 +162,7 @@ public class SeriesView implements Serializable {
     public StreamedContent getUserImage(User user) {
         StreamedContent image;
         try {
-            String userPhotoPath = user.getPathOfPhoto();
+            String userPhotoPath = PATH+user.getPathOfPhoto();
             image = new DefaultStreamedContent(new FileInputStream(userPhotoPath));
         } catch (Exception ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,29 +178,33 @@ public class SeriesView implements Serializable {
     public void setSeriesId(Long SeriesId) {
         this.seriesId = SeriesId;
     }
-    
-    public void loadDatabaseData(){
-        if(this.seriesId==null){
+
+    public void loadDatabaseData() {
+        if (this.seriesId == null) {
             throw new IllegalArgumentException("Error while trying to find your series");
         }
-       series=entityFacade.read(Series.class, this.seriesId);
-       if(series==null){
-           throw new IllegalArgumentException("There is no such Series");
-       }
+        series = entityFacade.read(Series.class, this.seriesId);
+        if (series == null) {
+            throw new IllegalArgumentException("There is no such Series");
+        }
     }
-    public String deleteSeries(){
+
+    public String deleteSeries() {
         this.entityFacade.delete(series);
         return "/user/series-user.xhtml;faces-redirect=true";
     }
-    public boolean isNoSeasonSelected(){
-        return this.actualSeason!=null;
+
+    public boolean isNoSeasonSelected() {
+        return this.actualSeason != null;
     }
-    public String goToSeriesView(Series series){
-        this.series=series;
+
+    public String goToSeriesView(Series series) {
+        this.series = series;
         return "/user/seriesView.xhtml;faces-redirect=true";
     }
-    public Series returnSeries(){
+
+    public Series returnSeries() {
         return entityFacade.read(Series.class, 1L);
     }
-    
+
 }

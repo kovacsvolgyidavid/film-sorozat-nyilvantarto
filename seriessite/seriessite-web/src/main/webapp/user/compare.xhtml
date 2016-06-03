@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <head>
         <title>TODO supply a title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -21,104 +22,137 @@ and open the template in the editor.
     <body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                            <table>
-                    <tr>
-                        <td rowspan="4">
-                            <p:graphicImage id="gi" value="#{seriesView.image}" width="230" height="180" cache="false"/>
-                        </td>
-
-                        <td>
-                            <h1><h:outputText value="#{seriesView.title}"/></h1>    
-                        </td>
-                        <td>
-                            <p:commandButton value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" style="width:100%; height: 100%; border-width: 0px; background-color: deepskyblue"/>
-                        </td>
-                        <td>
-                            <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" style="width:100%; height: 100%; border-width: 0px; background-color: darkorange"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Release date:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.series.yearOfRelease}">
+                <p:panelGrid columns="2" style="margin: 0 auto">
+                    <h:panelGrid style="width: 400px">
+                        <h:outputText value="#{compare.series1.title}" style="font-size: 30px; font-weight: bold"/>
+                        <p:graphicImage id="gi" value="#{compare.series1Image}" width="230" height="180" cache="false"/>
+                        <h:panelGroup>
+                            <h:outputText value="Release date:"/>
+                            <h:outputText value="#{compare.series1.yearOfRelease}">
                                 <f:convertDateTime pattern="yyyy"/>
-                            </h:outputText>  
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
+                            </h:outputText> 
+                        </h:panelGroup>
+                        <h:panelGroup> 
                             <h:outputText value="Seasons:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.seasonNumber}"/>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Episodes:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.episodeNumber}"/>    
-                        </td>
-                    </tr>
-                </table>
-                    </div>
-                </div> 
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-      <table>
-                    <tr>
-                        <td rowspan="4">
-                            <p:graphicImage id="ga" value="#{seriesView.image}" width="230" height="180" cache="false"/>
-                        </td>
+                            <h:outputText value="#{compare.getSeasonNumber(compare.series1)}"/> 
+                        </h:panelGroup> 
+                        <h:panelGroup> 
+                            <h:outputText value="Episodes:"/> 
+                            <h:outputText value="#{compare.getSeriesTotalEpisodes(compare.series1)}"/> 
+                        </h:panelGroup> 
+                        <br/>
+                        <h:outputText value="Description:" style="font-size: 25px; font-weight: bold"/>
+                        <h:outputText value="#{compare.series1.description}"/>
+                        <br/>
+                        <h:outputText style="font-size: 25px; font-weight: bold" value="Seasons:">
+                        </h:outputText>
+                        <p:tabView value="#{compare.series1.seasons}" var="season" 
+                                   style="border: transparent; background: transparent; height: 200px">
+                                <p:tab title="#{compare.series1.seasons.indexOf(season)+1}">
+                                    <p:dataTable value="#{season.episodes}" var="episode" 
+                                                 style="text-align: center; width: 500px">
+                                        <p:column headerText="Nu." style="width: 30px">
+                                            #{season.episodes.indexOf(episode)+1}
+                                        </p:column>
+                                        <p:column headerText="Title">
+                                            #{episode.title}
+                                        </p:column>
+                                        <p:column headerText="Release Date" style="width: 150px">
+                                            <h:outputText value="#{episode.dateOfRelease}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:tab>
+                        </p:tabView>
 
-                        <td>
-                            <h1><h:outputText value="#{seriesView.title}"/></h1>    
-                        </td>
-                        <td>
-                            <p:commandButton value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" style="width:100%; height: 100%; border-width: 0px; background-color: deepskyblue"/>
-                        </td>
-                        <td>
-                            <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" style="width:100%; height: 100%; border-width: 0px; background-color: darkorange"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Release date:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.series.yearOfRelease}">
+                        <br/><br/>
+                        <p:panelGrid columns="2" style="width: 400px">
+                            <h:panelGroup>
+                        <p:dataTable value="#{compare.series1.actors}" var="actor" style="text-align: center; align-self: baseline">
+                            <p:column headerText="Actors">
+                                #{actor.name}
+                            </p:column>
+                        </p:dataTable>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                        <p:dataTable value="#{compare.series1.directors}" var="director" style="text-align: center; align-self: baseline">
+                            <p:column headerText="Directors">
+                                #{director.name}
+                            </p:column>
+                        </p:dataTable>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                    </h:panelGrid>
+                    <h:panelGrid style="width: 400px">
+                        <h:outputText value="#{compare.series2.title}" style="font-size: 30px; font-weight: bold"/>
+                        <p:graphicImage id="gi" value="#{compare.series2Image}" width="230" height="180" cache="false"/>
+                        <h:panelGroup>
+                            <h:outputText value="Release date:"/>
+                            <h:outputText value="#{compare.series2.yearOfRelease}">
                                 <f:convertDateTime pattern="yyyy"/>
-                            </h:outputText>  
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
+                            </h:outputText> 
+                        </h:panelGroup>
+                        <h:panelGroup> 
                             <h:outputText value="Seasons:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.seasonNumber}"/>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Episodes:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.episodeNumber}"/>    
-                        </td>
-                    </tr>
-                </table>
-                    </div>
-                </div> 
+                            <h:outputText value="#{compare.getSeasonNumber(compare.series2)}"/> 
+                        </h:panelGroup> 
+                        <h:panelGroup> 
+                            <h:outputText value="Episodes:"/> 
+                            <h:outputText value="#{compare.getSeriesTotalEpisodes(compare.series2)}"/> 
+                        </h:panelGroup> 
+                        <br/>
+                        <h:outputText value="Description:" style="font-size: 25px; font-weight: bold"/>
+                        <h:outputText value="#{compare.series2.description}"/>
+                        <br/>
+                        <h:outputText style="font-size: 25px; font-weight: bold" value="Seasons:">
+                        </h:outputText>
+                        <h:panelGroup>
+                            <c:set var="upperLimit" value="#{Integer.toString(compare.getSeasonNumber(series2))}"/>
+                            <c:forEach var="i" begin="0" end="#{upperLimit-1}">
+                                <c:choose>
+                                    <c:when test="#{i==seriesView.actualSeason}">
+                                        <p:commandButton value="#{i+1}" disabled="true"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p:commandButton value="#{i+1}" update="form">
+                                            <p:ajax listener="#{compare.setActualSeason2(i)}" update="form"/>
+                                        </p:commandButton>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </h:panelGroup>
 
+                        <p:dataTable value="#{compare.actualSeason2.episodes}" var="episode" 
+                                     style="text-align: center; width: 500px"
+                                     rendered="#{compare.actualSeason2!=null}">
+                            <p:column headerText="Nu." style="width: 30px">
+                                #{compare.actualSeason2.episodes.indexOf(episode)+1}
+                            </p:column>
+                            <p:column headerText="Title">
+                                #{episode.title}
+                            </p:column>
+                            <p:column headerText="Release Date" style="width: 150px">
 
+                                <h:outputText value="#{episode.dateOfRelease}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+
+                            </p:column>
+                        </p:dataTable>
+                        <br/><br/>
+                        <p:dataTable value="#{compare.series2.actors}" var="actor" style="text-align: center; width: 500px">
+                            <p:column headerText="Actors">
+                                #{actor.name}
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable value="#{compare.series2.directors}" var="director" style="text-align: center; width: 500px">
+                            <p:column headerText="Directors">
+                                #{director.name}
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:panelGrid>
             </ui:define>
         </ui:composition>
         <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>
