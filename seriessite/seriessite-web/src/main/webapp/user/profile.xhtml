@@ -23,10 +23,11 @@
                             <p:inputText id="name" value="#{profile.user.name}"
                                          title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"
                                          validatorMessage="Wrong name format.">
+                                <p:ajax event="change" update="name nameMessage" />
                                 <f:validateRegex pattern="^([\p{Lu}]{1}[\p{Ll}]{1,30}[- ]{0,1}|[\p{Lu}]{1}[- \']{1}[\p{Lu}]{0,1}[\p{Ll}]{1,30}[- ]{0,1}|[\p{Ll}]{1,2}[ -\']{1}[\p{Lu}]{1}[\p{Ll}]{1,30}){2,5}$" />
                             </p:inputText>
                             <h:panelGroup/>
-                            <p:message for="name" />
+                            <p:message id="nameMessage" for="name" />
 
                             <p:outputLabel value="Date of Birth: " />
                             <p:calendar id="date" value="#{profile.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
@@ -58,10 +59,11 @@
                     <p:tab title="Password" id="passwordTab">
                         <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
-                            <h:outputLabel for="oldPassword" value="Old password: *" />
-                            <p:password id="oldPassword" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."/>
-                            <h:panelGroup/>
-                            <p:message for="oldPassword" />
+                            <h:outputLabel for="oldPassword" value="Old password: *" rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
+                            <p:password id="oldPassword" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."
+                                        rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
+                            <h:panelGroup rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
+                            <p:message for="oldPassword" rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
 
                             <h:outputLabel for="pwd1" value="Password: *" />
                             <p:password id="pwd1" value="#{profile.userDTO.password}" match="pwd2" label="Password"
@@ -70,16 +72,19 @@
                                 <f:validateRegex pattern="^((?=.*\d)(?=.*\p{Ll})(?=.*\p{Lu}).{6,20})$"/>
                             </p:password>
                             <h:panelGroup/>
-                            <p:message for="pwd1" />
+                            <p:message id="pwd1Message" for="pwd1" />
 
                             <h:outputLabel for="pwd2" value="Confirm Password: *" />
                             <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"
                                         required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
-                            <p:message for="pwd2" />
+                            <p:message id="pwd2Message" for="pwd2" />
 
                             <h:panelGroup/>
-                            <p:commandButton value="Save" action="#{profile.saveUserPassword()}" process="passwordTab" update="form"/>
+                            <p:commandButton value="Save" action="#{profile.savePasswordUser()}" process="passwordTab" update="form"
+                                             rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
+                            <p:commandButton value="Save" action="#{profile.savePasswordAdmin()}" process="passwordTab" update="form"
+                                             rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/>
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Favourites">

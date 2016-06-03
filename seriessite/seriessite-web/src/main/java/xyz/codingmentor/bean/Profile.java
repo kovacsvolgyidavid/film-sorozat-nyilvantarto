@@ -69,8 +69,7 @@ public class Profile implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String username = params.get("username");
-        
-        
+
 //        userDTO.setUser(user);
         return "/user/profile?username=" + username + ";faces-redirect=true";
     }
@@ -96,7 +95,7 @@ public class Profile implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The modification was successful."));
     }
 
-    public void saveUserPassword() {
+    public void savePasswordUser() {
         String oldPasswordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
 
         if (hashPassword(oldPassword).equals(oldPasswordFromTable)) {
@@ -106,6 +105,16 @@ public class Profile implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The old password is incorrect.", "Error!"));
         }
+    }
+
+    public void savePasswordAdmin() {
+        user.setPassword(hashPassword(userDTO.getPassword()));
+        entityFacade.update(user);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The password has been changed."));
+    }
+
+    public void saveAdminPassword() {
+        System.out.println("admin vagyok");
     }
 
     public void onTabChange(TabChangeEvent event) {

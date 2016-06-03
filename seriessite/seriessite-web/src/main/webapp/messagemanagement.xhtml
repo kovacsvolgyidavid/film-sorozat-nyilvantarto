@@ -16,8 +16,14 @@
                 <p:panelGrid columns="2" style="margin: 0 auto" styleClass="ui-noborder">
                 
                     <p:outputLabel value="Price: *"/>
-                    <p:inputText id="price" value="#{messageManagement.product.price}" required="true"/>
-
+                    <p:inputText id="price" value="#{messageManagement.product.price}" required="true" requiredMessage="This field has to be filled."
+                                 converterMessage="The price has to be a number.">
+                        <p:ajax event="change" update="price priceMessage" />
+                        <f:convertNumber integerOnly="true" type="number" />
+                    </p:inputText>
+                    <h:panelGroup/>
+                    <p:message id="priceMessage" for="price"/>
+                    
                     <p:outputLabel value="Type: *"/>
                     <h:selectOneMenu value="#{messageManagement.product.type}" style="width: 100%; height: 32px">
                         <f:selectItems value="#{messageManagement.types}" var="type" itemLabel="#{type}" itemValue="#{type}" />

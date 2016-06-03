@@ -30,11 +30,12 @@
                                              process="ActorsBySeriesTab" update="form"/>
                         </p:panelGrid>
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="actor" value="#{queries.actors}">
-                                    <p:commandLink value="#{actor.name}, "/>
+                                    <p:commandLink value="#{actor.name}"/>
+                                    <br/>
                                 </ui:repeat>
                             </p:outputPanel> 
                         </p:panelGrid> 
@@ -51,13 +52,14 @@
                         </div>
 
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
                                     <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, " >
                                         <f:param name="seriesid" value="#{s.id}" />
                                     </p:link>
+                                    <br/>
                                 </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
@@ -77,13 +79,14 @@
                                              process="SeriesByNumberOfEpisodesTab" update="form"/>
                         </p:panelGrid>
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, ">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
                                         <f:param name="seriesid" value="#{s.id}" />
                                     </p:link>
+                                    <br/>
                                 </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
@@ -107,17 +110,17 @@
                                              process="SeriesByCommentDate" update="form"/>
                         </p:panelGrid>
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
                                     <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, ">
                                         <f:param name="seriesid" value="#{s.id}" />
                                     </p:link>
+                                    <br/>
                                 </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
-
                     </p:tab>
                 </p:tabView>
             </ui:define>
