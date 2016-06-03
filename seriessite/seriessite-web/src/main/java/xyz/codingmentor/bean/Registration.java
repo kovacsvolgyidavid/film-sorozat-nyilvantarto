@@ -15,6 +15,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
@@ -53,7 +56,7 @@ public class Registration implements Serializable {
     private StreamedContent image;
     private final static Enum[] SEXES = new Enum[2];
     private UserDTO dtoUser;
-    private String confirmPassword;
+    private String connfirmPassword;
     
 //    private ProductDTO productDTO;
 //    
@@ -65,6 +68,8 @@ public class Registration implements Serializable {
         SEXES[0] = Sex.MALE;
         SEXES[1] = Sex.FEMALE;
         dtoUser = new UserDTO();
+        
+
         
 //        productDTO = new ProductDTO(111L, "BICIKLI");
 //        
@@ -89,6 +94,7 @@ public class Registration implements Serializable {
             return "/login.xhtml";
             //"/user/profile.xhtml?username=" + user.getUsername() + ";faces-redirect=true";
         }
+        dtoUser = new UserDTO();
         return "";
     }
 
@@ -191,15 +197,42 @@ public class Registration implements Serializable {
         this.dtoUser = dtoUser;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void konfirm() {
+        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+        UIComponent component = viewRoot.findComponent("registrationform:confirm");
+        String alma = (String)component.getAttributes().get("conf");
+        if(alma.isEmpty())
+            System.out.println("Edd");
     }
     
-    public void checkPasswordMatching(){
-        
+    public String render(){
+        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+        UIComponent component = viewRoot.findComponent("registrationform:confirm");
+        //String confirm = (String)
+         UIInput start = (UIInput)component.getAttributes().get("conf");
+         String confirm = (String)start.getValue();
+//         System.out.println("edd");
+        if(confirm == null){
+            connfirmPassword = "";
+            return "m_password";
+        }
+        else{
+            
+            return "m_password m_confirm confirm";
+        }
     }
+    
+        public String render2(){
+        return "m_confirm";
+    }
+
+    public String getConnfirmPassword() {
+        return connfirmPassword;
+    }
+
+    public void setConnfirmPassword(String connfirmPassword) {
+        this.connfirmPassword = connfirmPassword;
+    }
+        
+        
 }

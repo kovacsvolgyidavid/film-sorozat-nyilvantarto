@@ -61,24 +61,34 @@
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
                             <h:outputLabel for="password" value="My Password: *" rendered="#{!profile.editMyProfile}"/>
                             <h:outputLabel for="password" value="Password: *" rendered="#{profile.editMyProfile}"/>
-                            <p:password id="password" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."/>
-                            <h:panelGroup/>
-                            <p:message for="password"/>
-
-                            <h:outputLabel for="pwd1" value="New Password: *" />
-                            <p:password id="pwd1" value="#{profile.userDTO.password}" match="pwd2" label="Password"
-                                        required="true" requiredMessage="This field has to be filled." validatorMessage="Password should match with Confirm Password."
-                                        title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
-                                <f:validateRegex pattern="^((?=.*\d)(?=.*\p{Ll})(?=.*\p{Lu}).{6,20})$"/>
+                            <p:password id="password" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled.">
+                                <f:ajax event="blur" execute="password" render="m_password" />
                             </p:password>
                             <h:panelGroup/>
-                            <p:message id="pwd1Message" for="pwd1" />
+                            <p:message id="m_password" for="password"/>
 
-                            <h:outputLabel for="pwd2" value="Confirm New Password: *" />
-                            <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"
-                                        required="true" requiredMessage="This field has to be filled."/>
+
+
+                            <p:outputLabel value="New Password: *" />
+                            <p:password id="newpassword" value="#{profile.userDTO.password}" 
+                                        required="true" requiredMessage="This field has to be filled."
+                                        title="The password has to contain at least: &#13; -one number
+                                        &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
+                                <f:validator validatorId="confirmPasswordValidator" />
+                                <f:attribute name="confirm" value="#{confirmPassword.submittedValue}" />
+                                <f:ajax event="blur" execute="new_password confirm" render="m_newpassword" />
+                            </p:password>
                             <h:panelGroup/>
-                            <p:message id="pwd2Message" for="pwd2" />
+                            <p:message id="m_newpassword" for="newpassword" />
+
+
+                            <p:outputLabel value="Confirm New Password: *" />
+                            <p:password id="confirm" binding="#{confirmPassword}" 
+                                        required="true" requiredMessage="This field has to be filled.">
+                                <f:ajax event="blur" execute="newpassword confirm" render="m_newpassword m_confirm" />
+                            </p:password>
+                            <h:panelGroup/>
+                            <p:message id="m_confirm" for="confirm" />                            
 
                             <h:panelGroup/>
                             <p:commandButton value="Save" action="#{profile.savePassword()}" process="passwordTab" update="form"/>

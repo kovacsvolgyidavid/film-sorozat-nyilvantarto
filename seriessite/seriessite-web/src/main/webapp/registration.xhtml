@@ -12,44 +12,49 @@
     <h:body>
         <ui:composition template="/template/external-template.xhtml">
             <ui:define name="content">
-                <h:form>
+                <h:form id="registrationform">
                     <br/><h1 style="text-align: center">Registration</h1><br/>
 
                     <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
                         <p:outputLabel value="Name: *"/>
                         <p:inputText id="name" value="#{registration.dtoUser.user.name}" required="true" requiredMessage="This field has to be filled."
                                      validatorMessage="Wrong name format." title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy">
-                            <p:ajax event="change" update="name nameMessage" />                       
+                            <f:ajax event="blur" execute="name" render="m_name" />
                         </p:inputText>
                         <h:panelGroup/>
-                        <p:message id="nameMessage" for="name" />
+                        <p:message id="m_name" for="name" />
 
                         <p:outputLabel value="Username: *" />
                         <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled."
                                      title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters.">
-                            <p:ajax event="change" update="username usernameMessage" />
+                            <f:ajax event="blur" execute="username" render="m_username" />
                             <f:validateRegex pattern="^[\p{Ll}0-9_-]{3,15}$"/>
                         </p:inputText>
                         <h:panelGroup/>
-                        <p:message id="usernameMessage" for="username"/>
+                        <p:message id="m_username" for="username"/>
 
 
 
 
-                        <h:outputLabel for="password" value="Password: *" />
-                        <p:password id="password" binding="#{pass}" value="#{registration.dtoUser.password}" required="true"
-                                       requiredMessage="This field has to be filled.">
-<!--                            dfd-->
-                            <f:ajax event="blur" execute="password" render="m_password" />
+
+
+                        <p:outputLabel value="Password:" />
+                        <p:password id="password" value="#{registration.dtoUser.password}" 
+                                    required="true" requiredMessage="This field has to be filled."
+                                    title="The password has to contain at least: &#13; -one number 
+                                    &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
+                            <f:validator validatorId="confirmPasswordValidator" />
+                            <f:attribute name="confirm" value="#{confirmPassword.submittedValue}" />
+                            <f:ajax event="blur" execute="password confirm" 
+                                    render="m_password" />
                         </p:password>
                         <h:panelGroup/>
                         <p:message id="m_password" for="password" />
-                        
 
-                        <h:outputLabel for="confirm" value="Confirm Password *:" />
-                        <p:password id="confirm"  required="true" requiredMessage="This field has to be filled.">
-                            <f:validator validatorId="confirmPasswordValidator" />
-                            <f:attribute name="pass" value="#{pass.submittedValue}" />
+
+                        <p:outputLabel value="Confirm Password : *" />
+                        <p:password id="confirm" binding="#{confirmPassword}" 
+                                    required="true" requiredMessage="This field has to be filled.">
                             <f:ajax event="blur" execute="password confirm" render="m_password m_confirm" />
                         </p:password>
                         <h:panelGroup/>
@@ -61,9 +66,11 @@
                         <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                     navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100" 
                                     required="true" requiredMessage="This field has to be filled."
-                                    title="Format: dd/MM/yyyy" />
+                                    title="Format: dd/MM/yyyy" >
+<!--                            <f:ajax event="blur" execute="date" render="m_date"/>-->
+                        </p:calendar>    
                         <h:panelGroup/>
-                        <p:message id="dateMessage" for="date" />
+                        <p:message id="m_date" for="date" />
 
                         <p:outputLabel value="Sex: *" />
                         <p:selectOneRadio id="sex" value="#{registration.dtoUser.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
@@ -86,6 +93,7 @@
 
                         <h:panelGroup/>
                         <p:commandButton value="Registrate" action="#{registration.signIn()}" ajax="false"/>
+                        <h:commandButton value="klikk" action="#{registration.konfirm()}" immediate="true"/>
                     </p:panelGrid>
                 </h:form>
             </ui:define>

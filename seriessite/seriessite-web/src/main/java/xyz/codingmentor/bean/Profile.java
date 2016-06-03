@@ -111,7 +111,7 @@ public class Profile implements Serializable {
             passwordFromTable = entityFacade.read(User.class, facesContext.getExternalContext().getRemoteUser()).getPassword();
         
 
-        if (hashPassword(oldPassword).equals(passwordFromTable)) {
+        if (hashPassword(oldPassword).equals(passwordFromTable)) { //ezt tedd egy metódusba és azt hívd meg ajax-al a kliens oldali validáláshoz
             user.setPassword(hashPassword(userDTO.getPassword()));
             entityFacade.update(user);
             facesContext.addMessage(null, new FacesMessage("The password has been changed."));
