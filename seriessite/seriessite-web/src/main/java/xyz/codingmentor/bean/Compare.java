@@ -24,8 +24,7 @@ public class Compare implements Serializable {
 
     Series series1;
     Series series2;
-    Season actualSeason1;
-    Season actualSeason2;
+    
     @Inject
     EntityFacade entityFacade;
 
@@ -33,7 +32,7 @@ public class Compare implements Serializable {
     public void init() {
         series1 = entityFacade.read(Series.class, 1L);
         series2 = entityFacade.read(Series.class, 11L);
-        actualSeason1=series1.getSeasons().get(0);
+        
     }
 
     public Series getSeries1() {
@@ -51,29 +50,7 @@ public class Compare implements Serializable {
     public void setSeries2(Series series2) {
         this.series2 = series2;
     }
-
-    public Season getActualSeason1() {
-        return actualSeason1;
-    }
-
-    public void setActualSeason1(Season actualSeason1) {
-        this.actualSeason1 = actualSeason1;
-    }
-     public void setActualSeason1(int i) {
-        this.actualSeason1 = series1.getSeasons().get(i);
-    }
-
-    public Season getActualSeason2() {
-        return actualSeason2;
-    }
-
-    public void setActualSeason2(Season actualSeason2) {
-        this.actualSeason2 = actualSeason2;
-    }
-     public void setActualSeason2(int i) {
-        this.actualSeason2 = series2.getSeasons().get(i);
-    }
-
+    
      public String getSeasonNumber(Series series) {
         if (series.getSeasons() == null) {
             return Integer.toString(0);
