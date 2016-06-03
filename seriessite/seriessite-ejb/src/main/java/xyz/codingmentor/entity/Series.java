@@ -2,6 +2,7 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,21 +30,27 @@ import javax.persistence.CascadeType;
 })
 public class Series extends Movie implements Serializable {
     
-    @OneToMany(mappedBy = "series", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "series",cascade = CascadeType.ALL)
     private List<Season> seasons;
 
     @Column(length = 1000)
     private String description;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "SERIES_ACTOR", 
             joinColumns = @JoinColumn(name = "SERIES_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> actors;
+    
+    @ManyToMany
+    private List<Director> seriesdirectors;
 
+
+    
     public List<Actor> getActors() {
         return actors;
     }
+
 
     public void setActors(List<Actor> actors) {
         this.actors = actors;
@@ -68,10 +75,12 @@ public class Series extends Movie implements Serializable {
     }
   
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }

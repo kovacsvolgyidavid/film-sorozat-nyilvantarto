@@ -1,22 +1,138 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <head>
-        <title>TODO:Title</title>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-         <ui:composition template="/template/internal-template.xhtml">
-            <ui:define name="content">
-                <div>
-                    <p:commandButton action="#{seriesView.goToSeriesView(seriesView.returnSeries())}" value="Friends"/>
-                    <p:commandButton action="/user/compare.xhtml;faces-redirect=true" value="Compare"/>
-                </div>
+        <link rel="stylesheet" type="text/css" href="stlye.css"/>
+        <title>Series</title>
+    </h:head>
+
+    <h:body id="body" style="background-color: lavenderblush">
+        <ui:composition id="composition" template="/template/internal-template.xhtml">
+            <ui:define id="cont" name="content">
+
+                <h:panelGrid columns="1"  style="margin: 0 auto;" >
+
+                    <h:panelGroup style="display:block; text-align:center">
+
+                        <p:commandButton value="Movies" id="moviesbutton" ajax="false" immediate="true" action="movies-user.xhtml?faces-redirect=true" />
+
+                        <p:commandButton value="Series" id="seriesbutton" disabled="true" />
+
+                        <p:commandButton value="Directors" id="directorsbutton" ajax="false" immediate="true" action="directors-user.xhtml?faces-redirect=true" />
+
+                        <p:commandButton value="Actors" id="actorsbutton" ajax="false" immediate="true" action="actors-user.xhtml?faces-redirect=true" />
+
+                    </h:panelGroup>
+
+                </h:panelGrid>
+
+
+                <p:dataTable var="serie" value="#{series_User.series}" paginator="true" rows="#{series_User.actualUser.moviePerPage}"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="10,50,100" id="seriesTable" lazy="true">
+                    <p:column headerText="SeriesId" sortBy="#{serie.id}" filterBy="#{serie.id}">
+                        <h:panelGrid id="seriesblock" columns="4" style="#{series_User.blockStyle}">
+                            <h:panelGroup id="comparingblock">
+                                <p:growl id="gr" showDetail="false" sticky="false" rendered="#{series_User.comparingSeries.size() == 1}"/>
+                                <p:commandButton id="b_comparing" value="Comparing"
+                                                 ajax="false"
+                                                 rendered="#{series_User.comparingSeries.contains(serie)}"
+                                                 action="#{series_User.removeComparing(serie)}"
+                                                 style="font-size:8px; height: 25px; width: 70px"
+                                                 update="seriesblock" >
+                                </p:commandButton>
+
+                                <p:commandButton id="b_compare" value="Compare"
+                                                 ajax="false"
+                                                 rendered="#{!series_User.comparingSeries.contains(serie)}"
+                                                 action="#{series_User.setComparing(serie)}"
+                                                 style="font-size:8px; height: 25px; width: 70px"
+                                                 update="seriesblock">
+                                </p:commandButton>
+
+                            </h:panelGroup >
+
+                            <h:panelGroup>
+                                <p:graphicImage id="serieimage" value="#{series_User.getImage(serie)}" width="230" height="180" cache="false" />
+                            </h:panelGroup>
+
+
+
+                            <h:panelGroup id="favourite">
+                                <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
+                                <h:commandButton styleClass="favouriteicon"
+                                                 rendered="#{!series_User.actualUser.favourites.contains(serie)}"
+                                                 action="#{series_User.changeFavourites(serie)}"
+                                                 />
+                                <h:commandButton styleClass="favouriteiconfilled"
+                                                 rendered="#{series_User.actualUser.favourites.contains(serie)}"
+                                                 action="#{series_User.changeFavourites(serie)}"
+                                                 />
+                                <p:dataList value="#{serie.actors}" var="actor">
+                                    <f:facet name="header">
+                                        Actors
+                                    </f:facet>
+                                    #{actor.name}
+                                </p:dataList>
+
+                                <p>
+                                    <p:outputLabel value="Release: "/>
+                                    <p:outputLabel value="#{serie.yearOfRelease.year+1900}" style="font-style: italic" />
+                                </p>
+                                <p>
+                                    <p:outputLabel value="Seasons: "/>
+                                    <p:outputLabel value="#{serie.seasons.size()}" style="font-style: italic"/>
+                                </p>
+                                <p>
+                                    <p:outputLabel value="Episodes: "/>
+                                    <p:outputLabel value="#{series_User.getNumberOfEpisodes(serie)}" style="font-style: italic"/>
+                                </p>
+
+
+                            </h:panelGroup>
+
+
+                            <h:panelGroup>
+                                <p:commandButton 
+                                    ajax ="false"
+                                    rendered="#{request.isUserInRole('Admin')}"
+                                    action="/admin/seriesEdit.xhtml?faces-redirect=true"
+                                    id="editIcon" icon="ui-icon-pencil"
+                                    title="Edit" />
+
+
+                                <p:commandButton 
+                                    ajax="false" 
+                                    action="#{series_User.deleteSerie(serie)}" 
+                                    id="deleteIcon" icon="ui-icon-trash"  
+                                    rendered="#{request.isUserInRole('Admin')}"
+                                    title="Delete"
+                                    update="cont"/>
+
+                                <p:dataList value="#{serie.directors}" var="director">
+                                    <f:facet name="header">
+                                        Directors
+                                    </f:facet>
+                                    #{director.name}
+                                </p:dataList>
+                                <p:media value="#{series_User.getPromoVideoLink(serie)}" width="250" height="150" player="flash"/>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+                    </p:column>
+                </p:dataTable>
+
+
+
             </ui:define>
-         </ui:composition>
-    </body>
+        </ui:composition>
+    </h:body>
+
 </html>
+

@@ -2,14 +2,12 @@ package xyz.codingmentor.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
-import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Series;
 
 @Stateless

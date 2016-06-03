@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import javax.persistence.CascadeType;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SecondaryTable;
@@ -64,11 +67,25 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="USER_FAVOURITES", 
+          joinColumns=@JoinColumn(name="USER_ID"),
+          inverseJoinColumns=@JoinColumn(name="SERIE_ID"))
+    private List<Series> favourites;
 
     public User() {
         //Empty
     }
 
+    public List<Series> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<Series> favourites) {
+        this.favourites = favourites;
+    }
+    
     public String getUsername() {
         return username;
     }

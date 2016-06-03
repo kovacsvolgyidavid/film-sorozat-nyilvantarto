@@ -3,6 +3,7 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +28,7 @@ public class Season implements Serializable {
     @JoinColumn(name = "SERIES_ID"/*, nullable = false*/)
     private Series series;
 
-    @OneToMany(mappedBy = "season")
+    @OneToMany(mappedBy = "season",cascade = CascadeType.ALL)
     private List<Episode> episodes;
 
     @Column(name = "SERIAL_NUMBER")
