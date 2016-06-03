@@ -2,6 +2,7 @@ package xyz.codingmentor.bean;
 
 import java.io.FileInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,7 +43,17 @@ public class SeriesView implements Serializable {
     @PostConstruct
     public void init() {
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
-
+        this.series=new Series();
+        series.setActors(new ArrayList<Actor>());
+        series.setDirectors(new ArrayList<Director>());
+        series.setComments(new ArrayList<Comment>());
+        List<Season> seasons=new ArrayList<Season>();
+        Season season=new Season();
+        season.setEpisodes(new ArrayList<Episode>());
+        season.getEpisodes().add(new Episode());
+        seasons.add(season);
+        series.setSeasons(seasons);
+        
     }
 
     public String getTitle() {
@@ -140,7 +151,7 @@ public class SeriesView implements Serializable {
     }
 
     public String goToSeriesViewSite() {
-        /*FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = FacesContext.getCurrentInstance();
         // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
         String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
         return "/user/seriesView.xhtml?seriesId="+id+";faces-redirect=true";
@@ -167,10 +178,11 @@ public class SeriesView implements Serializable {
     }
 
     public void loadDatabaseData() {
+        Logger.getAnonymousLogger().info("seriesView is in loadDatabaseData");
         if (this.seriesId == null) {
             throw new IllegalArgumentException("Error while trying to find your series");
         }
-        series = entityFacade.read(Series.class, this.seriesId);
+        series = entityFacade.read(Series.class, seriesId);
         if (series == null) {
             throw new IllegalArgumentException("There is no such Series");
         }
