@@ -87,4 +87,9 @@ public class Compare implements Serializable {
         return Integer.toString(seasonCounter);
     }
 
+    public String goToCompare(Series series1,Series series2){//TODO: mi van ha ugyanaz a két sorozat
+        this.series1=series1;
+        this.series2=series2;
+        return "/user/compare.xhtml;faces-redirect=true";
+    }
 }
