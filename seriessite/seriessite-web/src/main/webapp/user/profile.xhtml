@@ -59,13 +59,13 @@
                     <p:tab title="Password" id="passwordTab">
                         <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
-                            <h:outputLabel for="oldPassword" value="Old password: *" rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
-                            <p:password id="oldPassword" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."
-                                        rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
-                            <h:panelGroup rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
-                            <p:message for="oldPassword" rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
+                            <h:outputLabel for="password" value="My Password: *" rendered="#{!profile.editMyProfile}"/>
+                            <h:outputLabel for="password" value="Password: *" rendered="#{profile.editMyProfile}"/>
+                            <p:password id="password" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."/>
+                            <h:panelGroup/>
+                            <p:message for="password"/>
 
-                            <h:outputLabel for="pwd1" value="Password: *" />
+                            <h:outputLabel for="pwd1" value="New Password: *" />
                             <p:password id="pwd1" value="#{profile.userDTO.password}" match="pwd2" label="Password"
                                         required="true" requiredMessage="This field has to be filled." validatorMessage="Password should match with Confirm Password."
                                         title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
@@ -74,17 +74,14 @@
                             <h:panelGroup/>
                             <p:message id="pwd1Message" for="pwd1" />
 
-                            <h:outputLabel for="pwd2" value="Confirm Password: *" />
+                            <h:outputLabel for="pwd2" value="Confirm New Password: *" />
                             <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"
                                         required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
                             <p:message id="pwd2Message" for="pwd2" />
 
                             <h:panelGroup/>
-                            <p:commandButton value="Save" action="#{profile.savePasswordUser()}" process="passwordTab" update="form"
-                                             rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
-                            <p:commandButton value="Save" action="#{profile.savePasswordAdmin()}" process="passwordTab" update="form"
-                                             rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/>
+                            <p:commandButton value="Save" action="#{profile.savePassword()}" process="passwordTab" update="form"/>
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Favourites">

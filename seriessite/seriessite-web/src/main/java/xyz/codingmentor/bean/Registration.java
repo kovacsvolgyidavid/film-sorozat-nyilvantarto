@@ -53,6 +53,7 @@ public class Registration implements Serializable {
     private StreamedContent image;
     private final static Enum[] SEXES = new Enum[2];
     private UserDTO dtoUser;
+    private String confirmPassword;
     
 //    private ProductDTO productDTO;
 //    
@@ -188,5 +189,17 @@ public class Registration implements Serializable {
 
     public void setDtoUser(UserDTO dtoUser) {
         this.dtoUser = dtoUser;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+    
+    public void checkPasswordMatching(){
+        
     }
 }

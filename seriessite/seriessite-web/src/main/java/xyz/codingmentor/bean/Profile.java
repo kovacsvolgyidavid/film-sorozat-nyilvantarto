@@ -54,6 +54,8 @@ public class Profile implements Serializable {
     private UserDTO userDTO;
     private String oldPassword;
     private final static Enum[] sexes = new Enum[2];
+    
+    private boolean editMyProfile;
 
     @PostConstruct
     public void init() {
@@ -62,9 +64,12 @@ public class Profile implements Serializable {
 
         userDTO = new UserDTO();
         userDTO.setUser(new User());
+        
+        editMyProfile = true;
     }
 
     public String getMyProfile() {
+        editMyProfile = true;
         user = entityFacade.read(User.class, Usermanagement.getUsername());
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -75,6 +80,7 @@ public class Profile implements Serializable {
     }
 
     public String getUserProfile(User user) {
+        editMyProfile = false;
         uploadedFile = null;
         this.user = user;
 //        userDTO.setUser(user);
@@ -95,15 +101,22 @@ public class Profile implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The modification was successful."));
     }
 
-    public void savePasswordUser() {
-        String oldPasswordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
+    public void savePassword() {
+        String passwordFromTable;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        
+        if(editMyProfile)
+            passwordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
+        else
+            passwordFromTable = entityFacade.read(User.class, facesContext.getExternalContext().getRemoteUser()).getPassword();
+        
 
-        if (hashPassword(oldPassword).equals(oldPasswordFromTable)) {
+        if (hashPassword(oldPassword).equals(passwordFromTable)) {
             user.setPassword(hashPassword(userDTO.getPassword()));
             entityFacade.update(user);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The password has been changed."));
+            facesContext.addMessage(null, new FacesMessage("The password has been changed."));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The old password is incorrect.", "Error!"));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your password is incorrect.", "Error!"));
         }
     }
 
@@ -237,5 +250,13 @@ public class Profile implements Serializable {
             Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
         }
         return hashedPassword;
+    }
+
+    public boolean isEditMyProfile() {
+        return editMyProfile;
+    }
+
+    public void setEditMyProfile(boolean editMyProfile) {
+        this.editMyProfile = editMyProfile;
     }
 }

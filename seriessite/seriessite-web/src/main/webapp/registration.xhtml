@@ -4,6 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Registration</title>
@@ -13,71 +14,78 @@
             <ui:define name="content">
                 <h:form>
                     <br/><h1 style="text-align: center">Registration</h1><br/>
-                    
+
                     <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
-                    <p:outputLabel value="Name: *"/>
-                    <p:inputText id="name" value="#{registration.dtoUser.user.name}" required="true" requiredMessage="This field has to be filled."
-                                 validatorMessage="Wrong name format." title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy">
-                        <p:ajax event="change" update="name nameMessage" />                       
-                    </p:inputText>
-                    <h:panelGroup/>
-                    <p:message id="nameMessage" for="name" />
-                    
-                    <p:outputLabel value="Username: *" />
-                    <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled."
-                                 title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters.">
-                        <p:ajax event="change" update="username usernameMessage" />
-                        <f:validateRegex pattern="^[\p{Ll}0-9_-]{3,15}$"/>
-                    </p:inputText>
-                    <h:panelGroup/>
-                    <p:message id="usernameMessage" for="username"/>
+                        <p:outputLabel value="Name: *"/>
+                        <p:inputText id="name" value="#{registration.dtoUser.user.name}" required="true" requiredMessage="This field has to be filled."
+                                     validatorMessage="Wrong name format." title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy">
+                            <p:ajax event="change" update="name nameMessage" />                       
+                        </p:inputText>
+                        <h:panelGroup/>
+                        <p:message id="nameMessage" for="name" />
 
-                    <p:outputLabel for="pwd1" value="Password: " />
-                    <p:password id="pwd1" value="#{registration.dtoUser.password}" match="pwd2" required="true" requiredMessage="This field has to be filled."                              
-                                validatorMessage="Password should match with Confirm Password."
-                                title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
-<!--                        <p:ajax event="change" update="pwd1 pwd1Message" />-->
-                        <f:validateRegex pattern="^((?=.*\d)(?=.*\p{Ll})(?=.*\p{Lu}).{6,20})$"/>
-                    </p:password>
-                    <h:panelGroup/>
-                    <p:message id="pwd1Message" for="pwd1" />
-                    
-                    <p:outputLabel for="pwd2" value="Confirm Password: " />
-                    <p:password id="pwd2" value="#{registration.dtoUser.password}" required="true" requiredMessage="This field has to be filled.">
-<!--                        <p:ajax event="change" update="pwd2 pwd2Message" />-->
-                    </p:password>    
-                    <h:panelGroup/>
-                    <p:message id="pwd2Message" for="pwd2" />
+                        <p:outputLabel value="Username: *" />
+                        <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled."
+                                     title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters.">
+                            <p:ajax event="change" update="username usernameMessage" />
+                            <f:validateRegex pattern="^[\p{Ll}0-9_-]{3,15}$"/>
+                        </p:inputText>
+                        <h:panelGroup/>
+                        <p:message id="usernameMessage" for="username"/>
 
-                    <p:outputLabel value="Date of Birth: *" />
-                    <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
-                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100" 
-                                required="true" requiredMessage="This field has to be filled."
-                                title="Format: dd/MM/yyyy" />
-                    <h:panelGroup/>
-                    <p:message id="dateMessage" for="date" />
 
-                    <p:outputLabel value="Sex: *" />
-                    <p:selectOneRadio id="sex" value="#{registration.dtoUser.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
-                        <f:selectItem itemLabel="Male" itemValue="#{registration.sexes[0]}" />
-                        <f:selectItem itemLabel="Female" itemValue="#{registration.sexes[1]}" />
-                    </p:selectOneRadio>
-                    <h:panelGroup/>
-                    <p:message for="sex" />
 
-                    <h:panelGroup/>
-                    <h:panelGrid columns="2" cellspacing="0">
-                        <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi" auto="true"/>
-                        <p:commandButton value="Reset">
-                            <p:ajax listener="#{registration.resetPicture}" update="gi"/>
-                        </p:commandButton>                    
-                    </h:panelGrid>
 
-                    <p:outputLabel value="Picture: "/>
-                    <p:graphicImage id="gi" value="#{registration.image}" width="205" height="155" cache="false"/>
-                    
-                    <h:panelGroup/>
-                    <p:commandButton value="Registrate" action="#{registration.signIn()}" ajax="false"/>
+                        <h:outputLabel for="password" value="Password: *" />
+                        <p:password id="password" binding="#{pass}" value="#{registration.dtoUser.password}" required="true"
+                                       requiredMessage="This field has to be filled.">
+<!--                            dfd-->
+                            <f:ajax event="blur" execute="password" render="m_password" />
+                        </p:password>
+                        <h:panelGroup/>
+                        <p:message id="m_password" for="password" />
+                        
+
+                        <h:outputLabel for="confirm" value="Confirm Password *:" />
+                        <p:password id="confirm"  required="true" requiredMessage="This field has to be filled.">
+                            <f:validator validatorId="confirmPasswordValidator" />
+                            <f:attribute name="pass" value="#{pass.submittedValue}" />
+                            <f:ajax event="blur" execute="password confirm" render="m_password m_confirm" />
+                        </p:password>
+                        <h:panelGroup/>
+                        <p:message id="m_confirm" for="confirm" />
+
+
+
+                        <p:outputLabel value="Date of Birth: *" />
+                        <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                    navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100" 
+                                    required="true" requiredMessage="This field has to be filled."
+                                    title="Format: dd/MM/yyyy" />
+                        <h:panelGroup/>
+                        <p:message id="dateMessage" for="date" />
+
+                        <p:outputLabel value="Sex: *" />
+                        <p:selectOneRadio id="sex" value="#{registration.dtoUser.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
+                            <f:selectItem itemLabel="Male" itemValue="#{registration.sexes[0]}" />
+                            <f:selectItem itemLabel="Female" itemValue="#{registration.sexes[1]}" />
+                        </p:selectOneRadio>
+                        <h:panelGroup/>
+                        <p:message for="sex" />
+
+                        <h:panelGroup/>
+                        <h:panelGrid columns="2" cellspacing="0">
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi" auto="true"/>
+                            <p:commandButton value="Reset">
+                                <p:ajax listener="#{registration.resetPicture}" update="gi"/>
+                            </p:commandButton>                    
+                        </h:panelGrid>
+
+                        <p:outputLabel value="Picture: "/>
+                        <p:graphicImage id="gi" value="#{registration.image}" width="205" height="155" cache="false"/>
+
+                        <h:panelGroup/>
+                        <p:commandButton value="Registrate" action="#{registration.signIn()}" ajax="false"/>
                     </p:panelGrid>
                 </h:form>
             </ui:define>
