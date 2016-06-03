@@ -2,16 +2,13 @@ package xyz.codingmentor.bean;
 
 import java.io.FileInputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
@@ -143,10 +140,10 @@ public class SeriesView implements Serializable {
     }
 
     public String goToSeriesViewSite() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        /*FacesContext context = FacesContext.getCurrentInstance();
         // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
         String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
-        series = entityFacade.read(Series.class, Long.getLong(id));
+        series = entityFacade.read(Series.class, Long.getLong(id)); */
         return "/user/seriesView.xhtml;faces-redirect=true";
     }
 
