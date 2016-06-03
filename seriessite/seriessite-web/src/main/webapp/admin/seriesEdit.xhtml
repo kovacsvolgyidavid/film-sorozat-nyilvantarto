@@ -93,25 +93,25 @@
                         <h:panelGrid columns="2" cellspacing="20" class="name-and-date-release">
                             <!--Series name-->
                             <p:outputLabel value="Series name: " class="top-labels"/>
-                            <p:inputText id="seriesName" value="#{seriesEdit.series.title}" class="color" 
+                            <p:inputText id="seriesName" value="#{seriesEdit.series.title}"
                                          title="Examples: &#13; -Szökés &#13; -Spongy Bob" />
 
                             <!--Release date-->
                             <p:outputLabel value="Release date of series: " class="top-labels color"/>
                             <p:calendar id="date" value="#{seriesEdit.series.yearOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1920" maxdate="31/12/2016" yearRange="c-100:c+100"
-                                        title="Format: dd/MM/yyyy" style="background-color: rgb(224,224,224) !important;" />
+                                        title="Format: dd/MM/yyyy"/>
                         </h:panelGrid>
                     </div>
                     <div class="ui-grid-col-4">
                         <!--Picture-->
                         <h:panelGrid columns="2" cellspacing="0">
-                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.pictureHandler.imageUpload(event)}" update="gi" auto="true"/>
-                            <p:commandButton value="Reset">
-                                <p:ajax listener="#{seriesEdit.pictureHandler.resetPicture(event)}" update="gi"/>
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
+                           <p:commandButton value="Reset">
+                                <p:ajax listener="#{seriesEdit.resetPicture(event)}" update="gi"/>
                             </p:commandButton>  
                         </h:panelGrid> 
-                        <p:graphicImage id="gi" value="#{seriesEdit.pictureHandler.image}" width="230" height="180" cache="false"/>
+                        <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
 
                     </div>
                 </div>
@@ -121,7 +121,7 @@
             <p:separator />
 
             <!--Episode tabs-->
-            <p:tabView id="seasonTabs">
+            <p:tabView id="seasonTabs" style="width: 75%; margin:0 auto">
                 <c:forEach var="season" items="#{seriesEdit.series.seasons}">
                     <p:tab title="#{season.title}">
 
@@ -168,7 +168,7 @@
                             </p:column>
 
                             <!--Episode serialnumber-->
-                            <p:column headerText="Serialnumber" style="width:40px;" >
+                            <p:column headerText="Serialnumber" style="width:120px;" >
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{episode.serialNumber}" /></f:facet>
                                     <f:facet name="input"><p:inputText id="epSeri" value="#{episode.serialNumber}" style="width:100%"/></f:facet>

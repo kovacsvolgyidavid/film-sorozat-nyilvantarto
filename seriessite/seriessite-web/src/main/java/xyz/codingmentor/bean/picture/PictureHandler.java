@@ -26,11 +26,19 @@ import xyz.codingmentor.bean.Registration;
 
 
 public class PictureHandler {
+
+    private static final Logger LOG = Logger.getLogger(PictureHandler.class.getName());
     
-  
-    private static final String PATH = "/series/";
+    private static String PATH; //= "/series/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
+
+    public PictureHandler(String path) {
+        
+        PATH=path;
+    }
+    
+    
 
     public void saveImageToDirectory(String nameOfImage) {
         createDirectory();
@@ -39,10 +47,14 @@ public class PictureHandler {
             InputStream inputstream = uploadedFile.getInputstream();
 //            String fullFileName = uploadedFile.getFileName();
             Path file = Paths.get(PATH + nameOfImage);
+            LOG.info("saveImageToDirectory " + file.toString());
+            LOG.info("saveImageToDirectory " + file.getFileName().toString());
 
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (IOException ex) {
+                        LOG.info("saveImageToDirectory excaption");
+
         }
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
@@ -61,6 +73,7 @@ public class PictureHandler {
     }
 
     public void imageUpload(FileUploadEvent event) {
+        LOG.info("imageUpload");
         uploadedFile = event.getFile();
 
         try {
@@ -75,13 +88,14 @@ public class PictureHandler {
     }
 
     public StreamedContent getImage() {
-//        LOG.info("in getImage function");
+        LOG.info("in getImage function");
         try {
             if (uploadedFile == null) {
 //                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
-//                LOG.info("after image load");
+                LOG.info("getImage " + noPicture.toString());
+                LOG.info("getImage " + noPicture.getPath().toString());
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
             } else {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());

@@ -1,5 +1,8 @@
 package xyz.codingmentor.bean;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,6 +43,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
+import javax.imageio.ImageIO;
 import org.apache.commons.lang3.SystemUtils;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 import org.primefaces.context.RequestContext;
@@ -68,9 +72,8 @@ public class SeriesEdit implements Serializable {
     private Actor newActor;
     private List<Actor> actorListNotInSeries;
     private String actorId;
-    
-        private Season newSeason;
 
+    private Season newSeason;
 
     @PostConstruct
     public void init() {
@@ -80,7 +83,11 @@ public class SeriesEdit implements Serializable {
         newActor = new Actor();
         newSeason = new Season();
         idOfSeries = "1";
-        
+        pictureHandler = new PictureHandler("/series/");
+
+        String homeDirectoryNameInUbuntu = System.getProperty("user.home");
+        PATH = "/home/" + homeDirectoryNameInUbuntu + "/series/";
+
         loadDatabaseData();
 //        loadDatabaseData(new ActionEvent());
     }
@@ -99,8 +106,6 @@ public class SeriesEdit implements Serializable {
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
     }
-
-
 
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -170,8 +175,8 @@ public class SeriesEdit implements Serializable {
         LOG.info("addNewActorToSeries end");
 
     }
-    
-    public void saveActor(Actor actor){
+
+    public void saveActor(Actor actor) {
         actorFacade.update(actor);
     }
 
@@ -186,6 +191,10 @@ public class SeriesEdit implements Serializable {
     }
 
     public void saveSeries() {
+        LOG.info("saveSeries");
+        String nameOfPhoto = series.getTitle() + series.getId();
+        saveImageToDirectory(nameOfPhoto);
+        series.setPathOfPhoto(nameOfPhoto);
         seriesFacade.saveSeries(series);
         LOG.info("linux? " + SystemUtils.IS_OS_LINUX);
         LOG.info("windows? " + SystemUtils.IS_OS_WINDOWS);
@@ -193,14 +202,14 @@ public class SeriesEdit implements Serializable {
 
     public void resetActor(Actor actor) {
         Actor findActorById = actorFacade.findActorById(actor.getId());
-        
+
         List<Actor> actors = series.getActors();
         for (int i = 0; i < actors.size(); i++) {
             Actor a = actors.get(i);
-            if(a.getId() == actor.getId()){
+            if (a.getId() == actor.getId()) {
                 actors.add(i, findActorById);
             }
-            
+
         }
     }
 
@@ -260,7 +269,6 @@ public class SeriesEdit implements Serializable {
         LOG.info("Error in deleteSeasion. Not found season in series");
     }
 
-
     public Season getNewSeason() {
         return newSeason;
     }
@@ -269,11 +277,112 @@ public class SeriesEdit implements Serializable {
         this.newSeason = newSeason;
     }
 
-
-
     public void addNewSeason() {
         LOG.info("addSeason fg");
         series.getSeasons().add(newSeason);
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    private static String PATH = "/series/";
+    private UploadedFile uploadedFile;
+    private StreamedContent image;
+
+    public void saveImageToDirectory(String nameOfImage) {
+        LOG.info("saveImageToDirectory");
+        createDirectory();
+
+        try {
+            InputStream inputstream = uploadedFile.getInputstream();
+//            String fullFileName = uploadedFile.getFileName();
+            Path file = Paths.get(PATH + nameOfImage);
+            LOG.info("saveImageToDirectory " + file.toString());
+            LOG.info("saveImageToDirectory " + file.getFileName().toString());
+
+            Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException ex) {
+            LOG.info("saveImageToDirectory Exception" + ex.toString());
+
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
+    }
+
+    public void createDirectory() {
+        LOG.info("createDirectory");
+        File directory = new File(PATH);
+
+        if (!directory.exists()) {
+            try {
+                directory.mkdirs();
+            } catch (SecurityException se) {
+                //handle it
+            }
+        }
+    }
+
+    public void imageUpload(FileUploadEvent event) {
+        LOG.info("imageUpload");
+        uploadedFile = event.getFile();
+
+        try {
+            image = new DefaultStreamedContent(uploadedFile.getInputstream());
+        } catch (IOException ex) {
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setUploadedFile(UploadedFile uploadedFile) {
+        LOG.info("setUploadedFile");
+        this.uploadedFile = uploadedFile;
+    }
+
+    public StreamedContent getImage() {
+        LOG.info("getImage function");
+        try {
+            if (!series.getPathOfPhoto().equals("")) {
+                LOG.info("Series has path of photo:" + series.getPathOfPhoto() + ".");
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new File(PATH + series.getTitle() + series.getId()));
+
+                    
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    ImageIO.write(img, "jpg", os);
+                    InputStream is = new ByteArrayInputStream(os.toByteArray());
+                    image = new DefaultStreamedContent(is, PATH + series.getTitle() + series.getId()+".jpg");
+                            
+                } catch (IOException e) {
+                    LOG.info("getImage Exceptin3");
+                }
+            }
+            if (uploadedFile == null) {
+//                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
+                ClassLoader classLoader = getClass().getClassLoader();
+                File noPicture = new File(classLoader.getResource("/series/noimages.png").getFile());
+                LOG.info("getImage " + noPicture.toString());
+                image = new DefaultStreamedContent(new FileInputStream(noPicture));
+            } else {
+                image = new DefaultStreamedContent(uploadedFile.getInputstream());
+            }
+        } catch (Exception ex) {
+//            LOG.info("Not found image. Exceptin in getImage function");
+//            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return image;
+    }
+
+    public void resetPicture(AjaxBehaviorEvent event) {
+        uploadedFile = null;
+    }
+
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setImage(StreamedContent image) {
+        this.image = image;
     }
 
 }
