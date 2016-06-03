@@ -146,8 +146,7 @@ public class SeriesView implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
         String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
-        series = entityFacade.read(Series.class, Long.getLong(id));
-        return "/user/seriesView.xhtml;faces-redirect=true";
+        return "/user/seriesView.xhtml?seriesId="+id+";faces-redirect=true";
     }
 
     public StreamedContent getUserImage(User user) {
