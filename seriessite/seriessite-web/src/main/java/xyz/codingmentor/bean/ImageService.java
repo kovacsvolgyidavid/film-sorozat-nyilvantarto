@@ -22,6 +22,7 @@ import org.primefaces.model.StreamedContent;
 @ApplicationScoped
 public class ImageService {
 
+    private StreamedContent image;
 
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -33,7 +34,13 @@ public class ImageService {
         else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String path = context.getExternalContext().getRequestParameterMap().get("path");
-            return new DefaultStreamedContent(new FileInputStream(path));
+            image = new DefaultStreamedContent(new FileInputStream(path));
+            if(image!=null){
+                return image;
+            }
+            else{
+                return new DefaultStreamedContent(new FileInputStream("/noimages.png"));
+            }
         }
     }
 

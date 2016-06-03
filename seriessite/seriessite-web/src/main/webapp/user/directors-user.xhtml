@@ -41,7 +41,9 @@
 
 
                             <h:panelGroup>
-                                <p:graphicImage id="directorimage" value="#{directors.getImage(director)}" width="230" height="180" />
+                                <p:graphicImage id="directorimage" value="#{imageService.image}" width="230" height="180" cache="false" >
+                                    <f:param name="path" value="#{director.pathOfPhoto}"/>
+                                </p:graphicImage>
                             </h:panelGroup>
 
 

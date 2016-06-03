@@ -1,3 +1,27 @@
+<<<<<<< HEAD
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <title>TODO:Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+         <ui:composition template="/template/internal-template.xhtml">
+            <ui:define name="content">
+                <div>
+                    <p:commandButton action="#{seriesView.goToSeriesView(seriesView.returnSeries())}" value="Friends"/>
+                    <p:commandButton action="/user/compare.xhtml;faces-redirect=true" value="Compare"/>
+                </div>
+            </ui:define>
+         </ui:composition>
+    </body>
+</html>
+=======
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -39,19 +63,19 @@
                     <p:column headerText="SeriesId" sortBy="#{serie.id}" filterBy="#{serie.id}">
                         <h:panelGrid id="seriesblock" columns="4" style="#{series_User.blockStyle}">
                             <h:panelGroup id="comparingblock">
-                                <p:growl id="gr" showDetail="false" sticky="false" rendered="#{compare.comparingSeries.size() == 1}"/>
+                                <p:growl id="gr" showDetail="false" sticky="false" rendered="#{series_User.comparingSeries.size() == 1}"/>
                                 <p:commandButton id="b_comparing" value="Comparing"
                                                  ajax="false"
-                                                 rendered="#{compare.comparingSeries.contains(serie)}"
-                                                 action="#{compare.removeComparing(serie)}"
+                                                 rendered="#{series_User.comparingSeries.contains(serie)}"
+                                                 action="#{series_User.removeComparing(serie)}"
                                                  style="font-size:8px; height: 25px; width: 70px"
                                                  update="seriesblock" >
                                 </p:commandButton>
 
                                 <p:commandButton id="b_compare" value="Compare"
                                                  ajax="false"
-                                                 rendered="#{!compare.comparingSeries.contains(serie)}"
-                                                 action="#{compare.setComparing(serie)}"
+                                                 rendered="#{!series_User.comparingSeries.contains(serie)}"
+                                                 action="#{series_User.setComparing(serie)}"
                                                  style="font-size:8px; height: 25px; width: 70px"
                                                  update="seriesblock">
                                 </p:commandButton>
@@ -59,20 +83,13 @@
                             </h:panelGroup >
 
                             <h:panelGroup>
-                                <p:graphicImage id="serieimage" value="#{imageService.image}" width="230" height="180" cache="false" >
-                                    <f:param name="path" value="#{serie.pathOfPhoto}"/>
-                                </p:graphicImage>
+                                <p:graphicImage id="serieimage" value="#{series_User.getImage(serie)}" width="230" height="180" cache="false" />
                             </h:panelGroup>
 
 
 
                             <h:panelGroup id="favourite">
-                                
-                                <h:link value="#{serie.title}" outcome="#{seriesView.goToSeriesViewSite()}" style="font-size: xx-large">
-                                    <f:param name="seriesId" value="#{serie.id}"/>
-                                </h:link>
-                                    
-
+                                <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
                                 <h:commandButton styleClass="favouriteicon"
                                                  rendered="#{!series_User.actualUser.favourites.contains(serie)}"
                                                  action="#{series_User.changeFavourites(serie)}"
@@ -143,3 +160,4 @@
 
 </html>
 
+>>>>>>> feature/serieslisting

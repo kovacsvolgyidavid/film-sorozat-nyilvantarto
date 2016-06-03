@@ -59,7 +59,7 @@ public class SeriesView implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             image = null;
-        }     
+        }
         return image;
     }
 
@@ -143,24 +143,17 @@ public class SeriesView implements Serializable {
     }
 
     public String goToSeriesViewSite() {
-        FacesContext context=FacesContext.getCurrentInstance();
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-            return "/user/seriesView.xhtml;faces-redirect=true";
-        }
-        else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-            String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
-            series=entityFacade.read(Series.class, Long.getLong(id));
-            return "/user/seriesView.xhtml;faces-redirect=true";   
-        }
-        
+        FacesContext context = FacesContext.getCurrentInstance();
+        // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+        String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
+        series = entityFacade.read(Series.class, Long.getLong(id));
+        return "/user/seriesView.xhtml;faces-redirect=true";
     }
 
     public StreamedContent getUserImage(User user) {
         StreamedContent image;
         try {
-            String userPhotoPath = PATH+user.getPathOfPhoto();
+            String userPhotoPath = PATH + user.getPathOfPhoto();
             image = new DefaultStreamedContent(new FileInputStream(userPhotoPath));
         } catch (Exception ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);

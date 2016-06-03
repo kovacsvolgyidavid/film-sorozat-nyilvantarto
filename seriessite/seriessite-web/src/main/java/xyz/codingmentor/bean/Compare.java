@@ -2,10 +2,14 @@ package xyz.codingmentor.bean;
 
 import java.io.FileInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
@@ -24,14 +28,13 @@ public class Compare implements Serializable {
 
     Series series1;
     Series series2;
-    
+    private List<Series> comparingSeries;
     @Inject
     EntityFacade entityFacade;
 
     @PostConstruct
     public void init() {
-        series1 = entityFacade.read(Series.class, 1L);
-        series2 = entityFacade.read(Series.class, 11L);
+        comparingSeries = new ArrayList<>();
     }
 
     public Series getSeries1() {
@@ -84,6 +87,31 @@ public class Compare implements Serializable {
             seasonCounter+=season.getEpisodes().size();
         }
         return Integer.toString(seasonCounter);
+    }
+    
+    
+    public String setComparing(Series serie) {
+
+        if (comparingSeries.isEmpty()) {
+            comparingSeries.add(serie);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage
+            ("Comparing " + serie.getTitle() + " to... Please select another item!"));
+          
+        }
+        else if (comparingSeries.size() == 1) {
+            comparingSeries.add(serie);
+            return goToCompare(comparingSeries.get(0), comparingSeries.get(1));
+        }
+        return "series-user.xhtml?faces-redirect=true";
+    }
+
+    public void removeComparing(Series serie) {
+        comparingSeries.remove(serie);
+    }
+
+    public List<Series> getComparingSeries() {
+        return comparingSeries;
     }
 
     public String goToCompare(Series series1,Series series2){//TODO: mi van ha ugyanaz a két sorozat

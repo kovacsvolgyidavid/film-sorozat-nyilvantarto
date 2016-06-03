@@ -37,67 +37,69 @@
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="10,50,100" id="actorsTable" lazy="true">
                     <p:column headerText="Search and Sort By Id" sortBy="#{actor.id}" filterBy="#{actor.id}">
-                    <h:panelGrid id="actorsblock" columns="4">
+                        <h:panelGrid id="actorsblock" columns="4">
 
 
-                        <h:panelGroup>
-                            <p:graphicImage id="actorimage" value="#{actors.getImage(actor)}" width="230" height="180" />
-                        </h:panelGroup>
+                            <h:panelGroup>
+                                <p:graphicImage id="actorimage" value="#{imageService.image}" width="230" height="180" cache="false" >
+                                    <f:param name="path" value="#{actor.pathOfPhoto}"/>
+                                </p:graphicImage>
+                            </h:panelGroup>
 
 
 
-                        <h:panelGroup>
-                            <h:outputText value="#{actor.name}"
-                                          style="font-size: xx-large; text-decoration: underline #00a8ea" />
+                            <h:panelGroup>
+                                <h:outputText value="#{actor.name}"
+                                              style="font-size: xx-large; text-decoration: underline #00a8ea" />
 
-                            <p:dataList value="#{actor.movies}" var="movie">
-                                <f:facet name="header">
-                                    Movies
-                                </f:facet>
-                                #{movie.title}
-                            </p:dataList>
+                                <p:dataList value="#{actor.movies}" var="movie">
+                                    <f:facet name="header">
+                                        Movies
+                                    </f:facet>
+                                    #{movie.title}
+                                </p:dataList>
 
-                            <p>
-                                <p:outputLabel value="Birth: "/>
-                                <p:outputLabel value="#{actor.dateOfBirth.year+1900}" style="font-style: italic" />
-                            </p>
-                            <p>
-                                <p:outputLabel value="Birth place: "/>
-                                <p:outputLabel value="#{actor.placeOfBirth}" style="font-style: italic"/>
-                            </p>
-                        </h:panelGroup>
-
-
-                        <h:panelGroup>
-                            <p:dataList value="#{actor.series}" var="serie">
-                                <f:facet name="header">
-                                    Series
-                                </f:facet>
-                                #{serie.title}
-                            </p:dataList>
-                            <h:link outcome="#{actor.officialWebsite}" value="Official Website"/>
-                        </h:panelGroup>
-
-                        <h:panelGroup>
-                            <p:commandButton 
-                                ajax ="false"
-                                rendered="#{request.isUserInRole('Admin')}"
-                                action="/admin/actorEdit.xhtml?faces-redirect=true"
-                                id="editIcon" icon="ui-icon-pencil"
-                                title="Edit" />
+                                <p>
+                                    <p:outputLabel value="Birth: "/>
+                                    <p:outputLabel value="#{actor.dateOfBirth.year+1900}" style="font-style: italic" />
+                                </p>
+                                <p>
+                                    <p:outputLabel value="Birth place: "/>
+                                    <p:outputLabel value="#{actor.placeOfBirth}" style="font-style: italic"/>
+                                </p>
+                            </h:panelGroup>
 
 
-                            <p:commandButton 
-                                ajax="false" 
-                                action="#{actors.deleteActor(actor)}" 
-                                id="deleteIcon" icon="ui-icon-trash"  
-                                rendered="#{request.isUserInRole('Admin')}"
-                                title="Delete"
-                                update="cont"/>
-                        </h:panelGroup>
+                            <h:panelGroup>
+                                <p:dataList value="#{actor.series}" var="serie">
+                                    <f:facet name="header">
+                                        Series
+                                    </f:facet>
+                                    #{serie.title}
+                                </p:dataList>
+                                <h:link outcome="#{actor.officialWebsite}" value="Official Website"/>
+                            </h:panelGroup>
 
-                    </h:panelGrid>
-                        </p:column>
+                            <h:panelGroup>
+                                <p:commandButton 
+                                    ajax ="false"
+                                    rendered="#{request.isUserInRole('Admin')}"
+                                    action="/admin/actorEdit.xhtml?faces-redirect=true"
+                                    id="editIcon" icon="ui-icon-pencil"
+                                    title="Edit" />
+
+
+                                <p:commandButton 
+                                    ajax="false" 
+                                    action="#{actors.deleteActor(actor)}" 
+                                    id="deleteIcon" icon="ui-icon-trash"  
+                                    rendered="#{request.isUserInRole('Admin')}"
+                                    title="Delete"
+                                    update="cont"/>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+                    </p:column>
                 </p:dataTable>
             </ui:define>
         </ui:composition>

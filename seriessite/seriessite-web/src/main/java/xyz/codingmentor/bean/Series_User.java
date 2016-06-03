@@ -5,18 +5,14 @@
  */
 package xyz.codingmentor.bean;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang3.SystemUtils;
@@ -40,10 +36,13 @@ public class Series_User implements Serializable {
 
     @Inject
     private DatabaseQuery databaseQuery;
+    
+    @Inject
+    private Compare compare;
 
     private List<Series> series;
     private Series serie;
-    private List<Series> comparingSeries;
+
     private String blockStyle = "margin: 0 auto";
     private String PATH = "/series/";
     private User actualUser;
@@ -53,7 +52,6 @@ public class Series_User implements Serializable {
     public void init() {
         String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         actualUser = databaseQuery.findUserByUsername(username);
-        comparingSeries = new ArrayList();
         series = entityFacade.findAll(Series.class);
     }
 
@@ -80,31 +78,6 @@ public class Series_User implements Serializable {
         return null;
     }
 
-    public String setComparing(Series serie) {
-
-        if (comparingSeries.isEmpty()) {
-            comparingSeries.add(serie);
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage
-            ("Comparing " + serie.getTitle() + " to... Please select another item!"));
-          
-        }
-        else if (comparingSeries.size() == 1) {
-            comparingSeries.add(serie);
-            
-            return "user.xhtml?faces-redirect=true";
-        }
-        return "series-user.xhtml?faces-redirect=true";
-    }
-
-    public void removeComparing(Series serie) {
-        comparingSeries.remove(serie);
-        blockStyle = "margin: 0 auto;";
-    }
-
-    public List<Series> getComparingSeries() {
-        return comparingSeries;
-    }
 
     public String getBlockStyle() {
         return blockStyle;

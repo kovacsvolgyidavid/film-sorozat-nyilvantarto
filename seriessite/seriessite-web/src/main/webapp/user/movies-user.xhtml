@@ -43,7 +43,9 @@
 
 
                         <h:panelGroup>
-                            <p:graphicImage id="movieimage" value="#{movies.getImage(movie)}" width="230" height="180" />
+                            <p:graphicImage id="movie" value="#{imageService.image}" width="230" height="180" cache="false" >
+                                    <f:param name="path" value="#{movie.pathOfPhoto}"/>
+                                </p:graphicImage>
                         </h:panelGroup>
 
 
