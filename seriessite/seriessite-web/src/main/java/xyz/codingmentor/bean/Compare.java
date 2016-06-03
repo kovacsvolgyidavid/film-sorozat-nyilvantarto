@@ -32,7 +32,6 @@ public class Compare implements Serializable {
     public void init() {
         series1 = entityFacade.read(Series.class, 1L);
         series2 = entityFacade.read(Series.class, 11L);
-        
     }
 
     public Series getSeries1() {

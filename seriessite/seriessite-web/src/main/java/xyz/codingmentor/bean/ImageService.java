@@ -1,0 +1,40 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package xyz.codingmentor.bean;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import javax.inject.Named;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+/**
+ *
+ * @author keni
+ */
+@Named
+@ApplicationScoped
+public class ImageService {
+
+
+    public StreamedContent getImage() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String path = context.getExternalContext().getRequestParameterMap().get("path");
+            return new DefaultStreamedContent(new FileInputStream(path));
+        }
+    }
+
+}

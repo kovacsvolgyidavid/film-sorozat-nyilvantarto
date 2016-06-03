@@ -198,8 +198,8 @@ public class SeriesView implements Serializable {
         return this.actualSeason != null;
     }
 
-    public String goToSeriesView(Series series) {
-        this.series = series;
+    public String goToSeriesView(Long id) {
+        this.series = entityFacade.read(series.getClass(), id);
         return "/user/seriesView.xhtml;faces-redirect=true";
     }
 

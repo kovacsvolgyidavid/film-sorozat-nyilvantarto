@@ -59,13 +59,18 @@
                             </h:panelGroup >
 
                             <h:panelGroup>
-                                <p:graphicImage id="serieimage" value="#{series_User.getImage(serie)}" width="230" height="180" cache="false" />
+                                <p:graphicImage id="serieimage" value="#{imageService.image}" width="230" height="180" cache="false" >
+                                    <f:param name="path" value="#{serie.pathOfPhoto}"/>
+                                </p:graphicImage>
                             </h:panelGroup>
 
 
 
                             <h:panelGroup id="favourite">
-                                <h:link value="#{serie.title}" outcome="user.xhtml" style="font-size: xx-large"/>
+                                
+                                <h:link value="#{serie.title}" outcome="/user/user.xhtml" style="font-size: xx-large"/>
+                                    
+
                                 <h:commandButton styleClass="favouriteicon"
                                                  rendered="#{!series_User.actualUser.favourites.contains(serie)}"
                                                  action="#{series_User.changeFavourites(serie)}"
