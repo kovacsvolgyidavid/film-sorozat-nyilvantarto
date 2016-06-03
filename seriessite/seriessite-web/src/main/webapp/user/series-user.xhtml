@@ -68,7 +68,9 @@
 
                             <h:panelGroup id="favourite">
                                 
-                                <h:link value="#{serie.title}" outcome="/user/user.xhtml" style="font-size: xx-large"/>
+                                <h:link value="#{serie.title}" outcome="#{seriesView.goToSeriesViewSite()}" style="font-size: xx-large">
+                                    <f:param name="seriesId" value="#{serie.id}"/>
+                                </h:link>
                                     
 
                                 <h:commandButton styleClass="favouriteicon"

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.bean;
 
 import java.io.FileInputStream;
@@ -16,6 +11,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DefaultStreamedContent;
@@ -147,16 +143,18 @@ public class SeriesView implements Serializable {
     }
 
     public String goToSeriesViewSite() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        Map<String, String> params
-                = context.getExternalContext().getRequestParameterMap();
-        String id = params.get("seriesid");
-//        LOG.info("Here go to actor side. ActorID: " + id);
-
-//        1 is Actor edit it
-        return "/user/seriesView.xhtml;faces-redirect=true";
-//        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
+        FacesContext context=FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return "/user/seriesView.xhtml;faces-redirect=true";
+        }
+        else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
+            series=entityFacade.read(Series.class, Long.getLong(id));
+            return "/user/seriesView.xhtml;faces-redirect=true";   
+        }
+        
     }
 
     public StreamedContent getUserImage(User user) {
