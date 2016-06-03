@@ -11,10 +11,10 @@ and open the template in the editor.
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-        <f:metadata>
-            <f:viewParam name="seriesId" value="#{seriesView.seriesId}"/>
-            <f:event type="preRenderView" listener="#{seriesView.loadDatabaseData}"/>
-        </f:metadata>
+    <f:metadata>
+        <f:viewParam name="seriesId" value="#{seriesView.seriesId}"/>
+        <f:event type="preRenderView" listener="#{seriesView.loadDatabaseData}"/>
+    </f:metadata>
     <h:head>
         <title>TODO supply a title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -24,7 +24,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap-theme.min.css"/>
     </h:head>
     <h:body>
-        
+
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
                 <table>
@@ -77,55 +77,37 @@ and open the template in the editor.
                         </td>
                     </tr>
                 </table>
-                <h:panelGrid columns="2" style="align-content:  flex-start">
-                    <h:panelGroup>
+
+
                 <h:outputText value="Descritpion:" style="font-size: 25px; font-weight: bold"/>
                 <br/>
-                        <h:outputText value="#{seriesView.series.description}"/>
-                
-                    
-                
-                </h:panelGroup>
-                    <h:panelGroup>
-                        <h:outputText style="font-size: 25px; font-weight: bold" value="Seasons:"/>
-                        <br/>
-                        
-                <c:set var="upperLimit" value="#{seriesView.seasonNumber}"/>
+                <h:outputText value="#{seriesView.series.description}" style="width: 50%"/>
 
-                <c:forEach var="i" begin="0" end="#{upperLimit-1}">
-                    <c:choose>
-                        <c:when test="#{i==seriesView.actualSeason}">
-                            <p:commandButton value="#{i+1}" disabled="true"/>
-                        </c:when>
-                        <c:otherwise>
-                            <p:commandButton value="#{i+1}" update="form">
-                                <p:ajax listener="#{seriesView.setActualSeason(i)}" update="form"/>
-                            </p:commandButton>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-                
-                <p:dataTable value="#{seriesView.actualSeasonEpisodes}" var="episode" 
-                             style="text-align: center; width: 600px"
-                             rendered="#{seriesView.isNoSeasonSelected()}">
-                    <p:column headerText="Nu." style="width: 50px">
 
-                        #{seriesView.actualSeasonEpisodes.indexOf(episode)+1}
-                    </p:column>
-                    <p:column headerText="Title">
 
-                        #{episode.title}
-                    </p:column>
-                    <p:column headerText="Release Date" style="width: 180px">
 
-                        <h:outputText value="#{episode.dateOfRelease}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
+                <h:outputText style="font-size: 25px; font-weight: bold" value="Seasons:"/>
+                <br/>
 
-                    </p:column>
-                </p:dataTable>
-                </h:panelGroup>
-</h:panelGrid>
+                <p:tabView value="#{seriesView.series.seasons}" var="season" 
+                           style="border: transparent; background: transparent; height: 100%; width: 50%">
+                    <p:tab title="#{seriesView.series.seasons.indexOf(season)+1}">
+                        <p:dataTable value="#{season.episodes}" var="episode" 
+                                     style="text-align: center; width: 100%">
+                            <p:column headerText="Nu." style="width: 5%">
+                                #{season.episodes.indexOf(episode)+1}
+                            </p:column>
+                            <p:column headerText="Title">
+                                #{episode.title}
+                            </p:column>
+                            <p:column headerText="Release Date" style="width: 35%">
+                                <h:outputText value="#{episode.dateOfRelease}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>              
                 <br/>
                 <br/>
                 <p:panelGrid columns="2">
@@ -142,29 +124,33 @@ and open the template in the editor.
                 </p:panelGrid>
                 <br/>
                 <br/>
-                
+
                 <h:outputText value="Comments:" style="font-size: 25px; font-weight: bold"/>
-                <c:forEach items="#{seriesView.series.comments}" var="comment">
-                    <p:panelGrid columns="2" id="comment_#{comment.id}">
-                        <p:graphicImage value="#{imageService.image}" height="48" cache="false">
+                <ui:repeat value="#{seriesView.comments}" var="comment">
+                    <h:panelGrid columns="2" style="margin-left: 25px">
+                        <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
                             <f:param name="path" value="#{comment.user.pathOfPhoto}"/>
                         </p:graphicImage>
-                        <p:outputLabel value="#{comment.user.name}"/>
-
-                    </p:panelGrid>
-                    <p:panelGrid columns="1" style="width: 600px">
-                        <h:outputText value="#{comment.content}"/>
-                    </p:panelGrid>
+                        <h:panelGroup> 
+                            <p:outputLabel value="#{comment.user.name}:" style="font-weight: bold; font-size: 20px; margin-left: 15px"/>
+                            <br/>
+                            <h:outputText value="#{comment.content}" style="margin-left: 25px"/>
+                        </h:panelGroup> 
+                    </h:panelGrid>
                     <br/>
-                </c:forEach>
-                <p:inputTextarea value="#{seriesView.comment}" maxlength="255" cols="60"/>
-                <p:commandButton value="Submit" update="form" action="#{seriesView.addComment()}" ajax="false">
-                    <p:ajax update="form"/>
-                </p:commandButton>
-                <p:commandButton value="Clear" update="form">
-                    <p:ajax listener="#{seriesView.setComment('')}" update="form"/>
-                </p:commandButton>
-
+                </ui:repeat>
+                <h:panelGrid columns="2">
+                    <p:inputTextarea value="#{seriesView.comment}" maxlength="255" cols="60"/>
+                    <h:panelGroup>
+                        <p:commandButton value="Submit" update="form" action="#{seriesView.addComment()}" ajax="false" style="width: 100%">
+                            <p:ajax update="form"/>
+                        </p:commandButton>
+                        <br/>
+                        <p:commandButton value="Clear" update="form" style="width: 100%">
+                            <p:ajax listener="#{seriesView.setComment('')}" update="form"/>
+                        </p:commandButton>
+                    </h:panelGroup>
+                </h:panelGrid>
             </ui:define>
         </ui:composition>
         <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>

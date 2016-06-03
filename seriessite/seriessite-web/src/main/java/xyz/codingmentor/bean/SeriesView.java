@@ -134,7 +134,7 @@ public class SeriesView implements Serializable {
         addComment.setUser(user);
         addComment.setShow(series);
         series.getComments().add(addComment);
-        entityFacade.create(addComment); //TODO
+        entityFacade.create(addComment); 
         comment = "";
     }
 
