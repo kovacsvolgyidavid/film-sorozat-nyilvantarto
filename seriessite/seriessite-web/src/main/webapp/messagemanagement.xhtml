@@ -5,21 +5,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
     <h:body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
                 <br/><h1 style="text-align: center">Products</h1><br/><br/><br/>
-
                 <p:panelGrid columns="2" style="margin: 0 auto" styleClass="ui-noborder">
                 
                     <p:outputLabel value="Price: *"/>
                     <p:inputText id="price" value="#{messageManagement.product.price}" required="true" requiredMessage="This field has to be filled."
                                  converterMessage="The price has to be a number.">
                         <p:ajax event="change" update="price priceMessage" />
-                        <f:convertNumber integerOnly="true" type="number" />
                     </p:inputText>
                     <h:panelGroup/>
                     <p:message id="priceMessage" for="price"/>
@@ -50,11 +45,8 @@
 
                     <p:column headerText="Delete" style="padding: 0px 0px 0px 0px; width: 30%;">
                         <p:commandButton style="width:100%; height: 100%; border-width: 0px;"
-                                         icon="ui-icon-trash" action="#{messageManagement.deleteProduct(product)}" update="form" immediate="true">
-
-                        </p:commandButton>
+                                         icon="ui-icon-trash" action="#{messageManagement.deleteProduct(product)}" update="form" immediate="true"/>
                     </p:column> 
-
                 </p:dataTable>
             </ui:define>
         </ui:composition>

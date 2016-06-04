@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -31,7 +32,6 @@ import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.dto.UserDTO;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Sex;
-import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 
 @Named
@@ -41,12 +41,6 @@ public class Profile implements Serializable {
     @Inject
     private EntityFacade entityFacade;
 
-    @Inject
-    private DatabaseQuery databaseQuery;
-
-    @Inject
-    private Registration registration;
-
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
@@ -54,7 +48,7 @@ public class Profile implements Serializable {
     private UserDTO userDTO;
     private String oldPassword;
     private final static Enum[] sexes = new Enum[2];
-    
+
     private boolean editMyProfile;
 
     @PostConstruct
@@ -64,7 +58,7 @@ public class Profile implements Serializable {
 
         userDTO = new UserDTO();
         userDTO.setUser(new User());
-        
+
         editMyProfile = true;
     }
 
@@ -75,7 +69,6 @@ public class Profile implements Serializable {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String username = params.get("username");
 
-//        userDTO.setUser(user);
         return "/user/profile?username=" + username + ";faces-redirect=true";
     }
 
@@ -83,51 +76,25 @@ public class Profile implements Serializable {
         editMyProfile = false;
         uploadedFile = null;
         this.user = user;
-//        userDTO.setUser(user);
 
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-//        String username = params.get("username");
-//        System.out.println("Here go to user side. UserID: " + username);
-//        1 is Actor edit it
         return "/user/profile.xhtml?username=" + user.getUsername() + ";faces-redirect=true";
-//        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
 
     public void saveUserData() {
         uploadPicture();
         entityFacade.update(user);
-
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The modification was successful."));
+        
+    }
+    
+    public void updateee(){
+        RequestContext.getCurrentInstance().update("form:profileTab");
     }
 
     public void savePassword() {
-        String passwordFromTable;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        
-        if(editMyProfile)
-            passwordFromTable = entityFacade.read(User.class, user.getUsername()).getPassword();
-        else
-            passwordFromTable = entityFacade.read(User.class, facesContext.getExternalContext().getRemoteUser()).getPassword();
-        
-
-        if (hashPassword(oldPassword).equals(passwordFromTable)) { //ezt tedd egy metódusba és azt hívd meg ajax-al a kliens oldali validáláshoz
-            user.setPassword(hashPassword(userDTO.getPassword()));
-            entityFacade.update(user);
-            facesContext.addMessage(null, new FacesMessage("The password has been changed."));
-        } else {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your password is incorrect.", "Error!"));
-        }
-    }
-
-    public void savePasswordAdmin() {
-        user.setPassword(hashPassword(userDTO.getPassword()));
         entityFacade.update(user);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The password has been changed."));
-    }
-
-    public void saveAdminPassword() {
-        System.out.println("admin vagyok");
+        RequestContext.getCurrentInstance().update("form:tabView:passwordTab");
     }
 
     public void onTabChange(TabChangeEvent event) {
@@ -241,7 +208,7 @@ public class Profile implements Serializable {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             String text = password;
-            md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+            md.update(text.getBytes("UTF-8"));
             byte[] digest = md.digest();
             BigInteger bigInt = new BigInteger(1, digest);
             hashedPassword = bigInt.toString(16);

@@ -5,9 +5,6 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
     <h:body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
@@ -40,8 +37,7 @@
                             </p:outputPanel> 
                         </p:panelGrid> 
                     </p:tab>
-
-
+                    
                     <p:tab title="Series by Director" id="SeriesByDirectorTab">
                         <h1 style="text-align: center;">Series</h1>
                         <h2 style="text-align: center">by Director whose original name equals to their stage name</h2><br/>
@@ -64,7 +60,6 @@
                             </p:outputPanel>
                         </p:panelGrid>
                     </p:tab>
-
 
                     <p:tab title="Series by Number of Episodes" id="SeriesByNumberOfEpisodesTab">
                         <h1 style="text-align: center;">Series</h1>
@@ -91,8 +86,6 @@
                             </p:outputPanel>
                         </p:panelGrid>
                     </p:tab>
-
-
 
                     <p:tab title="Series by Comment Date" id="SeriesByCommentDate">
                         <h1 style="text-align: center;">Series</h1>

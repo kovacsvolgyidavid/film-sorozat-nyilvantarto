@@ -1,6 +1,5 @@
 package xyz.codingmentor.bean;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,19 +21,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-import xyz.codingmentor.collective.dtio.ProductDTO;
 import xyz.codingmentor.dto.UserDTO;
-import xyz.codingmentor.entity.Actor;
-import xyz.codingmentor.entity.Movie;
-import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.enums.Sex;
-import xyz.codingmentor.jms.TopicService;
 import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
 import xyz.codingmentor.service.SeriesFacade;
@@ -58,25 +53,14 @@ public class Registration implements Serializable {
     private UserDTO dtoUser;
     private String connfirmPassword;
     
-//    private ProductDTO productDTO;
-//    
-//    @Inject
-//    TopicService topicService;
-
     @PostConstruct
     public void init() {
         SEXES[0] = Sex.MALE;
         SEXES[1] = Sex.FEMALE;
         dtoUser = new UserDTO();
-        
-
-        
-//        productDTO = new ProductDTO(111L, "BICIKLI");
-//        
-//        topicService.sendMessageToEntityDeleteTopic(productDTO);
     }
 
-    public String signIn() {
+    public String registrate() {
         if (entityFacade.read(User.class, dtoUser.getUser().getUsername()) != null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));           
         } else {
@@ -91,11 +75,16 @@ public class Registration implements Serializable {
             dtoUser.setUser(new User());
             uploadedFile = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration was successful."));
-            return "/login.xhtml";
-            //"/user/profile.xhtml?username=" + user.getUsername() + ";faces-redirect=true";
+            return "/login.xhtml?faces-redirect=true";
         }
         dtoUser = new UserDTO();
         return "";
+    }
+    
+    public String redirectRegistration() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        session.invalidate();
+        return "/registration.xhtml?faces-redirect=true";
     }
 
     public void uploadPicture() {
@@ -146,7 +135,6 @@ public class Registration implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                //image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
@@ -197,42 +185,11 @@ public class Registration implements Serializable {
         this.dtoUser = dtoUser;
     }
 
-    public void konfirm() {
-        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-        UIComponent component = viewRoot.findComponent("registrationform:confirm");
-        String alma = (String)component.getAttributes().get("conf");
-        if(alma.isEmpty())
-            System.out.println("Edd");
-    }
-    
-    public String render(){
-        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-        UIComponent component = viewRoot.findComponent("registrationform:confirm");
-        //String confirm = (String)
-         UIInput start = (UIInput)component.getAttributes().get("conf");
-         String confirm = (String)start.getValue();
-//         System.out.println("edd");
-        if(confirm == null){
-            connfirmPassword = "";
-            return "m_password";
-        }
-        else{
-            
-            return "m_password m_confirm confirm";
-        }
-    }
-    
-        public String render2(){
-        return "m_confirm";
-    }
-
     public String getConnfirmPassword() {
         return connfirmPassword;
     }
 
     public void setConnfirmPassword(String connfirmPassword) {
         this.connfirmPassword = connfirmPassword;
-    }
-        
-        
+    }       
 }

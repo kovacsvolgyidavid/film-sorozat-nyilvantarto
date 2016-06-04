@@ -4,70 +4,75 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:o="http://omnifaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Registration</title>
-    </h:head>
     <h:body>
         <ui:composition template="/template/external-template.xhtml">
             <ui:define name="content">
                 <h:form id="registrationform">
-                    <br/><h1 style="text-align: center">Registration</h1><br/>
+                    <p:tooltip for="name" showDelay="0" style="background-color: black; color: #00a8ea">
+                        <h:outputText value="Examples:"/><br/>
+                        <h:outputText value="&#160;-Andras Kiss"/><br/>
+                        <h:outputText value="&#160;-Hanna Andrea Kovacs"/><br/>
+                        <h:outputText value="&#160;-Zsolt Fazekas-Nagy"/>
+                    </p:tooltip>
+                    
+                    <p:tooltip for="username" showDelay="0" style="background-color: black; color: #00a8ea">
+                        <h:outputText value="Acceptable caracters:"/><br/>
+                        <h:outputText value="&#160;-lowercases"/><br/>
+                        <h:outputText value="&#160;-numbers"/><br/>
+                        <h:outputText value="&#160;-underline"/><br/>
+                        <h:outputText value="&#160;-hyphen"/><br/>
+                        <h:outputText value="The length of the username: 3-15 caracters."/>
+                    </p:tooltip>
+                          
+                    <p:tooltip for="password" showDelay="0" style="background-color: black; color: #00a8ea">
+                        <h:outputText value="The password has to contain at least:"/><br/>
+                        <h:outputText value="&#160;-one number"/><br/>
+                        <h:outputText value="&#160;-one lowercase"/><br/>
+                        <h:outputText value="&#160;-one uppercase"/><br/>
+                        <h:outputText value="The length of the password: 6-20 caracters."/>
+                    </p:tooltip>
+                    
+                   <br/><h1 style="text-align: center">Registration</h1><br/>
 
                     <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
                         <p:outputLabel value="Name: *"/>
                         <p:inputText id="name" value="#{registration.dtoUser.user.name}" required="true" requiredMessage="This field has to be filled."
-                                     validatorMessage="Wrong name format." title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy">
-                            <f:ajax event="blur" execute="name" render="m_name" />
+                                     validatorMessage="Wrong name format.">
+                            <f:ajax event="blur" execute="name" render="name m_name" />
                         </p:inputText>
                         <h:panelGroup/>
                         <p:message id="m_name" for="name" />
 
                         <p:outputLabel value="Username: *" />
-                        <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled."
-                                     title="Acceptable caracters: &#13; -lowercases &#13; -numbers &#13; -underline &#13; -hyphen &#13;The length of the username: 3-15 caracters.">
-                            <f:ajax event="blur" execute="username" render="m_username" />
-                            <f:validateRegex pattern="^[\p{Ll}0-9_-]{3,15}$"/>
+                        <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled.">
+                            <f:ajax event="blur" execute="username" render="username m_username" />
                         </p:inputText>
                         <h:panelGroup/>
                         <p:message id="m_username" for="username"/>
 
-
-
-
-
-
                         <p:outputLabel value="Password:" />
-                        <p:password id="password" value="#{registration.dtoUser.password}" 
-                                    required="true" requiredMessage="This field has to be filled."
-                                    title="The password has to contain at least: &#13; -one number 
-                                    &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
+                        <p:password id="password" value="#{registration.dtoUser.password}" redisplay="true"
+                                    required="true" requiredMessage="This field has to be filled.">
                             <f:validator validatorId="confirmPasswordValidator" />
                             <f:attribute name="confirm" value="#{confirmPassword.submittedValue}" />
-                            <f:ajax event="blur" execute="password confirm" 
-                                    render="m_password" />
+                            <f:ajax event="blur" execute="password confirm" render="password m_password" />
                         </p:password>
                         <h:panelGroup/>
-                        <p:message id="m_password" for="password" />
-
+                        <p:message id="m_password" for="password"/>
 
                         <p:outputLabel value="Confirm Password : *" />
-                        <p:password id="confirm" binding="#{confirmPassword}" 
+                        <p:password id="confirm" binding="#{confirmPassword}" redisplay="true"
                                     required="true" requiredMessage="This field has to be filled.">
-                            <f:ajax event="blur" execute="password confirm" render="m_password m_confirm" />
+                            <f:ajax event="blur" execute="password confirm" render="password confirm m_password m_confirm" />
                         </p:password>
                         <h:panelGroup/>
                         <p:message id="m_confirm" for="confirm" />
-
-
-
+                                             
                         <p:outputLabel value="Date of Birth: *" />
                         <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                     navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100" 
-                                    required="true" requiredMessage="This field has to be filled."
-                                    title="Format: dd/MM/yyyy" >
-<!--                            <f:ajax event="blur" execute="date" render="m_date"/>-->
+                                    required="true" requiredMessage="This field has to be filled.">
                         </p:calendar>    
                         <h:panelGroup/>
                         <p:message id="m_date" for="date" />
@@ -92,8 +97,7 @@
                         <p:graphicImage id="gi" value="#{registration.image}" width="205" height="155" cache="false"/>
 
                         <h:panelGroup/>
-                        <p:commandButton value="Registrate" action="#{registration.signIn()}" ajax="false"/>
-                        <h:commandButton value="klikk" action="#{registration.konfirm()}" immediate="true"/>
+                        <p:commandButton value="Registrate" action="#{registration.registrate()}" ajax="false"/>
                     </p:panelGrid>
                 </h:form>
             </ui:define>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.entity;
 
 import java.io.Serializable;
@@ -11,18 +6,18 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import xyz.codingmentor.collective.enums.Type;
 
-/**
- *
- * @author Józsi
- */
 @Entity
 public class Product implements Serializable{
     @Id
     @GeneratedValue
     private Long id;
     
+    @Min(value = 0, message = "The minimum price is 0.")
+    @Max(value = 10000000, message = "The maximum price is 10000000.")
     private Long price;
     
     @Enumerated(EnumType.STRING)
