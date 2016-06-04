@@ -100,8 +100,9 @@ public class Compare implements Serializable {
           
         }
         else if (comparingSeries.size() == 1) {
-            comparingSeries.add(serie);
-            return goToCompare(comparingSeries.get(0), comparingSeries.get(1));
+            Series firstSeriesToCompare = comparingSeries.get(0);
+            comparingSeries.clear();
+            return goToCompare(firstSeriesToCompare,serie);
         }
         return "series-user.xhtml?faces-redirect=true";
     }
