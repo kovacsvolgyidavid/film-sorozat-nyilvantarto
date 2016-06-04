@@ -20,7 +20,7 @@ import xyz.codingmentor.service.EntityFacade;
 
 /**
  *
- * @author keni
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
  */
 @Named
 @SessionScoped
@@ -52,13 +52,14 @@ public class Compare implements Serializable {
     public void setSeries2(Series series2) {
         this.series2 = series2;
     }
-    
-     public String getSeasonNumber(Series series) {
+
+    public String getSeasonNumber(Series series) {
         if (series.getSeasons() == null) {
             return Integer.toString(0);
         }
         return Integer.toString(series.getSeasons().size());
     }
+
     public StreamedContent getSeries1Image() {
         StreamedContent image;
         try {
@@ -82,24 +83,21 @@ public class Compare implements Serializable {
     }
 
     public String getSeriesTotalEpisodes(Series series) {
-        int seasonCounter=0;
+        int seasonCounter = 0;
         for (Season season : series.getSeasons()) {
-            seasonCounter+=season.getEpisodes().size();
+            seasonCounter += season.getEpisodes().size();
         }
         return Integer.toString(seasonCounter);
     }
-    
-    
+
     public String setComparing(Series serie) {
 
         if (comparingSeries.isEmpty()) {
             comparingSeries.add(serie);
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage
-            ("Comparing " + serie.getTitle() + " to... Please select another item!"));
-          
-        }
-        else if (comparingSeries.size() == 1) {
+            context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
+
+        } else if (comparingSeries.size() == 1) {
             comparingSeries.add(serie);
             return goToCompare(comparingSeries.get(0), comparingSeries.get(1));
         }
@@ -114,9 +112,9 @@ public class Compare implements Serializable {
         return comparingSeries;
     }
 
-    public String goToCompare(Series series1,Series series2){//TODO: mi van ha ugyanaz a két sorozat
-        this.series1=series1;
-        this.series2=series2;
+    public String goToCompare(Series series1, Series series2) {//TODO: mi van ha ugyanaz a két sorozat
+        this.series1 = series1;
+        this.series2 = series2;
         return "/user/compare.xhtml;faces-redirect=true";
     }
 }

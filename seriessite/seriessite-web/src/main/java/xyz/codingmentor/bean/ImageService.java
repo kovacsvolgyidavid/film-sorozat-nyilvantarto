@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.bean;
 
 import java.io.FileInputStream;
@@ -16,7 +11,7 @@ import org.primefaces.model.StreamedContent;
 
 /**
  *
- * @author keni
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
  */
 @Named
 @ApplicationScoped
@@ -30,15 +25,13 @@ public class ImageService {
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
-        }
-        else {
+        } else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String path = context.getExternalContext().getRequestParameterMap().get("path");
             image = new DefaultStreamedContent(new FileInputStream(path));
-            if(image!=null){
+            if (image != null) {
                 return image;
-            }
-            else{
+            } else {
                 return new DefaultStreamedContent(new FileInputStream("/noimages.png"));
             }
         }

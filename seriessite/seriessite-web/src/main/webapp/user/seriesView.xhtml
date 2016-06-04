@@ -8,7 +8,6 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <f:metadata>
@@ -27,61 +26,85 @@ and open the template in the editor.
 
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
-                <table>
-                    <tr>
-                        <td rowspan="4">
-                            <p:graphicImage id="gi" value="#{seriesView.image}" width="230" height="180" cache="false"/>
-                        </td>
+                <style>
+                    .row{
+                        margin: 0 auto;
+                        width: 100%;
+                        padding-left: 30px;
+                        padding-top:30px;
+                        padding-bottom:30px;
+                        margin-bottom:30px;
+                        color:inherit;
+                        background-color: #204d74}
+                    .title{
+                        font-size: 40px;
+                        color: white;}
+                    .jumbotext{
+                        margin-left: 20px;
+                        color: white;
+                    }
+                    .jumboheader{
+                        float: right;
+                        color: white;                          
+                    }
+                    .admin_button{
+                        width: 150px; 
+                        height: 100%; 
+                        border-width: 0px;
+                        text-align: center
+                    }
+                </style>
+                <div class="row">
 
-                        <td>
-                            <h1><h:outputText value="#{seriesView.title}"/></h1>    
-                        </td>
-                        <td>
-                            <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" style=" align-content: center ;width: 150px; height: 100%; border-width: 0px; background-color: deepskyblue"/>
-                        </td>
-                        <td>
-                            <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" style="width: 150px; height: 100%; border-width: 0px; background-color: darkorange">
-                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
-                            </p:commandButton>
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Release date:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.series.yearOfRelease}">
-                                <f:convertDateTime pattern="yyyy"/>
-                            </h:outputText>  
-                        </td>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
+                                        style="float: right; margin-left: 20px"/>
+                    </div>
 
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Seasons:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.seasonNumber}"/>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Episodes:"/>    
-                        </td>
-                        <td>
-                            <h:outputText value="#{seriesView.episodeNumber}"/>    
-                        </td>
-                    </tr>
-                </table>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="text-align: center">
+                        <h:outputText value="#{seriesView.title}" class="title"/> 
+                        <br/>
+                        <h:panelGrid columns="1">
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:outputLabel for="ryear" value="Release date:" class="jumboheader"/>    
+
+                                <h:outputText id="ryear" value="#{seriesView.series.yearOfRelease}" class="jumbotext">
+                                    <f:convertDateTime pattern="yyyy"/>
+                                </h:outputText>  
+
+                                <p:outputLabel for="season" value="Seasons:" class="jumboheader"/>    
+
+                                <h:outputText id="season" value="#{seriesView.seasonNumber}" class="jumbotext"/>    
+
+                                <p:outputLabel for="episodes" value="Episodes:" class="jumboheader"/>    
+
+                                <h:outputText id="episodes" value="#{seriesView.episodeNumber}" class="jumbotext"/> 
+                            </h:panelGrid>
+                            <br/>
+                            <h:outputText value="#{seriesView.series.description}" class="jumbotext"/>
+                        </h:panelGrid>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button" style="background-color: deepskyblue"/>
+                        <BR/>
+                        <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button" style="background-color: darkorange">
+                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog> 
+                    </div>
 
 
-                <h:outputText value="Descritpion:" style="font-size: 25px; font-weight: bold"/>
-                <br/>
-                <h:outputText value="#{seriesView.series.description}" style="width: 50%"/>
+
+
+
+
+
+                </div>
+
 
 
 
