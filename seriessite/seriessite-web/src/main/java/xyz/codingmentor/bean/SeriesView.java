@@ -123,6 +123,7 @@ public class SeriesView implements Serializable {
         addComment.setShow(series);
         series.getComments().add(addComment);
         entityFacade.create(addComment);
+        entityFacade.update(series);
         comment = "";
     }
 
@@ -187,10 +188,6 @@ public class SeriesView implements Serializable {
     public String goToSeriesView(Long id) {
         this.series = entityFacade.read(series.getClass(), id);
         return "/user/seriesView.xhtml;faces-redirect=true";
-    }
-
-    public Series returnSeries() {
-        return entityFacade.read(Series.class, 1L);
     }
 
 }

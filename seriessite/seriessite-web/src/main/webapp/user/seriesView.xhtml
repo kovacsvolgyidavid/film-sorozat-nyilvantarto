@@ -26,6 +26,7 @@ and open the template in the editor.
 
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
+
                 <style>
                     .row{
                         margin: 0 auto;
@@ -34,8 +35,8 @@ and open the template in the editor.
                         padding-top:30px;
                         padding-bottom:30px;
                         margin-bottom:30px;
-                        color:inherit;
-                        background-color: #204d74}
+                        color: inherit;
+                        background-color: #333333}
                     .title{
                         font-size: 40px;
                         color: white;}
@@ -51,17 +52,30 @@ and open the template in the editor.
                         width: 150px; 
                         height: 100%; 
                         border-width: 0px;
-                        text-align: center
+                        text-align: center;
+                    }
+                    .actor-director{
+                        background: #cccccc;
+                    }
+                    .season{
+                        border: transparent; 
+                        width: 75%; 
+                        margin: 0 auto;
+                    }
+                    .tables{
+                        background: yellow !important;
                     }
                 </style>
                 <div class="row">
 
                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
                         <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
                                         style="float: right; margin-left: 20px"/>
+
                     </div>
 
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="text-align: center">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align: center">
                         <h:outputText value="#{seriesView.title}" class="title"/> 
                         <br/>
                         <h:panelGrid columns="1">
@@ -72,9 +86,9 @@ and open the template in the editor.
                                     <f:convertDateTime pattern="yyyy"/>
                                 </h:outputText>  
 
-                                <p:outputLabel for="season" value="Seasons:" class="jumboheader"/>    
+                                <p:outputLabel value="Seasons:" class="jumboheader"/>    
 
-                                <h:outputText id="season" value="#{seriesView.seasonNumber}" class="jumbotext"/>    
+                                <h:outputText value="#{seriesView.seasonNumber}" class="jumbotext"/>    
 
                                 <p:outputLabel for="episodes" value="Episodes:" class="jumboheader"/>    
 
@@ -85,7 +99,7 @@ and open the template in the editor.
                         </h:panelGrid>
                     </div>
 
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                         <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button" style="background-color: deepskyblue"/>
                         <BR/>
                         <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button" style="background-color: darkorange">
@@ -96,60 +110,74 @@ and open the template in the editor.
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog> 
                     </div>
-
-
-
-
-
-
-
                 </div>
-
-
-
-
-
-                <h:outputText style="font-size: 25px; font-weight: bold" value="Seasons:"/>
-                <br/>
-
-                <p:tabView value="#{seriesView.series.seasons}" var="season" 
-                           style="border: transparent; background: transparent; height: 100%; width: 50%">
-                    <p:tab title="#{seriesView.series.seasons.indexOf(season)+1}">
-                        <p:dataTable value="#{season.episodes}" var="episode" 
-                                     style="text-align: center; width: 100%">
-                            <p:column headerText="Nu." style="width: 5%">
-                                #{season.episodes.indexOf(episode)+1}
-                            </p:column>
-                            <p:column headerText="Title">
-                                #{episode.title}
-                            </p:column>
-                            <p:column headerText="Release Date" style="width: 35%">
-                                <h:outputText value="#{episode.dateOfRelease}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                    </p:tab>
-                </p:tabView>              
-                <br/>
-                <br/>
-                <p:panelGrid columns="2">
-                    <p:dataTable value="#{seriesView.actors}" var="actor" style="text-align: center">
-                        <p:column headerText="Actors">
-                            #{actor.name}
-                        </p:column>
-                    </p:dataTable>
-                    <p:dataTable value="#{seriesView.directors}" var="director" style="text-align: center;">
-                        <p:column headerText="Directors">
-                            #{director.name}
-                        </p:column>
-                    </p:dataTable>
-                </p:panelGrid>
-                <br/>
-                <br/>
-
-                <h:outputText value="Comments:" style="font-size: 25px; font-weight: bold"/>
+                <div class="row" style="background: white;">
+                    <div class="col-12">
+                        <p:outputLabel for="season" style="margin-left: 12.5%; font-size: 25px; font-weight: bold" value="Seasons:"/>
+                        <p:tabView id="season" value="#{seriesView.series.seasons}" var="season" class="season">
+                            <p:tab title="#{seriesView.series.seasons.indexOf(season)+1}">
+                                <p:dataTable value="#{season.episodes}" var="episode" 
+                                             style="text-align: center; width: 100%" tableStyleClass="tables">
+                                    <p:column headerText="Nu." style="width: 5%">
+                                        #{season.episodes.indexOf(episode)+1}
+                                    </p:column>
+                                    <p:column headerText="Title">
+                                        #{episode.title}
+                                    </p:column>
+                                    <p:column headerText="Release Date" style="width: 35%">
+                                        <h:outputText value="#{episode.dateOfRelease}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                        </p:tabView> 
+                    </div>
+                    <div class="col-lg-4 col-lg-offset-1 col-md-6">
+                        <p:dataScroller value="#{seriesView.actors}" var="actor" 
+                                        chunkSize="3" class="actor-director">
+                            <f:facet name="header">
+                                Actors
+                            </f:facet>
+                            <f:facet name="loader">
+                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"/>
+                            </f:facet>
+                            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                                <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
+                                    <f:param name="path" value="#{actor.pathOfPhoto}"/>
+                                </p:graphicImage>
+                                <p:outputPanel>                             
+                                    <h:outputText value="#{actor.name}" style="font-weight: bold"/>
+                                </p:outputPanel>
+                            </h:panelGrid>
+                        </p:dataScroller> 
+                    </div>
+                    <div class="col-lg-4 col-lg-offset-1 col-md-6">
+                        <p:dataScroller value="#{seriesView.directors}" var="director" chunkSize="3"
+                                        class="actor-director">
+                            <f:facet name="header">
+                                Directors
+                            </f:facet>
+                            <f:facet name="loader">
+                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"/>
+                            </f:facet>
+                            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                                <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
+                                    <f:param name="path" value="#{director.pathOfPhoto}"/>
+                                </p:graphicImage>
+                                <p:outputPanel>                             
+                                    <h:outputText value="#{director.name}" style="font-weight: bold"/>
+                                </p:outputPanel>
+                            </h:panelGrid>
+                        </p:dataScroller>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="col-lg-8">
+                        <h:panelGrid columns="1" style="margin-left:0%; width: 75%">
+                         <h:outputText value="Comments:" style="font-size: 25px; font-weight: bold"/>
                 <ui:repeat value="#{seriesView.comments}" var="comment">
+                     
                     <h:panelGrid columns="2" style="margin-left: 25px">
                         <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
                             <f:param name="path" value="#{comment.user.pathOfPhoto}"/>
@@ -174,6 +202,13 @@ and open the template in the editor.
                         </p:commandButton>
                     </h:panelGroup>
                 </h:panelGrid>
+                         </h:panelGrid>
+                    </div>
+                <br/>
+                <br/>
+</div>
+               
+
             </ui:define>
         </ui:composition>
         <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>
