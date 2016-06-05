@@ -36,7 +36,7 @@ and open the template in the editor.
                         padding-bottom:30px;
                         margin-bottom:30px;
                         color: inherit;
-                        background-color: #333333}
+                    }
                     .title{
                         font-size: 40px;
                         color: white;}
@@ -66,12 +66,13 @@ and open the template in the editor.
                         background: yellow !important;
                     }
                 </style>
+                    <div style="background-image: url('#{request.contextPath}/resources/backgrounds/seriesview.jpg'); background-repeat: no-repeat; background-size: cover" class="img-responsive">
                 <div class="row">
 
                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 
                         <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
-                                        style="float: right; margin-left: 20px"/>
+                                        class="img-responsive" style="margin: 0 auto"/>
 
                     </div>
 
@@ -100,9 +101,9 @@ and open the template in the editor.
                     </div>
 
                     <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-                        <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button" style="background-color: deepskyblue"/>
+                        <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: deepskyblue"/>
                         <BR/>
-                        <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button" style="background-color: darkorange">
+                        <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: darkorange">
                             <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -111,6 +112,7 @@ and open the template in the editor.
                         </p:confirmDialog> 
                     </div>
                 </div>
+                        </div>
                 <div class="row" style="background: white;">
                     <div class="col-12">
                         <p:outputLabel for="season" style="margin-left: 12.5%; font-size: 25px; font-weight: bold" value="Seasons:"/>
@@ -173,41 +175,41 @@ and open the template in the editor.
                     </div>
                     <br/>
                     <br/>
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <h:panelGrid columns="1" style="margin-left:0%; width: 75%">
-                         <h:outputText value="Comments:" style="font-size: 25px; font-weight: bold"/>
-                <ui:repeat value="#{seriesView.comments}" var="comment">
-                     
-                    <h:panelGrid columns="2" style="margin-left: 25px">
-                        <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
-                            <f:param name="path" value="#{comment.user.pathOfPhoto}"/>
-                        </p:graphicImage>
-                        <h:panelGroup> 
-                            <p:outputLabel value="#{comment.user.name}:" style="font-weight: bold; font-size: 20px; margin-left: 15px"/>
-                            <br/>
-                            <h:outputText value="#{comment.content}" style="margin-left: 25px"/>
-                        </h:panelGroup> 
-                    </h:panelGrid>
-                    <br/>
-                </ui:repeat>
-                <h:panelGrid columns="2">
-                    <p:inputTextarea value="#{seriesView.comment}" maxlength="255" cols="60"/>
-                    <h:panelGroup>
-                        <p:commandButton value="Submit" update="form" action="#{seriesView.addComment()}" ajax="false" style="width: 100%">
-                            <p:ajax update="form"/>
-                        </p:commandButton>
-                        <br/>
-                        <p:commandButton value="Clear" update="form" style="width: 100%">
-                            <p:ajax listener="#{seriesView.setComment('')}" update="form"/>
-                        </p:commandButton>
-                    </h:panelGroup>
-                </h:panelGrid>
-                         </h:panelGrid>
+                            <h:outputText value="Comments:" style="font-size: 25px; font-weight: bold"/>
+                            <ui:repeat value="#{seriesView.comments}" var="comment">
+
+                                <h:panelGrid columns="2" style="margin-left: 25px">
+                                    <p:graphicImage value="#{imageService.image}" height="72" width="60" cache="false">
+                                        <f:param name="path" value="#{comment.user.pathOfPhoto}"/>
+                                    </p:graphicImage>
+                                    <h:panelGroup> 
+                                        <p:outputLabel value="#{comment.user.name}:" style="font-weight: bold; font-size: 20px; margin-left: 15px"/>
+                                        <br/>
+                                        <h:outputText value="#{comment.content}" style="margin-left: 25px"/>
+                                    </h:panelGroup> 
+                                </h:panelGrid>
+                                <br/>
+                            </ui:repeat>
+                            <h:panelGrid columns="2">
+                                <p:inputTextarea value="#{seriesView.comment}" maxlength="255" cols="60"/>
+                                <h:panelGroup>
+                                    <p:commandButton value="Submit" update="form" action="#{seriesView.addComment()}" ajax="false" style="width: 100%">
+                                        <p:ajax update="form"/>
+                                    </p:commandButton>
+                                    <br/>
+                                    <p:commandButton value="Clear" update="form" style="width: 100%">
+                                        <p:ajax listener="#{seriesView.setComment('')}" update="form"/>
+                                    </p:commandButton>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </h:panelGrid>
                     </div>
-                <br/>
-                <br/>
-</div>
-               
+                    <br/>
+                    <br/>
+                </div>
+
 
             </ui:define>
         </ui:composition>

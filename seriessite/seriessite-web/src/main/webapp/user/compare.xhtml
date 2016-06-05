@@ -29,8 +29,9 @@ and open the template in the editor.
     <body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
-                <p:panelGrid columns="2" style="margin: 0 auto; width: 100%" class="alignTop">
-                    <h:panelGrid style="width: 100%; padding-top: auto; vertical-align: top">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                      <h:panelGrid style="width: 100%; padding-top: auto; float: top" >
                         <h:outputText value="#{compare.series1.title}" style="font-size: 30px; font-weight: bold"/>
                         <p:graphicImage id="gi" value="#{compare.series1Image}" width="230" height="180" cache="false"/>
                         <h:panelGroup>
@@ -90,8 +91,10 @@ and open the template in the editor.
                                 </p:dataTable>
                             </h:panelGroup>
                         </p:panelGrid>
-                    </h:panelGrid>
-                    <h:panelGrid style="width: 100%; vertical-align: top" styleClass="gridtop">
+                    </h:panelGrid>  
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                         <h:panelGrid style="width: 100%; float: top" styleClass="gridtop">
                         <h:outputText value="#{compare.series2.title}" style="font-size: 30px; font-weight: bold"/>
                         <p:graphicImage id="gi2" value="#{compare.series2Image}" width="230" height="180" cache="false"/>
                         <h:panelGroup>
@@ -152,7 +155,11 @@ and open the template in the editor.
                             </h:panelGroup>
                         </p:panelGrid>
                     </h:panelGrid>
-                </p:panelGrid>
+               
+                    </div>
+                </div>
+                    
+                   
             </ui:define>
         </ui:composition>
         <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>

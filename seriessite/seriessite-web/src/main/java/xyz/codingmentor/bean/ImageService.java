@@ -1,7 +1,11 @@
 package xyz.codingmentor.bean;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -23,18 +27,17 @@ public class ImageService {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
         } else {
-            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String path = context.getExternalContext().getRequestParameterMap().get("path");
-            image = new DefaultStreamedContent(new FileInputStream(path));
-            if (image != null) {
-                return image;
+            if (path.equals("user.jpg") || path == null) {
+                ClassLoader classLoader = getClass().getClassLoader();
+                File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
+                image = new DefaultStreamedContent(new FileInputStream(noPicture));
             } else {
-                return new DefaultStreamedContent(new FileInputStream("/noimages.png"));
+                image = new DefaultStreamedContent(new FileInputStream(path));
             }
+            return image;
         }
     }
-
 }

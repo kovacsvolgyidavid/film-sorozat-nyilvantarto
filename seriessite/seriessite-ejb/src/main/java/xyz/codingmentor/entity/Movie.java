@@ -49,7 +49,7 @@ public class Movie implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> movieactors;
 
-    @OneToMany(mappedBy = "show", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "show", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments;
 
     private String description;
