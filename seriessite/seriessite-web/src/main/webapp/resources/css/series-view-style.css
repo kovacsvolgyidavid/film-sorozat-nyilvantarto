@@ -22,6 +22,9 @@
     float: right;
     color: white;                          
 }
+textarea {
+color: red;
+}
 .admin_button{
     width: 100%; 
     height: 100%; 
