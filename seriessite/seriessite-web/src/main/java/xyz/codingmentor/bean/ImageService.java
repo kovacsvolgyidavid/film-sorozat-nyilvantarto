@@ -2,10 +2,7 @@ package xyz.codingmentor.bean;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -30,7 +27,7 @@ public class ImageService {
             return new DefaultStreamedContent();
         } else {
             String path = context.getExternalContext().getRequestParameterMap().get("path");
-            if (path.equals("user.jpg") || path == null) {
+            if (path.equals("user.jpg") || path.equals("")) {
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
