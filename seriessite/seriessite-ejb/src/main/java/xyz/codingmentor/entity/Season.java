@@ -3,6 +3,8 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +29,7 @@ public class Season implements Serializable {
     @JoinColumn(name = "SERIES_ID"/*, nullable = false*/)
     private Series series;
 
-    @OneToMany(mappedBy = "season")
+    @OneToMany(mappedBy = "season",cascade = CascadeType.ALL)
     private List<Episode> episodes;
 
     @Column(name = "SERIAL_NUMBER")
@@ -99,4 +101,39 @@ public class Season implements Serializable {
     public void setLinkOfPromoVideo(String linkOfPromoVideo) {
         this.linkOfPromoVideo = linkOfPromoVideo;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.title);
+        hash = 97 * hash + Objects.hashCode(this.serialNumber);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Season other = (Season) obj;
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        if (!Objects.equals(this.serialNumber, other.serialNumber)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
