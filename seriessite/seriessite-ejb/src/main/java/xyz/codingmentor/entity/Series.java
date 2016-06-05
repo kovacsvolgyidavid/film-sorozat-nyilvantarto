@@ -48,6 +48,9 @@ public class Series extends Movie implements Serializable {
     @ManyToMany
     private List<Director> seriesdirectors;
 
+    public Series() {
+        //it is bean
+    }
 
     
     public List<Actor> getActors() {
@@ -67,13 +70,8 @@ public class Series extends Movie implements Serializable {
         this.seasons = seasons;
     }
 
-    public Series() {
-        //it is bean
-    }
-
     @Override
     public String toString() {
-//        return "Series{" + "seasons=" + seasons + '}';
         return getId() + "    " + getTitle();
     }
   
@@ -91,12 +89,12 @@ public class Series extends Movie implements Serializable {
 
     @Override
     public String getTitle() {
-        return super.getTitle(); //To change body of generated methods, choose Tools | Templates.
+        return super.getTitle();
     }
 
     @Override
     public Long getId() {
-        return super.getId(); //To change body of generated methods, choose Tools | Templates.
+        return super.getId();
     }
 
   

@@ -43,15 +43,8 @@ public class Usermanagement implements Serializable {
         return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
 
-    public boolean isUserLoggedIn() {
-        String user = this.getUsername();
-        boolean result = !((user == null) || user.isEmpty());
-        return result;
-    }
-
     public static String getUsername() {
-        String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        return user;
+        return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
 
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.service;
 
 import java.util.ArrayList;
@@ -68,16 +63,10 @@ public class SeriesFacade {
         TypedQuery<Actor> findAllActor = em.createNamedQuery("Actor.findAll", Actor.class);
         List<Actor> actorsAll = findAllActor.getResultList();
 
-//        LOG.info("getActorListNotInSeries Size of actorsAll: " + actorsAll.size());
         TypedQuery<Actor> findActorsInSeries = em.createNamedQuery("Series.findActorsBySeriesId", Actor.class);
         findActorsInSeries.setParameter("id", seriesId);
         List<Actor> actorsInSeries = findActorsInSeries.getResultList();
-
-//        LOG.info("getActorListNotInSeries Size of actorsInSeries: " + actorsInSeries.size());
-        // Remove all elements in firstList from secondList
         actorsAll.removeAll(actorsInSeries);
-
-//        LOG.info("getActorListNotInSeries Size of : " + actorsAll.size());
         return actorsAll;
     }
 

@@ -5,15 +5,12 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
     <h:body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
                 <p:tabView id="tabView" style="border: none">
 
-                    <p:ajax event="tabChange" listener="#{queries.onTabChange}" update="form"/>
+                    <p:ajax event="tabChange" listener="#{queries.onTabChange}" update="form" resetValues="true"/>
                     <p:tab title="Actors by Series" id="ActorsBySeriesTab">
                         <h1 style="text-align: center;">Actors</h1>
                         <h2 style="text-align: center">from series after the given date</h2><br/><br/>
@@ -21,8 +18,7 @@
                             <p:outputLabel value="Date: " />
                             <p:calendar id="date" value="#{queries.date}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1900" maxdate="20/05/2016" yearRange="c-120:c+100" 
-                                        required="true" requiredMessage="This field has to be filled."
-                                        title="Format: dd/MM/yyyy" />
+                                        required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
                             <p:message for="date"/>
                             <h:panelGroup/>
@@ -30,17 +26,17 @@
                                              process="ActorsBySeriesTab" update="form"/>
                         </p:panelGrid>
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="actor" value="#{queries.actors}">
-                                    <p:commandLink value="#{actor.name}, "/>
+                                    <p:commandLink value="#{actor.name}"/>
+                                    <br/>
                                 </ui:repeat>
                             </p:outputPanel> 
                         </p:panelGrid> 
                     </p:tab>
-
-
+                    
                     <p:tab title="Series by Director" id="SeriesByDirectorTab">
                         <h1 style="text-align: center;">Series</h1>
                         <h2 style="text-align: center">by Director whose original name equals to their stage name</h2><br/>
@@ -51,43 +47,49 @@
                         </div>
 
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}" >
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, " >
                                         <f:param name="seriesid" value="#{s.id}" />
-                                    </p:link>                                </ui:repeat>
+                                    </p:link>
+                                    <br/>
+                                </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
                     </p:tab>
-
 
                     <p:tab title="Series by Number of Episodes" id="SeriesByNumberOfEpisodesTab">
                         <h1 style="text-align: center;">Series</h1>
                         <h2 style="text-align: center">with more episode </h2><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Number of episodes: " />
-                            <p:inputText id="noe" value="#{queries.numberOfEpisodes}"/>
+                            <p:inputText id="noe" value="#{queries.numberOfEpisodes}"
+                                         converterMessage="Format: integer between 0-10000."
+                                         validatorMessage="Format: integer between 0-10000.">
+                                <f:validateLongRange minimum="0" maximum="10000" />
+                                <p:ajax event="blur" update="noe m_noe" />
+                            </p:inputText>
                             <h:panelGroup/>
-                            <p:message for="noe"/>
+                            <p:message id="m_noe" for="noe"/>
                             <h:panelGroup/>
                             <p:commandButton value="Search" action="#{queries.seriesWithMoreEpisode()}" 
                                              process="SeriesByNumberOfEpisodesTab" update="form"/>
                         </p:panelGrid>
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
                                     <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
                                         <f:param name="seriesid" value="#{s.id}" />
-                                    </p:link>                                </ui:repeat>
+                                    </p:link>
+                                    <br/>
+                                </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
                     </p:tab>
-
-
 
                     <p:tab title="Series by Comment Date" id="SeriesByCommentDate">
                         <h1 style="text-align: center;">Series</h1>
@@ -96,8 +98,7 @@
                             <p:outputLabel value="Date: " />
                             <p:calendar id="commentDate" value="#{queries.date}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1900" maxdate="20/05/2016" yearRange="c-120:c+100" 
-                                        required="true" requiredMessage="This field has to be filled."
-                                        title="Format: dd/MM/yyyy" />
+                                        required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
                             <p:message for="commentDate"/>
                             <h:panelGroup/>
@@ -105,17 +106,17 @@
                                              process="SeriesByCommentDate" update="form"/>
                         </p:panelGrid>
                         <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 60%;" styleClass="ui-noborder">
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, ">
                                         <f:param name="seriesid" value="#{s.id}" />
                                     </p:link>
+                                    <br/>
                                 </ui:repeat>
                             </p:outputPanel>
                         </p:panelGrid>
-
                     </p:tab>
                 </p:tabView>
             </ui:define>
