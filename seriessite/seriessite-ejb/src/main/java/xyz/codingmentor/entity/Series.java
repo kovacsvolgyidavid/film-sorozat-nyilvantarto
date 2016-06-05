@@ -3,6 +3,7 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,12 +29,14 @@ import javax.persistence.CascadeType;
 })
 public class Series extends Movie implements Serializable {
 
-    @OneToMany(mappedBy = "series")
+    @OneToMany(mappedBy = "series", cascade = {CascadeType.PERSIST,CascadeType.MERGE } )
     private List<Season> seasons;
 
     @Column(length = 1000)
     private String description;
 
+    private static final Logger LOG = Logger.getLogger(Series.class.getName());
+    
     @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE } )
     @JoinTable(name = "SERIES_ACTOR", 
             joinColumns = @JoinColumn(name = "SERIES_ID"),
@@ -72,6 +75,7 @@ public class Series extends Movie implements Serializable {
     }
 
     public void setDescription(String description) {
+        LOG.info("setDescription");
         this.description = description;
     }
 

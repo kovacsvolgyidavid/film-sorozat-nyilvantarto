@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Movie implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE })
     @JoinTable(name = "MOVIE_DIRECTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))

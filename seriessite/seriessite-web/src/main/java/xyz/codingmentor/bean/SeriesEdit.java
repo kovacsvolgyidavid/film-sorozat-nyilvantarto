@@ -46,11 +46,13 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.imageio.ImageIO;
 import org.apache.commons.lang3.SystemUtils;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+import org.primefaces.component.tabview.TabView;
 import org.primefaces.context.RequestContext;
-import xyz.codingmentor.bean.picture.NewClass;
+import org.primefaces.event.TabChangeEvent;
 import xyz.codingmentor.bean.picture.PictureHandler;
 import xyz.codingmentor.entity.Episode;
 import xyz.codingmentor.entity.Season;
+import xyz.codingmentor.enums.Sex;
 import xyz.codingmentor.service.ActorFacade;
 
 @Named
@@ -74,22 +76,31 @@ public class SeriesEdit implements Serializable {
     private String actorId;
 
     private Season newSeason;
+    private Episode newEpisode;
+    private Season selectedSeason;
+    private Integer activeIndexToTabView;
 
     @PostConstruct
     public void init() {
         LOG.info("init() function");
         series = new Series();
         actorListNotInSeries = new ArrayList<>();
+        
         newActor = new Actor();
         newSeason = new Season();
+        newEpisode = new Episode();
+
+        selectedSeason = new Season();
+
         idOfSeries = "1";
         pictureHandler = new PictureHandler("/series/");
+ 
 
         String homeDirectoryNameInUbuntu = System.getProperty("user.home");
         PATH = "/home/" + homeDirectoryNameInUbuntu + "/series/";
 
+        activeIndexToTabView = 0;
         loadDatabaseData();
-//        loadDatabaseData(new ActionEvent());
     }
 
 //    public void loadDatabaseData(ComponentSystemEvent event) {
@@ -105,6 +116,16 @@ public class SeriesEdit implements Serializable {
             series = seriesFacade.findSeriesById(idOfSeries2);
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
+    }
+    
+    public String goToSeriesEditSite() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        Map<String, String> params
+                = context.getExternalContext().getRequestParameterMap();
+        String id = params.get("seriesId");
+
+        return "seriesEdit.xhtml/?id=" + id + ";faces-redirect=true";
     }
 
     public String goToActorEditSite() {
@@ -162,6 +183,9 @@ public class SeriesEdit implements Serializable {
 
     public void addExistingActorToSeries() {
         LOG.info("addExistingActorToSeries");
+        if(actorId == "" || actorId == null){
+            LOG.info("addExistingActorToSeries. actorId is \"\" or null");
+        }
         Actor actor = searchActorById(actorListNotInSeries, actorId);
         actorListNotInSeries.remove(actor);
         series.getActors().add(actor);
@@ -185,6 +209,17 @@ public class SeriesEdit implements Serializable {
         newActor = new Actor();
     }
 
+    public void initialNewSeason() {
+        LOG.info("initalNewSeason");
+        newSeason = new Season();
+    }
+
+    public void initialNewEpisode(Season season) {
+        LOG.info("initalNewSeason");
+        newEpisode = new Episode();
+        selectedSeason = season;
+    }
+
     public void removeActorFromSeries(Actor actor) {
         series.getActors().remove(actor);
         actorListNotInSeries.add(actor);
@@ -193,7 +228,7 @@ public class SeriesEdit implements Serializable {
     public void saveSeries() {
         LOG.info("saveSeries");
         String nameOfPhoto = series.getTitle() + series.getId();
-        saveImageToDirectory(nameOfPhoto);
+//        saveImageToDirectory(nameOfPhoto);
         series.setPathOfPhoto(nameOfPhoto);
         seriesFacade.saveSeries(series);
         LOG.info("linux? " + SystemUtils.IS_OS_LINUX);
@@ -259,7 +294,10 @@ public class SeriesEdit implements Serializable {
     }
 
     public void deleteSeasion(Season season) {
+        LOG.info("deleteSeasion");
+        LOG.info("akt season" + season.toString());
         for (Season s : series.getSeasons()) {
+              LOG.info("in for, season" + season.toString());
             if (s.equals(season)) {
                 series.getSeasons().remove(season);
                 return;
@@ -280,6 +318,24 @@ public class SeriesEdit implements Serializable {
     public void addNewSeason() {
         LOG.info("addSeason fg");
         series.getSeasons().add(newSeason);
+    }
+
+    public void addNewEpisode() {
+        LOG.info("addNewEpisode");
+        //        newEpisode.setSeason(selectedSeason);
+        
+        List<Season> seasons = series.getSeasons();
+        for (Season season : seasons) {
+            if (season.equals(selectedSeason)){
+                if(null == season.getEpisodes()){
+                    LOG.info("addNewEpisode. Season.getEpisodes() was null ");
+                    season.setEpisodes(new ArrayList<Episode>());
+                }
+                season.getEpisodes().add(newEpisode);
+                return;
+            }
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -346,12 +402,11 @@ public class SeriesEdit implements Serializable {
                 try {
                     img = ImageIO.read(new File(PATH + series.getTitle() + series.getId()));
 
-                    
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     ImageIO.write(img, "jpg", os);
                     InputStream is = new ByteArrayInputStream(os.toByteArray());
-                    image = new DefaultStreamedContent(is, PATH + series.getTitle() + series.getId()+".jpg");
-                            
+                    image = new DefaultStreamedContent(is, PATH + series.getTitle() + series.getId() + ".jpg");
+
                 } catch (IOException e) {
                     LOG.info("getImage Exceptin3");
                 }
@@ -384,5 +439,37 @@ public class SeriesEdit implements Serializable {
     public void setImage(StreamedContent image) {
         this.image = image;
     }
+
+    public Episode getNewEpisode() {
+        return newEpisode;
+    }
+
+    public void setNewEpisode(Episode newEpisode) {
+        this.newEpisode = newEpisode;
+    }
+    
+    public Sex getMale(){
+        return Sex.MALE;
+    }
+    
+    public Sex getFemale(){
+        return Sex.FEMALE;
+    }
+
+    public Integer getActiveIndexToTabView() {
+        return activeIndexToTabView;
+    }
+
+    public void setActiveIndexToTabView(Integer activeIndexToTabView) {
+        this.activeIndexToTabView = activeIndexToTabView;
+    }
+    
+     public void onTabChange(TabChangeEvent event) 
+    {   
+        TabView tabView = (TabView) event.getComponent();
+        activeIndexToTabView = tabView.getChildren().indexOf(event.getTab());
+    }
+    
+    
 
 }
