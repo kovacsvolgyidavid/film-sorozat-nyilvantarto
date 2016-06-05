@@ -1,8 +1,6 @@
 package xyz.codingmentor;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -13,31 +11,20 @@ import xyz.codingmentor.jms.TopicService;
 
 @Named
 @SessionScoped
-public class Bean implements Serializable {
+public class TopicSubscription implements Serializable {
 
     @Inject
     TopicService topicService;
 
     private ProductDTO productDTO;
-
-    private Long price;
     
     private Type type;
-    private static Enum[] types;
+    private Enum[] types;
 
     @PostConstruct
     public void init() {
         types = Type.class.getEnumConstants();
         productDTO = new ProductDTO();
-
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
     }
 
     public String subscribeForTopicDelete() {
@@ -61,8 +48,8 @@ public class Bean implements Serializable {
         this.type = type;
     }
     
-    public List<Enum> getTypes() {
-        return Arrays.asList(types);
+    public Enum[] getTypes() {
+        return types;
     }
 
     public ProductDTO getProductDTO() {

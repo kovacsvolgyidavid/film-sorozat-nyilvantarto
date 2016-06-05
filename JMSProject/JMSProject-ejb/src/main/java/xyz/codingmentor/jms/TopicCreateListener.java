@@ -26,7 +26,7 @@ public class TopicCreateListener implements MessageListener {
                     productDTO.getPrice() < topicService.getExpectedProductDTO().getPrice() &&
                     productDTO.getType().equals(topicService.getExpectedProductDTO().getType())) {
 
-                topicService.addDeletedproductDTO(productDTO);
+                topicService.addProductDTO(productDTO);
 
                 LOGGER.info("====================================\n"
                         + "One product has been created:\n"

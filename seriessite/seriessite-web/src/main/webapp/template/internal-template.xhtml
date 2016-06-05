@@ -15,7 +15,7 @@
     </h:head>
     <h:body>
         <h:form id="form" style="height: 100%;">
-            <p:growl id="grow" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+            <p:growl id="growl" sticky="false" rendered="#{not facesContext.validationFailed}"/>
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -35,7 +35,6 @@
                             <li><p:commandLink value=" Messages" action="/messagemanagement.xhtml?faces-redirect=true" style="height:50px;" 
                                                class="glyphicon glyphicon-leaf" immediate="true" 
                                                rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/></li>
-
                             <p class="navbar-text glyphicon glyphicon-heart" style="font-size: medium;"> 
                                 Today's visitors: #{usermanagement.visitorCounter.visitor}</p> 
                         </ul>

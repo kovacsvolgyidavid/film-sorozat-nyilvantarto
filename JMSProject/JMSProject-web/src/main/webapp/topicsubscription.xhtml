@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Topic Subscription</title>
     </h:head>
     <h:body>
         <h:form>
@@ -27,19 +27,22 @@
                 
                 <h:panelGrid columns="2" style="margin: 0 auto; text-align: left;" styleClass="ui-noborder" columnClasses="innercolumn1, innercolumn2">
                     <p:outputLabel value="Maximum price: "/>
-                    <p:inputText id="price" value="#{bean.productDTO.price}"/>
+                    <p:inputText id="price" value="#{topicSubscription.productDTO.price}" required="true" requiredMessage="This field has to be filled."
+                                 converterMessage="Format: integer between 0-10000000.">
+                        <p:ajax event="blur" update="price priceMessage" />       
+                    </p:inputText>
                     <h:panelGroup/>
-                    <p:message for="price"/>
+                    <p:message id="priceMessage" for="price"/>
 
                     <p:outputLabel value="Type: "/>
-                    <p:selectOneMenu value="#{bean.productDTO.type}">
-                        <f:selectItems value="#{bean.types}" var="type" itemLabel="#{type}" itemValue="#{type}" />
+                    <p:selectOneMenu value="#{topicSubscription.productDTO.type}">
+                        <f:selectItems value="#{topicSubscription.types}" var="type" itemLabel="#{type}" itemValue="#{type}" />
                     </p:selectOneMenu>
                     <h:panelGroup/>
-                    <p:commandButton value="Create" action="#{bean.subscribeForTopicCreate()}"/><br/>
+                    <p:commandButton value="Create" action="#{topicSubscription.subscribeForTopicCreate()}"/><br/>
                 </h:panelGrid>
                     
-                <p:commandButton value="Delete" action="#{bean.subscribeForTopicDelete()}" immediate="true"/>
+                <p:commandButton value="Delete" action="#{topicSubscription.subscribeForTopicDelete()}" immediate="true"/>
                 
             </h:panelGrid>
 

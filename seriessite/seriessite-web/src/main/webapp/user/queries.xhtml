@@ -10,7 +10,7 @@
             <ui:define name="content">
                 <p:tabView id="tabView" style="border: none">
 
-                    <p:ajax event="tabChange" listener="#{queries.onTabChange}" update="form"/>
+                    <p:ajax event="tabChange" listener="#{queries.onTabChange}" update="form" resetValues="true"/>
                     <p:tab title="Actors by Series" id="ActorsBySeriesTab">
                         <h1 style="text-align: center;">Actors</h1>
                         <h2 style="text-align: center">from series after the given date</h2><br/><br/>
@@ -18,8 +18,7 @@
                             <p:outputLabel value="Date: " />
                             <p:calendar id="date" value="#{queries.date}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1900" maxdate="20/05/2016" yearRange="c-120:c+100" 
-                                        required="true" requiredMessage="This field has to be filled."
-                                        title="Format: dd/MM/yyyy" />
+                                        required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
                             <p:message for="date"/>
                             <h:panelGroup/>
@@ -66,9 +65,14 @@
                         <h2 style="text-align: center">with more episode </h2><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Number of episodes: " />
-                            <p:inputText id="noe" value="#{queries.numberOfEpisodes}"/>
+                            <p:inputText id="noe" value="#{queries.numberOfEpisodes}"
+                                         converterMessage="Format: integer between 0-10000."
+                                         validatorMessage="Format: integer between 0-10000.">
+                                <f:validateLongRange minimum="0" maximum="10000" />
+                                <p:ajax event="blur" update="noe m_noe" />
+                            </p:inputText>
                             <h:panelGroup/>
-                            <p:message for="noe"/>
+                            <p:message id="m_noe" for="noe"/>
                             <h:panelGroup/>
                             <p:commandButton value="Search" action="#{queries.seriesWithMoreEpisode()}" 
                                              process="SeriesByNumberOfEpisodesTab" update="form"/>
@@ -94,8 +98,7 @@
                             <p:outputLabel value="Date: " />
                             <p:calendar id="commentDate" value="#{queries.date}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1900" maxdate="20/05/2016" yearRange="c-120:c+100" 
-                                        required="true" requiredMessage="This field has to be filled."
-                                        title="Format: dd/MM/yyyy" />
+                                        required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
                             <p:message for="commentDate"/>
                             <h:panelGroup/>

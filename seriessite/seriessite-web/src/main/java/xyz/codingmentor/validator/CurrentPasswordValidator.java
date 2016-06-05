@@ -1,5 +1,11 @@
 package xyz.codingmentor.validator;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,8 +37,25 @@ public class CurrentPasswordValidator implements Validator{
             passwordFromTable = entityFacade.read(User.class, facesContext.getExternalContext().getRemoteUser()).getPassword();
         }
 
-        if (!profile.hashPassword(oldPassword).equals(passwordFromTable)) {
+        if (!hashPassword(oldPassword).equals(passwordFromTable)) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your password is incorrect."));  
         }                
-    }  
+    }
+    
+    public String hashPassword(String password) {
+        String hashedPassword = null;
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            String text = password;
+            md.update(text.getBytes("UTF-8"));
+            byte[] digest = md.digest();
+            BigInteger bigInt = new BigInteger(1, digest);
+            hashedPassword = bigInt.toString(16);
+
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hashedPassword;
+    }
 }

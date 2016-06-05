@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.bean;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -25,7 +19,7 @@ public class MessageManagement implements Serializable {
     @Inject
     private EntityFacade entityFacade;
 
-    private static Enum[] types;
+    private Enum[] types;
     private Product product;
     private Type type;
     private List<Product> products;
@@ -39,14 +33,13 @@ public class MessageManagement implements Serializable {
     public void init() {
         product = new Product();
         types = Type.class.getEnumConstants();
-        //createProducts();
         products = entityFacade.findAll(Product.class);
     }
     
     public void addProduct() {
         products.add(product);
         entityFacade.create(product);
-        
+
         productDTO = new ProductDTO(product.getPrice(), product.getType().toString());
         topicService.sendMessageToEntityCreateTopic(productDTO);
         
@@ -61,44 +54,6 @@ public class MessageManagement implements Serializable {
         productDTO = new ProductDTO(product.getPrice(), product.getType().toString());
         topicService.sendMessageToEntityDeleteTopic(productDTO);
     }    
-
-    public void createProducts() {
-        for (int i = 0; i < 2; i++) {
-            product = new Product();
-            product.setPrice(i * 100L);
-            product.setType(Type.MONITOR);
-            entityFacade.create(product);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            product = new Product();
-            product.setPrice(i * 100L);
-            product.setType(Type.BALL);
-            entityFacade.create(product);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            product = new Product();
-            product.setPrice(i * 100L);
-            product.setType(Type.LAPTOP);
-            entityFacade.create(product);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            product = new Product();
-            product.setPrice(i * 100L);
-            product.setType(Type.SHOE);
-            entityFacade.create(product);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            product = new Product();
-            product.setPrice(i * 100L);
-            product.setType(Type.CANDY);
-            entityFacade.create(product);
-        }
-        product = new Product();
-    }
 
     public Product getProduct() {
         return product;
@@ -124,8 +79,7 @@ public class MessageManagement implements Serializable {
         this.products = products;
     }
 
-    public List<Enum> getTypes() {
-        return Arrays.asList(types);
+    public Enum[] getTypes() {
+        return types;
     }
-
 }

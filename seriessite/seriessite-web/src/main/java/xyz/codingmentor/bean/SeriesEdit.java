@@ -20,22 +20,14 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.entity.Series;
-import xyz.codingmentor.service.EntityFacade;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.service.SeriesFacade;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
@@ -77,7 +69,7 @@ public class SeriesEdit implements Serializable {
         if (idOfSeries != null) {
             Long id = (Long) Long.parseLong(idOfSeries);
             
-            Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
+            Long idOfSeries2 = id;
 
             LOG.info("idd: " + idOfSeries2);
 
@@ -86,38 +78,12 @@ public class SeriesEdit implements Serializable {
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
     }
-//
-//    public void enterSeries(Long id) {
-////        FacesContext context = FacesContext.getCurrentInstance();
-////
-////        Map<String, String> params
-////                = context.getExternalContext().getRequestParameterMap();
-////        String id = params.get("seriesId");
-////        series = newSeries;
-//
-//        Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
-//
-//        LOG.info("idd: " + idOfSeries2);
-////        series = seriesInput;
-//
-//        series = seriesFacade.findSeriesById(idOfSeries2);
-//        actorList = seriesFacade.findActorsInSeries(idOfSeries2);
-//        actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
-//
-////        return "seriesEdit.xhtml/?id=" + series.getId() + ";faces-redirect=true";
-//    }
 
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        Map<String, String> params
-                = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String id = params.get("actorId");
-//        LOG.info("Here go to actor side. ActorID: " + id);
-
-//        1 is Actor edit it
         return "actorEdit.xhtml/?id=" + id + ";faces-redirect=true";
-//        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
 
     public Series getSeries() {
@@ -133,7 +99,6 @@ public class SeriesEdit implements Serializable {
     }
 
     public List<Actor> getActorListNotInSeries() {
-//        LOG.info("actorListNotInSeries size is " + actorListNotInSeries.size());
         return actorListNotInSeries;
     }
 
@@ -146,15 +111,11 @@ public class SeriesEdit implements Serializable {
 
         try {
             InputStream inputstream = uploadedFile.getInputstream();
-//            String fullFileName = uploadedFile.getFileName();
             Path file = Paths.get(PATH + nameOfImage);
-
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-
         } catch (IOException ex) {
             Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
     }
 
@@ -165,7 +126,7 @@ public class SeriesEdit implements Serializable {
             try {
                 directory.mkdirs();
             } catch (SecurityException se) {
-                //handle it
+                Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, se);
             }
         }
     }
@@ -185,23 +146,18 @@ public class SeriesEdit implements Serializable {
     }
 
     public StreamedContent getImage() {
-//        LOG.info("in getImage function");
         try {
             if (uploadedFile == null) {
-//                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
-//                LOG.info("after image load");
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
             } else {
                 LOG.info(this.getClass().getCanonicalName() + "else ag in getImage function");
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
         } catch (Exception ex) {
-//            LOG.info("Not found image. Exceptin in getImage function");
-//            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return image;
     }
 
@@ -222,7 +178,6 @@ public class SeriesEdit implements Serializable {
     }
 
     public void setActorId(String actorId) {
-//        LOG.info("setActor function");
         this.actorId = actorId;
     }
 
@@ -247,22 +202,15 @@ public class SeriesEdit implements Serializable {
 
     public void addActorToSeries() {
         Actor actor = searchActorById(actorListNotInSeries, actorId);
-
-//        LOG.info("addActorToSeries");
-//        LOG.info("Add actor " + actor.getName() + "  to " + series.getTitle());
         actorList.add(actor);
         actorListNotInSeries.remove(actor);
         seriesFacade.addActorToSeries(series.getId(), actor.getId());
     }
 
     public void removeActorFromSeries(Actor actor) {
-//        LOG.info("removeActorFromSeries");
-
         actorList.remove(actor);
         actorListNotInSeries.add(actor);
         seriesFacade.deleteActorFromSeries(series.getId(), actor.getId());
-
-//        LOG.info("Remove " + actor.getId() + " id of actor from " + series.getTitle());
     }
 
     public void saveButtonAction(ActionEvent actionEvent) {

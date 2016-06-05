@@ -11,10 +11,10 @@
                 <br/><h1 style="text-align: center">Products</h1><br/><br/><br/>
                 <p:panelGrid columns="2" style="margin: 0 auto" styleClass="ui-noborder">
                 
-                    <p:outputLabel value="Price: *"/>
+                    <p:outputLabel value="Price ($): *"/>
                     <p:inputText id="price" value="#{messageManagement.product.price}" required="true" requiredMessage="This field has to be filled."
-                                 converterMessage="The price has to be a number.">
-                        <p:ajax event="change" update="price priceMessage" />
+                                 converterMessage="Format: integer between 0-10000000.">
+                        <p:ajax event="blur" update="price priceMessage" />
                     </p:inputText>
                     <h:panelGroup/>
                     <p:message id="priceMessage" for="price"/>

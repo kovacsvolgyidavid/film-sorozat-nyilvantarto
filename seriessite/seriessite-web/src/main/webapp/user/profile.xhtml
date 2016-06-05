@@ -19,6 +19,13 @@
                             <h:outputText value="&#160;-Zsolt Fazekas-Nagy"/>
                         </p:tooltip>
 
+                        <p:tooltip for="upload gi" showDelay="0" style="background-color: black; color: #00a8ea">
+                            <h:outputText value="Acceptable file formats:"/><br/>
+                            <h:outputText value="&#160;-jpg"/><br/>
+                            <h:outputText value="&#160;-jpeg"/><br/>
+                            <h:outputText value="&#160;-png"/>
+                        </p:tooltip> 
+
                         <h1 style="text-align: center">Profile</h1><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Name: "/>
@@ -38,14 +45,14 @@
 
                             <p:outputLabel value="Sex:" />
                             <p:selectOneRadio id="sex" value="#{profile.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
-                                <f:selectItem itemLabel="Male" itemValue="#{profile.sexes[0]}" />
-                                <f:selectItem itemLabel="Female" itemValue="#{profile.sexes[1]}" />
+                                <f:selectItems value="#{profile.sexes}" var="sex" itemLabel="#{sex}" itemValue="#{sex}" />
                             </p:selectOneRadio>
                             <h:panelGroup/>
                             <p:message for="sex" />
 
                             <h:panelGroup/>
-                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"/>
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"
+                                          allowTypes="/(\.|\/)(jpe?g|png)$/"/>
 
                             <p:outputLabel value="Picture: "/>
                             <p:graphicImage id="gi" value="#{profile.image}" width="205" height="155" cache="false"/>
@@ -75,7 +82,7 @@
                             <h:outputLabel value="My Password: *" rendered="#{!profile.editMyProfile}"/>
                             <h:outputLabel value="Password: *" rendered="#{profile.editMyProfile}"/>
 
-                            <p:password id="password" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled.">
+                            <p:password id="password" required="true" requiredMessage="This field has to be filled.">
                                 <f:validator validatorId="currentPasswordValidator" />
                                 <f:ajax event="blur" execute="password" render="m_password" />
                             </p:password>

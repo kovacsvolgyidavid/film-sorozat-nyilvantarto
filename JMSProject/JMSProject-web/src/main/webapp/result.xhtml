@@ -16,15 +16,15 @@
                     <p:commandButton value="Back" action="#{result.back()}" style="float: right"/>
                 </h:panelGroup>
                 
-                <p:dataTable id="table" var="product" value="#{result.products}" widgetVar="productTable" resizableColumns="true"
+                <p:dataTable id="table" var="productDTO" value="#{result.productDTOs}" widgetVar="productTable" resizableColumns="true"
                              rows="10" paginator="true" rowsPerPageTemplate="10, 20, 50, 100"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                    <p:column headerText="Price" sortBy="#{product.price}" style="padding-bottom: 7px; padding-top: 7px;">
-                        <h:outputText value="#{product.price}" />
+                    <p:column headerText="Price" sortBy="#{productDTO.price}" style="padding-bottom: 7px; padding-top: 7px;">
+                        <h:outputText value="#{productDTO.price}" />
                     </p:column>  
 
-                    <p:column headerText="Type" sortBy="#{product.type}" style="padding-bottom: 7px; padding-top: 7px;">
-                        <h:outputText value="#{product.type}" />
+                    <p:column headerText="Type" sortBy="#{productDTO.type}" style="padding-bottom: 7px; padding-top: 7px;">
+                        <h:outputText value="#{productDTO.type}" />
                     </p:column>
                 </p:dataTable>
             </h:panelGrid>

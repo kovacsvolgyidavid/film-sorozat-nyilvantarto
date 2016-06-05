@@ -1,15 +1,14 @@
 package xyz.codingmentor.collective.dtio;
 
 import java.io.Serializable;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 public class ProductDTO implements Serializable {
     
-    //@Digits(integer = 18, fraction = 0, message = "The number format is incorrect.")
-//    @Min(value = 0, message = "The number format is incorrect.")
-//    @NotNull(message = "This field has to be filled.")
-    private Long price;
+    @Min(value = 0, message = "The minimum price is 0.")
+    @Max(value = 10000000, message = "The maximum price is 10000000.")
+    private long price;
 
     private String type;
 
@@ -21,11 +20,11 @@ public class ProductDTO implements Serializable {
         this.type = type;
     }
 
-    public Long getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

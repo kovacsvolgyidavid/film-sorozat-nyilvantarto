@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,7 +12,6 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
-import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Series;
 
 @Stateless
@@ -44,61 +42,17 @@ public class ActorFacade {
         return actor.getSingleResult();
     }
 
-//    public List<Series> findSeriesByActorId(Long actorId) {
-////        TypedQuery<Series> actor = em.createNamedQuery("Actor.findSeriesByActorId", Series.class);
-////        actor.setParameter("id", actorId);
-////        LOG.info("in findSeriesByActorId size: " + actor.getResultList().size() );
-////        return actor.getResultList();
-//
-//        TypedQuery<Actor> actor = em.createNamedQuery("Actor.findActorById", Actor.class);
-//        actor.setParameter("id", actorId);
-//        LOG.info("in findSeriesByActorId1 size: " + actor.getSingleResult().getSeries().size() );
-//        
-////        List<Movie> s = actor.getSingleResult().getSeries();
-////        List<Series> tmp = new ArrayList<>();
-////        for (Movie movie : s) {
-////            if(movie instanceof Series){
-////                tmp.add((Series) movie);
-////            }else{
-////                LOG.info("(movie instanceof");
-////            }
-////        }
-////        LOG.info("in findSeriesByActorId2 size: " + tmp.size());
-//        
-////        return tmp;
-//          return actor.getSingleResult().getSeries();
-//
-//    }
     public List<Series> findAllSeries() {
         TypedQuery<Series> series = em.createNamedQuery("Series.findAll", Series.class);
         return series.getResultList();
     }
 
-//    public void deleteSeriesFromActor(Long seriesId, Long actorId) {
-//        Series series = em.find(Series.class, seriesId);
-//        Actor actor = em.find(Actor.class, actorId);
-//        actor.getSeries().remove(series);
-//    }
-//
-//    public void addSeriesToActor(Long seriesId, Long actorId) {
-//        Series series = em.find(Series.class, seriesId);
-//        Actor actor = em.find(Actor.class, actorId);
-//        actor.getSeries().add(series);
-//    }
-
-    
     public List<Series> findSeriesInWichActorDontPlay(Long actorId) {
 
         TypedQuery<Series> findAllSeries = em.createNamedQuery("Series.findAll", Series.class);
         List<Series> seriesAll = findAllSeries.getResultList();
-//        printActorSeriessss(findActorInDataBase);
-
-
-//        List<Series> series = findSeriesByActorId(actorId);
         Actor findActorById = findActorById(actorId);
         List<Series> series = findActorById.getSeries();
-
-        // Remove all elements in firstList from secondList
         seriesAll.removeAll(series);
 
         return seriesAll;
@@ -123,7 +77,6 @@ public class ActorFacade {
 
     public void saveActor(Actor actor) {
         LOG.info("saveActor id: " + actor.getId());
-//        printActorSeries2(actor);
         Actor findActorInDataBase = em.find(Actor.class, actor.getId());
 
         printActorSeriessss(findActorInDataBase);

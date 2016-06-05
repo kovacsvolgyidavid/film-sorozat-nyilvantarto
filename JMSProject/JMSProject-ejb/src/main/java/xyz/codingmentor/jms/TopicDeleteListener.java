@@ -20,7 +20,7 @@ public class TopicDeleteListener implements MessageListener{
         if(topicService.isReadTopicDelete()){
             try {
                 ProductDTO productDTO = message.getBody(ProductDTO.class);
-                topicService.addDeletedproductDTO(productDTO);
+                topicService.addProductDTO(productDTO);
 
                 LOGGER.info("One product has been deleted:\n" +
                         "Price: " + productDTO.getPrice() + "\n" +

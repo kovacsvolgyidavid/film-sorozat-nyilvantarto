@@ -2,7 +2,6 @@ package xyz.codingmentor.jms;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
@@ -13,7 +12,6 @@ import xyz.codingmentor.collective.dtio.ProductDTO;
 
 @Singleton
 public class TopicService {
-    private static final Logger LOGGER = Logger.getLogger(TopicService.class.getName());
     private boolean readTopicDelete = false;
     private boolean readTopicCreate = false;
     private ProductDTO expectedProductDTO;
@@ -27,7 +25,7 @@ public class TopicService {
     @Resource(lookup = "jms/TopicDelete")
     private Topic topicDelete;
 
-    private List<ProductDTO> deletedProductDTOs = new ArrayList();
+    private List<ProductDTO> productDTOs = new ArrayList();
     
     @PostConstruct
     public void init(){
@@ -58,12 +56,12 @@ public class TopicService {
         jmsContext.createProducer().send(topicCreate, productDTO);
     }
 
-    public List<ProductDTO> getDeletedProductDTOs() {
-        return deletedProductDTOs;
+    public List<ProductDTO> getProductDTOs() {
+        return productDTOs;
     }
 
-    public void addDeletedproductDTO(ProductDTO productDTO) {
-        deletedProductDTOs.add(productDTO);
+    public void addProductDTO(ProductDTO productDTO) {
+        productDTOs.add(productDTO);
     } 
 
     public ProductDTO getExpectedProductDTO() {

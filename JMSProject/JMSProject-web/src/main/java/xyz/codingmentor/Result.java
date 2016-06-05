@@ -16,30 +16,30 @@ public class Result implements Serializable{
     @Inject
     TopicService topicService;
     
-    private List<ProductDTO> products;
+    private List<ProductDTO> productDTOs;
     
     @PostConstruct
     public void init(){
-        products = new ArrayList<>();
+        productDTOs = new ArrayList<>();
     }
     
     public void referesh(){
-        products = topicService.getDeletedProductDTOs();
+        productDTOs = topicService.getProductDTOs();
     }
     
     public String back(){
         topicService.setExpectedProductDTO(new ProductDTO());
         topicService.setReadTopicCreate(false);
         topicService.setReadTopicDelete(false);
-        topicService.getDeletedProductDTOs().clear();
-        return "index.xhtml?faces-redirect=true";
+        topicService.getProductDTOs().clear();
+        return "topicsubscription.xhtml?faces-redirect=true";
     }
 
-    public List<ProductDTO> getProducts() {
-        return products;
+    public List<ProductDTO> getProductDTOs() {
+        return productDTOs;
     }
 
-    public void setProducts(List<ProductDTO> products) {
-        this.products = products;
+    public void setProductDTOs(List<ProductDTO> productDTOs) {
+        this.productDTOs = productDTOs;
     }   
 }

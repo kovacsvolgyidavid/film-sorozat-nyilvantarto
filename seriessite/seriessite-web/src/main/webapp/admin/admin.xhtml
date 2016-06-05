@@ -58,7 +58,7 @@
 
                         <h:selectOneMenu value="#{user.groups}" style="width:100%; height: 100%;" disabled="#{usermanagement.actualUser eq user.username}">
                             <p:ajax listener="#{admin.rankValueChangeMethod(user)}"/>
-                            <f:selectItems value="#{admin.ranks}" var="r" itemLabel="#{r}" itemValue="#{r}" />
+                            <f:selectItems value="#{admin.ranks}" var="rank" itemLabel="#{rank}" itemValue="#{rank}" />
                         </h:selectOneMenu>
                     </p:column>  
 

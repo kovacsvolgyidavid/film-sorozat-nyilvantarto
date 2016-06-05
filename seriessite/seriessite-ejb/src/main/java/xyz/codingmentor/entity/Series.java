@@ -2,7 +2,6 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -39,6 +38,10 @@ public class Series extends Movie implements Serializable {
             joinColumns = @JoinColumn(name = "SERIES_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> actors;
+    
+    public Series() {
+        //it is bean
+    }
 
     public List<Actor> getActors() {
         return actors;
@@ -56,13 +59,8 @@ public class Series extends Movie implements Serializable {
         this.seasons = seasons;
     }
 
-    public Series() {
-        //it is bean
-    }
-
     @Override
     public String toString() {
-//        return "Series{" + "seasons=" + seasons + '}';
         return getId() + "    " + getTitle();
     }
   
@@ -77,12 +75,12 @@ public class Series extends Movie implements Serializable {
 
     @Override
     public String getTitle() {
-        return super.getTitle(); //To change body of generated methods, choose Tools | Templates.
+        return super.getTitle();
     }
 
     @Override
     public Long getId() {
-        return super.getId(); //To change body of generated methods, choose Tools | Templates.
+        return super.getId();
     }
 
   
