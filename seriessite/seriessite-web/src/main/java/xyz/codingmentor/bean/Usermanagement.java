@@ -2,7 +2,6 @@ package xyz.codingmentor.bean;
 
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -10,16 +9,20 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import xyz.codingmentor.service.VisitorCounter;
 
+/**
+ *
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
+ */
 @Named
 @SessionScoped
 public class Usermanagement implements Serializable {
-    
+
     @Inject
     VisitorCounter visitorCounter;
-    
+
     @PostConstruct
-    public void increaseVisitors(){
-        visitorCounter.setVisitor(visitorCounter.getVisitor()+1);
+    public void increaseVisitors() {
+        visitorCounter.setVisitor(visitorCounter.getVisitor() + 1);
     }
 
     public VisitorCounter getVisitorCounter() {
@@ -35,8 +38,8 @@ public class Usermanagement implements Serializable {
         session.invalidate();
         return "/login.xhtml?faces-redirect=true";
     }
-    
-    public String getActualUser(){
+
+    public String getActualUser() {
         return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
 
@@ -49,5 +52,6 @@ public class Usermanagement implements Serializable {
     public static String getUsername() {
         String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         return user;
-    }    
+    }
+
 }

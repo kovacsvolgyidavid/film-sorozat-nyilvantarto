@@ -31,6 +31,18 @@ body{
     transform: translateX(700%);
 }
 
+.favouriteicon{
+    width: 40px; 
+    height: 40px; 
+    background-image: url(C:\\path\\resources\\favourites_star.jpg);
+}
+
+.favouriteiconfilled{
+    width: 40px; 
+    height: 40px; 
+    background-image: url(C:\\path\\resources\\favourites_star_black.jpg);
+}
+
 @media only screen and (min-width: 600px) {
     .col-m-1 {width: 8.33%;}
     .col-m-2 {width: 16.66%;}

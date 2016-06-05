@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -15,7 +14,6 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
-import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Series;
 
 @Stateless

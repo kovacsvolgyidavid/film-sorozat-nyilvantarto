@@ -14,6 +14,10 @@ public class Director extends Person implements Serializable {
 
     @ManyToMany(mappedBy = "directors")
     private List<Movie> movies;
+    
+   
+    @ManyToMany(mappedBy = "seriesdirectors")
+    private List<Series> series;
 
     public Director() {
         //it is bean
@@ -34,4 +38,14 @@ public class Director extends Person implements Serializable {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
+
+    public List<Series> getSeries() {
+        return series;
+    }
+
+    public void setSeries(List<Series> series) {
+        this.series = series;
+    }
+    
+    
 }

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <f:metadata>
+        <f:viewParam name="seriesId" value="#{seriesView.seriesId}"/>
+        <f:event type="preRenderView" listener="#{seriesView.loadDatabaseData}"/>
+    </f:metadata>
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap-theme.min.css"/>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/template/internal-template.xhtml">
+            <ui:define name="content">
+
+                <style>
+                    .row{
+                        margin: 0 auto;
+                        width: 100%;
+                        padding-left: 30px;
+                        padding-top:30px;
+                        padding-bottom:30px;
+                        margin-bottom:30px;
+                        color: inherit;
+                    }
+                    .title{
+                        font-size: 40px;
+                        color: white;}
+                    .jumbotext{
+                        margin-left: 20px;
+                        color: white;
+                    }
+                    .jumboheader{
+                        float: right;
+                        color: white;                          
+                    }
+                    .admin_button{
+                        width: 150px; 
+                        height: 100%; 
+                        border-width: 0px;
+                        text-align: center;
+                    }
+                    .actor-director{
+                        background: #cccccc;
+                    }
+                    .season{
+                        border: transparent; 
+                        width: 75%; 
+                        margin: 0 auto;
+                    }
+                    .tables{
+                        background: yellow !important;
+                    }
+                </style>
+                    <div style="background-image: url('#{request.contextPath}/resources/backgrounds/seriesview.jpg'); background-repeat: no-repeat; background-size: cover" class="img-responsive">
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                        <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
+                                        class="img-responsive" style="margin: 0 auto"/>
+
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align: center">
+                        <h:outputText value="#{seriesView.title}" class="title"/> 
+                        <br/>
+                        <h:panelGrid columns="1">
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:outputLabel for="ryear" value="Release date:" class="jumboheader"/>    
+
+                                <h:outputText id="ryear" value="#{seriesView.series.yearOfRelease}" class="jumbotext">
+                                    <f:convertDateTime pattern="yyyy"/>
+                                </h:outputText>  
+
+                                <p:outputLabel value="Seasons:" class="jumboheader"/>    
+
+                                <h:outputText value="#{seriesView.seasonNumber}" class="jumbotext"/>    
+
+                                <p:outputLabel for="episodes" value="Episodes:" class="jumboheader"/>    
+
+                                <h:outputText id="episodes" value="#{seriesView.episodeNumber}" class="jumbotext"/> 
+                            </h:panelGrid>
+                            <br/>
+                            <h:outputText value="#{seriesView.series.description}" class="jumbotext"/>
+                        </h:panelGrid>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                        <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: deepskyblue"/>
+                        <BR/>
+                        <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: darkorange">
+                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog> 
+                    </div>
+                </div>
+                        </div>
+                <div class="row" style="background: white;">
+                    <div class="col-12">
+                        <p:outputLabel for="season" style="margin-left: 12.5%; font-size: 25px; font-weight: bold" value="Seasons:"/>
+                        <p:tabView id="season" value="#{seriesView.series.seasons}" var="season" class="season">
+                            <p:tab title="#{seriesView.series.seasons.indexOf(season)+1}">
+                                <p:dataTable value="#{season.episodes}" var="episode" 
+                                             style="text-align: center; width: 100%" tableStyleClass="tables">
+                                    <p:column headerText="Nu." style="width: 5%">
+                                        #{season.episodes.indexOf(episode)+1}
+                                    </p:column>
+                                    <p:column headerText="Title">
+                                        #{episode.title}
+                                    </p:column>
+                                    <p:column headerText="Release Date" style="width: 35%">
+                                        <h:outputText value="#{episode.dateOfRelease}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                        </p:tabView> 
+                    </div>
+                    <div class="col-lg-4 col-lg-offset-1 col-md-6">
+                        <p:dataScroller value="#{seriesView.actors}" var="actor" 
+                                        chunkSize="3" class="actor-director">
+                            <f:facet name="header">
+                                Actors
+                            </f:facet>
+                            <f:facet name="loader">
+                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"/>
+                            </f:facet>
+                            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                                <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
+                                    <f:param name="path" value="#{actor.pathOfPhoto}"/>
+                                </p:graphicImage>
+                                <p:outputPanel>                             
+                                    <h:outputText value="#{actor.name}" style="font-weight: bold"/>
+                                </p:outputPanel>
+                            </h:panelGrid>
+                        </p:dataScroller> 
+                    </div>
+                    <div class="col-lg-4 col-lg-offset-1 col-md-6">
+                        <p:dataScroller value="#{seriesView.directors}" var="director" chunkSize="3"
+                                        class="actor-director">
+                            <f:facet name="header">
+                                Directors
+                            </f:facet>
+                            <f:facet name="loader">
+                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"/>
+                            </f:facet>
+                            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                                <p:graphicImage value="#{imageService.image}" height="72" width="45" cache="false">
+                                    <f:param name="path" value="#{director.pathOfPhoto}"/>
+                                </p:graphicImage>
+                                <p:outputPanel>                             
+                                    <h:outputText value="#{director.name}" style="font-weight: bold"/>
+                                </p:outputPanel>
+                            </h:panelGrid>
+                        </p:dataScroller>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="col-lg-12">
+                        <h:panelGrid columns="1" style="margin-left:0%; width: 75%">
+                            <h:outputText value="Comments:" style="font-size: 25px; font-weight: bold"/>
+                            <ui:repeat value="#{seriesView.comments}" var="comment">
+
+                                <h:panelGrid columns="2" style="margin-left: 25px">
+                                    <p:graphicImage value="#{imageService.image}" height="72" width="60" cache="false">
+                                        <f:param name="path" value="#{comment.user.pathOfPhoto}"/>
+                                    </p:graphicImage>
+                                    <h:panelGroup> 
+                                        <p:outputLabel value="#{comment.user.name}:" style="font-weight: bold; font-size: 20px; margin-left: 15px"/>
+                                        <br/>
+                                        <h:outputText value="#{comment.content}" style="margin-left: 25px"/>
+                                    </h:panelGroup> 
+                                </h:panelGrid>
+                                <br/>
+                            </ui:repeat>
+                            <h:panelGrid columns="2">
+                                <p:inputTextarea value="#{seriesView.comment}" maxlength="255" cols="60"/>
+                                <h:panelGroup>
+                                    <p:commandButton value="Submit" update="form" action="#{seriesView.addComment()}" ajax="false" style="width: 100%">
+                                        <p:ajax update="form"/>
+                                    </p:commandButton>
+                                    <br/>
+                                    <p:commandButton value="Clear" update="form" style="width: 100%">
+                                        <p:ajax listener="#{seriesView.setComment('')}" update="form"/>
+                                    </p:commandButton>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </div>
+                    <br/>
+                    <br/>
+                </div>
+
+
+            </ui:define>
+        </ui:composition>
+        <script src="#{request.contextPath}/resources/js/bootstrap.js"></script>
+    </h:body>
+</html>

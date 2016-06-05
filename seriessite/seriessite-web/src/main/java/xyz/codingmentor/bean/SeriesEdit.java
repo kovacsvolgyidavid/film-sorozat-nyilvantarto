@@ -23,23 +23,15 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.entity.Series;
-import xyz.codingmentor.service.EntityFacade;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.service.SeriesFacade;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
@@ -83,8 +75,8 @@ public class SeriesEdit implements Serializable {
     @PostConstruct
     public void init() {
         LOG.info("init() function");
-        series = new Series();
-        actorListNotInSeries = new ArrayList<>();
+//        series = new Series();
+//        actorListNotInSeries = new ArrayList<>();
         
         newActor = new Actor();
         newSeason = new Season();
