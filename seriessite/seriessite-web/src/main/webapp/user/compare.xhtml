@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -133,7 +128,7 @@ and open the template in the editor.
                                 <p:tab title="#{compare.series1.seasons.indexOf(season)+1}">
                                     <p:dataTable value="#{season.episodes}" var="episode" 
                                                  style="text-align: center; width: 100%">
-                                        <p:column headerText="Nu." style="width: 5%">
+                                        <p:column headerText="*" style="width: 5%">
                                             #{season.episodes.indexOf(episode)+1}
                                         </p:column>
                                         <p:column headerText="Title">
@@ -154,7 +149,7 @@ and open the template in the editor.
                                 <p:tab title="#{compare.series2.seasons.indexOf(season)+1}">
                                     <p:dataTable value="#{season.episodes}" var="episode" 
                                                  style="text-align: center; width: 100%">
-                                        <p:column headerText="Nu." style="width: 5%">
+                                        <p:column headerText="*" style="width: 5%">
                                             #{season.episodes.indexOf(episode)+1}
                                         </p:column>
                                         <p:column headerText="Title">
