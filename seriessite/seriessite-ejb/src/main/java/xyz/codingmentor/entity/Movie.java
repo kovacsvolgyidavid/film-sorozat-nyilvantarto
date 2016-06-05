@@ -3,8 +3,10 @@ package xyz.codingmentor.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -35,18 +37,22 @@ public class Movie implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE })
     @JoinTable(name = "MOVIE_DIRECTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
     private List<Director> directors;
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "MOVIE_ACTOR",
+            joinColumns = @JoinColumn(name = "MOVIE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
+    private List<Actor> movieactors;
 
-
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments;
 
-
+    private String description;
 
     public Movie() {
         //it is bean
@@ -85,6 +91,19 @@ public class Movie implements Serializable {
         this.directors = directors;
     }
 
+    public List<Actor> getMovieactors() {
+        return movieactors;
+    }
+
+    public void setMovieactors(List<Actor> movieactors) {
+        this.movieactors = movieactors;
+    }
+
+  
+
+   
+
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -101,5 +120,13 @@ public class Movie implements Serializable {
         this.yearOfRelease = yearOfRelease;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String descreption) {
+        this.description = descreption;
     
+    }
+
 }

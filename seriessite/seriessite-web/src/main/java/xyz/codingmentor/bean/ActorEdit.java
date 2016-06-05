@@ -55,8 +55,6 @@ public class ActorEdit implements Serializable {
         Long idOfActor = 1L;
         actor = actorFacade.findActorById(idOfActor);
 
-          seriesInWichActorDontPlay = actorFacade.findSeriesInWichActorDontPlay(idOfActor);
-
     }
 
     public String goToSeriesEditSite() {
@@ -68,77 +66,7 @@ public class ActorEdit implements Serializable {
         return "seriesEdit.xhtml/?id=" + id + ";faces-redirect=true";
     }
 
-    public void saveImageToDirectory(String nameOfImage) {
-        createDirectory();
-
-        try {
-            InputStream inputstream = uploadedFile.getInputstream();
-            Path file = Paths.get(PATH + nameOfImage);
-
-            Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException ex) {
-            Logger.getLogger(ActorEdit.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
-    }
-
-    public void createDirectory() {
-        File directory = new File(PATH);
-
-        if (!directory.exists()) {
-            try {
-                directory.mkdirs();
-            } catch (SecurityException se) {
-                Logger.getLogger(ActorEdit.class.getName()).log(Level.SEVERE, null, se);
-            }
-        }
-    }
-
-    public void imageUpload(FileUploadEvent event) {
-        uploadedFile = event.getFile();
-
-        try {
-            image = new DefaultStreamedContent(uploadedFile.getInputstream());
-        } catch (IOException ex) {
-            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void setUploadedFile(UploadedFile uploadedFile) {
-        this.uploadedFile = uploadedFile;
-    }
-
-    public StreamedContent getImage() {
-        LOG.info("in getImage function");
-        try {
-            if (uploadedFile == null) {
-                ClassLoader classLoader = getClass().getClassLoader();
-                File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
-                image = new DefaultStreamedContent(new FileInputStream(noPicture));
-            } else {
-                LOG.info(this.getClass().getCanonicalName() + "else ag in getImage function");
-                image = new DefaultStreamedContent(uploadedFile.getInputstream());
-            }
-        } catch (Exception ex) {
-            LOG.info("Not found image. Exceptin in getImage function");
-        }
-
-        return image;
-    }
-
-    public void resetPicture(AjaxBehaviorEvent event) {
-        uploadedFile = null;
-    }
-
-    public UploadedFile getUploadedFile() {
-        return uploadedFile;
-    }
-
-    public void setImage(StreamedContent image) {
-        this.image = image;
-    }
+    
 
     private Series searchSeriesById(List<Series> l, String seriesId) {
         Long id = Long.parseLong(seriesId);
@@ -183,7 +111,7 @@ public class ActorEdit implements Serializable {
     public void saveActor() {
         LOG.info("In saveActor ");
         printActorSeries(actor);
-        actorFacade.saveActor(actor);
+        actorFacade.create(actor);
     }
 
     public ActorFacade getActorFacade() {

@@ -17,7 +17,7 @@ import xyz.codingmentor.entity.User;
 
 /**
  *
- * @author keni
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
  */
 public class UserDTO {
 
@@ -27,6 +27,27 @@ public class UserDTO {
     @PasswordConstraint(message = "Wrong password format.")
     private String password;
 
+    public User makeUser() {
+        String outcome;
+        outcome = this.hashPassword(password);
+        user.setPassword(outcome);
+        return this.user;
+    }
+
+    public String hashPassword(String password) {
+        String hashedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+            byte[] digest = md.digest();
+            BigInteger bigInt = new BigInteger(1, digest);
+            hashedPassword = bigInt.toString(16);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            Logger.getLogger(UserDTO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hashedPassword;
+    }
+
     public UserDTO() {
         user = new User();
     }
@@ -34,13 +55,6 @@ public class UserDTO {
     public UserDTO(User user, String password) {
         this.user = user;
         this.password = password;
-    }
-
-    public User makeUser() {
-        String outcome;
-        outcome = this.hashPassword(password);
-        user.setPassword(outcome);
-        return this.user;
     }
 
     public User getUser() {
@@ -59,17 +73,4 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String hashPassword(String password) {
-        String hashedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if needed
-            byte[] digest = md.digest();
-            BigInteger bigInt = new BigInteger(1, digest);
-            hashedPassword = bigInt.toString(16);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            Logger.getLogger(UserDTO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return hashedPassword;
-    }
 }

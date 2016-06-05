@@ -2,6 +2,10 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
+import java.util.Objects;
+import java.util.logging.Logger;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -26,26 +30,33 @@ import javax.persistence.CascadeType;
             query = "SELECT s FROM Series s")
 })
 public class Series extends Movie implements Serializable {
-
-    @OneToMany(mappedBy = "series")
+    
+    @OneToMany(mappedBy = "series",cascade = CascadeType.ALL)
     private List<Season> seasons;
 
     @Column(length = 1000)
     private String description;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    private static final Logger LOG = Logger.getLogger(Series.class.getName());
+    
+    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE } )
     @JoinTable(name = "SERIES_ACTOR", 
             joinColumns = @JoinColumn(name = "SERIES_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> actors;
     
+    @ManyToMany
+    private List<Director> seriesdirectors;
+
     public Series() {
         //it is bean
     }
 
+    
     public List<Actor> getActors() {
         return actors;
     }
+
 
     public void setActors(List<Actor> actors) {
         this.actors = actors;
@@ -65,11 +76,14 @@ public class Series extends Movie implements Serializable {
     }
   
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
+        LOG.info("setDescription");
         this.description = description;
     }
 

@@ -1,18 +1,25 @@
 package xyz.codingmentor.service;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
+import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Series;
 
 @Stateless
 public class SeriesFacade {
+
+    private static final Logger LOG = Logger.getLogger(SeriesFacade.class.getName());
 
     @PersistenceContext(unitName = "MoviePU")
     private EntityManager em;
@@ -61,13 +68,32 @@ public class SeriesFacade {
         List<Actor> actorsInSeries = findActorsInSeries.getResultList();
         actorsAll.removeAll(actorsInSeries);
         return actorsAll;
-
     }
+
 
     public void saveSeries(Series series) {
         em.merge(series);
     }
+    
+    public void updateSeries(Series series) {
+        em.merge(series);
+    }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public List<Series> seriesByDirectorOriginalNameEqualsName() {
         Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");
         return q.getResultList();

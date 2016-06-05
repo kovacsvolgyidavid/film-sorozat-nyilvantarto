@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -17,7 +18,7 @@ import xyz.codingmentor.enums.Sex;
 public class Person implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @Size(min = 1, message = "This field has to be filled.")
@@ -77,4 +78,11 @@ public class Person implements Serializable {
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" + "id=" + id + ", name=" + name + ", sex=" + sex + ", dateOfBirth=" + dateOfBirth + ", pathOfPhoto=" + pathOfPhoto + '}';
+    }
+    
+    
 }

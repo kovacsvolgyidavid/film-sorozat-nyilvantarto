@@ -5,16 +5,20 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      >
 
-<f:metadata>
-    <f:viewParam name="seriesid" value="#{seriesEdit.idOfSeries}" />
-    <f:event type="preRenderView" listener="#{seriesEdit.loadDatabaseData}" />
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-</f:metadata>
-    
+    <f:metadata>
+        <f:viewParam name="seriesid" value="#{seriesEdit.idOfSeries}" />
+        <!--<f:event type="postAddToView" listener="#{seriesEdit.loadDatabaseData}" />-->
+    </f:metadata>
+
     <h:head>
         <title>Series edit site</title>
+
+        <link rel="stylesheet" href="#{request.contextPath}/resources/font-awesome/css/font-awesome.min.css"/>
+
+
         <style type="text/css">
             .ui-orderlist-list {
                 list-style-type: none;
@@ -24,145 +28,440 @@
                 height:200px;
                 width:100%;
             }
-
-            .ui-fileupload-content {
-                display: none;
+            .ui-fileupload-buttonbar {      /*important*/
+                background: transparent none;
+                border: none;
             }
-            .ui-fileupload-buttonbar.ui-widget-header {
-                background-color: transparent;
-                border: 0 none;
+            .ui-fileupload-content {      /*important*/
+                display: none;
             }
             .ui-growl{
                 top:100px;
+            }
+            .ui-panelgrid td, .ui-panelgrid tr
+            {
+                border-style: none !important
+            }
+            .tables{
+                margin: 0 auto;
+                margin-bottom: 10px;
+            }
+            .icon-row{
+                width:38px;
+            }
+            .description{
+                margin:0 auto;
+                width:500px;
+            }
+            .save-button{
+                margin-right: 100px;
+            }
+            .name-and-date-release{
+                margin:0 auto;
+                padding:20px;
+
+            }
+            .top-labels{
+                font-weight:bold;
+                font-size:24px;
+            }
+            .color{
+                background-color: rgb(224,224,224);
+            }
+            .start-header{
+                margin-left: 100px;
+                margin-right: 100px;
+                margin-top: 0px;
             }
         </style>
 
     </h:head>
     <h:body>
-        <ui:composition template="/template/internal-template.xhtml">
-            <ui:define name="content">
+        <script type="text/javascript">
+            function addRowOnComplete() {
+                jQuery('#supercoolnewrow').trigger('click');
+            }
+        </script>
+        <!--        <ui:composition template="/template/internal-template.xhtml">
+                    <ui:define name="content">-->
+        <h1 style="text-align: center">Series editing slide</h1>
+        <h:form id="form2">
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row color" >
+                    <div class="ui-grid-col-8" > 
+                        <h:panelGrid columns="2" cellspacing="20" class="name-and-date-release">
+                            <!--Series name-->
+                            <p:outputLabel value="Series name: " class="top-labels"/>
+                            <p:inputText id="seriesName" value="#{seriesEdit.series.title}"
+                                         title="Examples: &#13; -Szökés &#13; -Spongy Bob" />
 
-                <div class="ui-grid ui-grid-responsive">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-8"> 
-                            <h:panelGrid columns="2" cellspacing="20" style="margin-top:60px;margin-left:40px;padding:20px">
-                                <!--Series name-->
-                                <p:outputLabel value="Series name: "/>
-                                <p:inputText id="name" value="#{seriesEdit.series.title}"
-                                             title="Examples: &#13; -Szökés &#13; -Spongy Bob"/>
+                            <!--Release date-->
+                            <p:outputLabel value="Release date of series: " class="top-labels color"/>
+                            <p:calendar id="date" value="#{seriesEdit.series.yearOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                        navigator="true" mindate="01/01/1920" maxdate="31/12/2016" yearRange="c-100:c+100"
+                                        title="Format: dd/MM/yyyy"/>
+                        </h:panelGrid>
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <!--Picture-->
+                        <h:panelGrid columns="2" cellspacing="0">
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
+                            <p:commandButton value="Reset">
+                                <p:ajax listener="#{seriesEdit.resetPicture(event)}" update="gi"/>
+                            </p:commandButton>  
+                        </h:panelGrid> 
+                        <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
 
-                                <!--Release date-->
-                                <p:outputLabel value="Release date of series: " />
-                                <p:calendar id="date" value="#{seriesEdit.series.yearOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
-                                            navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                            title="Format: dd/MM/yyyy" />
-                            </h:panelGrid>
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <!--Picture-->
-                            <h:panelGrid columns="2" cellspacing="0">
-                                <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
-                                <p:commandButton value="Reset">
-                                    <p:ajax listener="#{seriesEdit.resetPicture}" update="gi"/>
-                                </p:commandButton>  
-                            </h:panelGrid> 
-                            <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
-
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <p:separator />
-                <div class="ui-grid ui-grid-responsive">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4">
-                            4
-                        </div>
-                        <div class="ui-grid-col-4">
-                            4
-                        </div>
-                        <div class="ui-grid-col-4">
-                            4
-                        </div>
-                    </div>
-                </div>
+            <p:separator />
+            <p:separator />
 
-                <!--List actors, directors, and seasons-->
-                <div class="ui-grid ui-grid-responsive">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4">
+            <!--Episode tabs-->
+            <p:tabView id="seasonTabs" style="width: 75%; margin:0 auto" activeIndex="#{seriesEdit.activeIndexToTabView}">
+                <p:ajax event="tabChange" listener="#{seriesEdit.onTabChange}" />
+                <c:forEach var="season" items="#{seriesEdit.series.seasons}">
+                    <p:tab title="#{season.title}">
 
-                            <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.actorList}" style="width:250px;margin: 0 auto;margin-bottom: 10px;">
+                        <p:dataTable id="episodeDateTable" var="episode" value="#{season.episodes}" class="tables" style="width:100%" editable="true">
+                            <f:facet name="header">
+                                Episode               
+                            </f:facet>
+
+
+                            <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update="form2:seasonTabs:episodeDateTable" />
+                            <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update="form2:seasonTabs:episodeDateTable" />
+
+                            <!--Episode id-->
+                            <p:column headerText="Id" style="width:40px;">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.id}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="epId" value="#{episode.id}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <!--Episode title-->
+                            <p:column headerText="Title">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.title}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="epTitle" value="#{episode.title}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <!--Episode dateOfRelease-->
+                            <p:column headerText="Release date">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{episode.dateOfRelease}" >
+                                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                                        </h:outputText>
+
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar value="#{episode.dateOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                                    navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                                    title="Format: dd/MM/yyyy" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <!--Episode serialnumber-->
+                            <p:column headerText="Serialnumber" style="width:120px;" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{episode.serialNumber}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="epSeri" value="#{episode.serialNumber}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+
+                            <!--Trash-->
+                            <p:column class="icon-row">
+                                <h:commandLink value="" action="#{seriesEdit.removeEpisodeFromSeason(season,episode)}"  >
+                                    <i class="fa fa-trash" ></i>
+                                    <f:ajax render="form2:myTabView:episodeDateTable" execute="form2:seasonTabs:episodeDateTable"></f:ajax>
+                                </h:commandLink>
+                            </p:column>
+
+                            <p:column style="width:32px">
+                                <p:rowEditor />
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-row" >
+                                <div class="ui-grid-col-4" style="margin:0 auto" > 
+                                    <!--Delete Season-->
+                                    <p:commandButton value="Delete season" action="#{seriesEdit.deleteSeasion(season)}" update="seasonTabs" />
+                                </div>                                                                        
+                                <div class="ui-grid-col-4" > 
+                                    <!--New season button-->
+                                    <p:commandButton value="Add season" action="#{seriesEdit.initialNewSeason()}" oncomplete="PF('seasonDlg').show();" icon="ui-icon-extlink"  process="@this" update="form2:seasonTabs"/>
+                                </div>
+                                <div class="ui-grid-col-4" > 
+                                    <p:commandButton value="New episode" action="#{seriesEdit.initialNewEpisode(season)}" oncomplete="PF('episodeDlg').show();" icon="ui-icon-extlink"  process="@this" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </p:tab>
+                </c:forEach>
+            </p:tabView>
+
+
+
+
+            <p:separator />
+
+            <p:separator />
+
+            <!--List actors, directors, and seasons-->
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <form id="actorFrom">
+                            <p:dataTable id="actorListId" var="actorVar" value="#{seriesEdit.series.actors}" class="tables" style="width: 75%" editable="true">
                                 <f:facet name="header">
-                                    <h:outputText value="Actors"/>
+                                    Actors               
                                 </f:facet>
 
+
+                                <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update="actorListId" />
+                                <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update="actorListId" />
+
+
+                                <p:column style="width:16px">
+                                    <p:rowToggler />
+                                </p:column>
+
                                 <!--Actor title-->
-                                <p:column >
-                                    <p:link outcome="actorEdit.xhtml" value="#{actorVar.name}">
-                                        <f:param name="actorId" value="#{actorVar.id}" />
-                                    </p:link>
+                                <p:column headerText="Name">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{actorVar.name}" /></f:facet>
+                                        <f:facet name="input"><p:inputText id="modelInput" value="#{actorVar.name}" style="width:100%"/></f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
-                                <!--Edit actor button-->
-                                <p:column style="width:38px;">
-                                    <p:commandButton  action="#{seriesEdit.goToActorEditSite()}" icon="ui-icon-edit" title="Edit">
-                                        <f:param name="actorId" value="#{actorVar.id}" />
-                                    </p:commandButton>
+                                <!--Actor birthplace-->
+                                <p:column headerText="Birthplace">
+
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{actorVar.placeOfBirth}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{actorVar.placeOfBirth}" style="width:100%"/></f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
-                                <!--Remove actor button-->
-                                <p:column style="width:38px;">
-                                    <p:commandButton icon="ui-icon-trash" title="Remove"   
-                                                     action="#{seriesEdit.removeActorFromSeries(actorVar)}" update="actorListId,form:addPanel">
-
-                                    </p:commandButton>
-
+                                <!--Actor sex-->
+                                <p:column headerText="Sex">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{actorVar.sex}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{actorVar.sex}" style="width:100%"/></f:facet>
+                                    </p:cellEditor>
                                 </p:column>
+
+
+                                <!--Trash-->
+                                <p:column class="icon-row">
+                                    <h:commandLink value="" action="#{seriesEdit.removeActorFromSeries(actorVar)}"  >
+                                        <i class="fa fa-trash" ></i>
+                                        <f:ajax render="actorListId" execute="actorListId"></f:ajax>
+                                    </h:commandLink>
+                                </p:column>
+
+                                <p:rowExpansion id="actorRowExpansion">
+                                    <p:panelGrid  columns="3"  style="width:80%;margin:0 auto;">
+                                        <f:facet name="header">
+                                            <p:graphicImage name="actor/#{actorVar.id}.jpg"/> 
+                                        </f:facet>
+
+                                        <!--Actor name-->
+                                        <p:outputLabel value="Name: "/>
+                                        <p:inputText id="nameInRE" value="#{actorVar.name}"/>
+                                        <h:panelGroup />
+
+                                        <!--Birthday-->
+                                        <p:outputLabel value="Birthday: " />
+                                        <p:calendar id="birthdayInRE" value="#{actorVar.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                                    navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                                    title="Format: dd/MM/yyyy" />
+                                        <h:panelGroup />
+
+                                        <!--Birthplace-->
+                                        <p:outputLabel value="Birthplace: "/>
+                                        <p:inputText id="birthplaceInRE" value="#{actorVar.placeOfBirth}"/>
+                                        <h:panelGroup />
+
+                                        <!--Official website-->
+                                        <h:outputText value="Official website:" style="text-align: right"/>
+                                        <p:inputText id="websiteurlInRE" value="#{actorVar.officialWebsite}"></p:inputText>
+                                        <h:panelGroup />
+                                        <!--</p:panelGrid>-->
+
+                                        <!--Picture-->
+                                        <p:outputLabel value="Picutre: "/>
+                                        <p:inputText value="#{actorVar.pathOfPhoto}"/>
+                                        <p:fileUpload id="uploadInRE" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.pictureHandler.imageUpload(event)}" auto="true"/>
+
+                                        <p:growl id="growlInRE" life="2000" />
+                                        <h:panelGrid columns="2" cellpadding="20px">
+                                            <p:commandButton action="#{seriesEdit.saveActor(actorVar)}" actionListener="#{seriesEdit.saveButtonListener}" value="Save" 
+                                                             update="growlInRE" icon="ui-icon-disk" title="Save" />
+                                            <p:commandButton value="Reset" action="#{seriesEdit.resetActor(actorVar)}"/> 
+
+                                        </h:panelGrid>
+                                    </p:panelGrid>
+
+                                </p:rowExpansion>
 
                             </p:dataTable>
 
+
+
                             <!--Add panel-->
-                            <h:panelGrid id="addPanel" columns="2" cellpadding="10" style="margin:0 auto" >
-                                <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" style="width:150px">
-                                    <f:selectItem itemLabel="Choose Actor" itemValue="#{null}" />
+                            <h:panelGrid id="addPanel" columns="3" cellpadding="10" style="margin:0 auto" >
+                                <p:selectOneMenu  id="btnSelect" value="#{seriesEdit.actorId}" style="width:250px">
+                                    <f:selectItem itemLabel="Choose existing actor" itemValue="#{null}" />
                                     <f:selectItems value="#{seriesEdit.actorListNotInSeries}" var="actorVar" itemLabel="#{actorVar.name}" itemValue="#{actorVar.id}"/>
                                     <p:ajax event="change" update="@this" />
                                 </p:selectOneMenu>
-                                <p:commandButton value="Add" title="Add"
-                                                 action="#{seriesEdit.addActorToSeries}" update="addPanel, actorListId">
-                                </p:commandButton>
-
+                                <p:commandButton value="Add selected actor" title="Add"
+                                                 action="#{seriesEdit.addExistingActorToSeries}" update="addPanel actorListId" process="@this" />
+                                                 <!--action="#{seriesEdit.addExistingActorToSeries}" update="addPanel, actorListId" />-->
+                                <p:commandButton value="Add new actor" action="#{seriesEdit.initialNewActor()}" oncomplete="PF('dlg').show();" icon="ui-icon-extlink"  process="@this" update="newActorDialog"/>
                             </h:panelGrid>
 
-                        </div>                                                  
-                    </div>
+                            <!--oncomplete="dlg.show()"-->
+                            <!--onclick="PF('dlg').show();"-->
+                            <!--update="form2:newActorDialog"-->
+                            <!--New actor dialog-->
+                            <!--<h:form >-->
+
+
+                            <!--</h:form>-->
+                        </form>
+                    </div>                                                  
                 </div>
+            </div>
 
-                <p:separator />
+            <p:separator />
 
-                <!--Description panel-->
-                <h:panelGrid style="margin:0 auto">
-                    <h:outputText value="Desctiption" />
-                    <p:inputTextarea rows="10" cols="60" value="#{seriesEdit.series.description}" 
-                                     queryDelay="750" minQueryLength="4"  autoResize="true"/>
+
+            <p:separator />
+
+            <!--Description panel-->
+            <h:panelGrid class="description">
+                <h:outputText value="Desctiption" />
+                <p:inputTextarea rows="10" cols="60" value="#{seriesEdit.series.description}" 
+                                 queryDelay="750" minQueryLength="4"  autoResize="true"/>
+            </h:panelGrid>
+
+
+            <!--Save panel-->
+            <p:growl id="growl" life="2000" />
+            <h:panelGrid class="save-button">
+                <p:commandButton action="#{seriesEdit.saveSeries()}" actionListener="#{seriesEdit.saveButtonListener(actionEvent)}" value="Save" 
+                                 update="growl" icon="ui-icon-disk" title="Save" />
+            </h:panelGrid>
+
+        </h:form>
+
+        <!--New actor dialog-->
+        <p:dialog id="newActorDialog" header="Add new actor" widgetVar="dlg" >
+            <h:form>
+                <p:panelGrid  columns="2"  style="width:80%;margin:0 auto;">
+
+                    <!--Actor name-->
+                    <p:outputLabel value="Name: "/>
+                    <p:inputText id="nameInDl" value="#{seriesEdit.newActor.name}"/>
+
+                    <!--Birthday-->
+                    <p:outputLabel value="Birthday: " />
+                    <p:calendar id="birthdayInDl" value="#{seriesEdit.newActor.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                title="Format: dd/MM/yyyy" />
+
+                    <!--Birthplace-->
+                    <p:outputLabel value="Birthplace: "/>
+                    <p:inputText id="birthplaceInDl" value="#{seriesEdit.newActor.placeOfBirth}"/>
+
+                    <!--Sex-->
+                    <p:outputLabel value="Sex: "/>
+                    <p:selectOneMenu id="console" value="#{seriesEdit.newActor.sex}">
+                        <f:selectItem itemLabel="MALE" itemValue="#{seriesEdit.male}" />
+                        <f:selectItem itemLabel="FEMALE" itemValue="#{seriesEdit.female}" />
+                    </p:selectOneMenu>
+
+                    <!--Official website-->
+                    <h:outputText value="Official website:" style="text-align: right"/>
+                    <p:inputText id="websiteurlInDl" value="#{seriesEdit.newActor.officialWebsite}"></p:inputText>
+
+                    <!--Picture-->
+                    <p:outputLabel value="Picutre: "/>
+                    <p:inputText id="pictureInDl" value="#{seriesEdit.newActor.pathOfPhoto}"/>
+
+                    <p:commandButton value="Save" action="#{seriesEdit.addNewActorToSeries()}" oncomplete="PF('dlg').hide();" process="@form" update="form2:actorListId"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('dlg').hide();" /> 
+
+
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <!--Season dialog-->
+        <p:dialog header="New season" widgetVar="seasonDlg" >
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <!--Season name-->
+                    <p:outputLabel value="Name: "/>
+                    <p:inputText value="#{seriesEdit.newSeason.title}"/>
+
+                    <!--dateOfRelease-->
+                    <p:outputLabel value="Release date: " />
+                    <p:calendar value="#{seriesEdit.newSeason.dateOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                title="Format: dd/MM/yyyy" />
+
+                    <!--Season linkOfPromoVideo-->
+                    <p:outputLabel value="Promovideo link: "/>
+                    <p:inputText value="#{seriesEdit.newSeason.linkOfPromoVideo}"/>
+
+
+                    <p:commandButton value="Save" action="#{seriesEdit.addNewSeason()}" oncomplete="PF('seasonDlg').hide();" process="@form" update="form2:seasonTabs"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('seasonDlg').hide();" /> 
                 </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Episode title" widgetVar="episodeDlg" >
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <!--Episode name-->
+                    <p:outputLabel value="Name: "/>
+                    <p:inputText value="#{seriesEdit.newEpisode.title}"/>
+
+                    <!--Episode date of release-->
+                    <p:outputLabel value="Release date: " />
+                    <p:calendar value="#{seriesEdit.newEpisode.dateOfRelease}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                                navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
+                                title="Format: dd/MM/yyyy" />
+
+                    <!--Episode serialnumber-->
+                    <p:outputLabel value="Serial number: "/>
+                    <p:inputText value="#{seriesEdit.newEpisode.serialNumber}"/>
 
 
-                <!--Save panel-->
-                <p:growl id="growl" life="2000" />
-                <h:panelGrid>
-                    <p:commandButton action="#{seriesEdit.saveSeries}" actionListener="#{seriesEdit.saveButtonAction}" value="Save" 
-                                     update="growl" icon="ui-icon-disk" title="Save" />
+                    <p:commandButton value="Save" action="#{seriesEdit.addNewEpisode()}" oncomplete="PF('episodeDlg').hide();" process="@form" update="form2:seasonTabs"/>
+                    <p:commandButton value="Cancel" oncomplete="PF('episodeDlg').hide();" /> 
                 </h:panelGrid>
+            </h:form>
+        </p:dialog>
 
 
 
-
-
-
-            </ui:define>
-        </ui:composition>
+        <!--            </ui:define>
+                </ui:composition>-->
 
     </h:body>
 

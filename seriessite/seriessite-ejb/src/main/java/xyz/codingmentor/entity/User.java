@@ -4,11 +4,14 @@ import xyz.codingmentor.enums.Groups;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SecondaryTable;
@@ -57,13 +60,27 @@ public class User implements Serializable {
     @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Comment> comments;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="USER_FAVOURITES", 
+          joinColumns=@JoinColumn(name="USER_ID"),
+          inverseJoinColumns=@JoinColumn(name="SERIE_ID"))
+    private List<Series> favourites;
 
     public User() {
         //Empty
     }
 
+    public List<Series> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<Series> favourites) {
+        this.favourites = favourites;
+    }
+    
     public String getUsername() {
         return username;
     }

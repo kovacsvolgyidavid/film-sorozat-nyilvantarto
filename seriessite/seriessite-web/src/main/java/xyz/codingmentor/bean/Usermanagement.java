@@ -9,6 +9,10 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import xyz.codingmentor.service.VisitorCounter;
 
+/**
+ *
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
+ */
 @Named
 @SessionScoped
 public class Usermanagement implements Serializable {
@@ -42,4 +46,5 @@ public class Usermanagement implements Serializable {
     public static String getUsername() {
         return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
+
 }
