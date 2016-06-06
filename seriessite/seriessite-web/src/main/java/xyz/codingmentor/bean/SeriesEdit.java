@@ -85,9 +85,13 @@ public class SeriesEdit implements Serializable {
         selectedSeason = new Season();
 
         pictureHandler = new PictureHandler("/series/");
+        if (SystemUtils.IS_OS_LINUX) {
+            LOG.info("I am Linux");
+            String homeDirectoryNameInUbuntu = System.getProperty("user.home");
+            PATH = "/home/" + homeDirectoryNameInUbuntu + "/series/";
+            LOG.info("Path: " + PATH.toString());
 
-        String homeDirectoryNameInUbuntu = System.getProperty("user.home");
-        PATH = "/home/" + homeDirectoryNameInUbuntu + "/series/";
+        }
 
         activeIndexToTabView = 0;
 //        loadDatabaseData();
@@ -259,7 +263,7 @@ public class SeriesEdit implements Serializable {
     }
 
     public void setIdOfSeries(String idOfSeries) {
-        LOG.info("setIdOfSeries. Id is " + idOfSeries );
+        LOG.info("setIdOfSeries. Id is " + idOfSeries);
         this.idOfSeries = idOfSeries;
 //        loadDatabaseData();
 
@@ -340,12 +344,12 @@ public class SeriesEdit implements Serializable {
         createDirectory();
 
         try {
-            InputStream inputstream = uploadedFile.getInputstream();
 //            String fullFileName = uploadedFile.getFileName();
             Path file = Paths.get(PATH + nameOfImage);
             LOG.info("saveImageToDirectory " + file.toString());
             LOG.info("saveImageToDirectory " + file.getFileName().toString());
 
+            InputStream inputstream = uploadedFile.getInputstream();
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (IOException ex) {
