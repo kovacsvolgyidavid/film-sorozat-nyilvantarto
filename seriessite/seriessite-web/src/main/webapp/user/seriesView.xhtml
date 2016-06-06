@@ -55,7 +55,7 @@
                             <p:commandButton  value="Edit" action="#{seriesEdit.goToSeriesEditSite()}"
                                               rendered="#{facesContext.externalContext.isUserInRole('Admin')}" 
                                               class="admin_button img-responsive" style="background-color: deepskyblue">
-                                <f:param name="seriesId" value="#{seriesView.series.id}"/>
+                                <f:param name="seriesid" value="#{seriesView.series.id}"/>
                             </p:commandButton>
                             <BR/>
                             <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" 
