@@ -98,7 +98,6 @@ public class SeriesEdit implements Serializable {
         LOG.info("loadDatabaseData 1");
         if (idOfSeries != null) {
             LOG.info("loadDatabaseData 2");
-            idOfSeries = "1";
             Long id = (Long) Long.parseLong(idOfSeries);
 
             Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
