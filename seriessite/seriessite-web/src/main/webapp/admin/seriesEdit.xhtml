@@ -10,7 +10,8 @@
 
     <f:metadata>
         <f:viewParam name="seriesid" value="#{seriesEdit.idOfSeries}" />
-        <!--<f:event type="postAddToView" listener="#{seriesEdit.loadDatabaseData}" />-->
+        <f:viewAction action="#{seriesEdit.loadDatabaseData()}" />
+        <!--<f:event type="preRenderView" listener="#{seriesEdit.loadDatabaseData}" />-->
     </f:metadata>
 
     <h:head>

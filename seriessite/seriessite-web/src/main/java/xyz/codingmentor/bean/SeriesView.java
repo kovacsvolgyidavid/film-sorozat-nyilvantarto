@@ -44,6 +44,10 @@ public class SeriesView implements Serializable {
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
     }
 
+    public String goToSeriesEditSite() {
+        return "/admin/seriesEdit.xhtml/?seriesid=" + series.getId() + ";faces-redirect=true";
+    }
+
     public String getTitle() {
         return series.getTitle();
     }

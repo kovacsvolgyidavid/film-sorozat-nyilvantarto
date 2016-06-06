@@ -77,27 +77,27 @@ public class SeriesEdit implements Serializable {
         LOG.info("init() function");
 //        series = new Series();
 //        actorListNotInSeries = new ArrayList<>();
-        
+
         newActor = new Actor();
         newSeason = new Season();
         newEpisode = new Episode();
 
         selectedSeason = new Season();
 
-        idOfSeries = "1";
         pictureHandler = new PictureHandler("/series/");
- 
 
         String homeDirectoryNameInUbuntu = System.getProperty("user.home");
         PATH = "/home/" + homeDirectoryNameInUbuntu + "/series/";
 
         activeIndexToTabView = 0;
-        loadDatabaseData();
+//        loadDatabaseData();
     }
 
 //    public void loadDatabaseData(ComponentSystemEvent event) {
     public void loadDatabaseData() {
+        LOG.info("loadDatabaseData 1");
         if (idOfSeries != null) {
+            LOG.info("loadDatabaseData 2");
             idOfSeries = "1";
             Long id = (Long) Long.parseLong(idOfSeries);
 
@@ -109,15 +109,15 @@ public class SeriesEdit implements Serializable {
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
     }
-    
+
     public String goToSeriesEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         Map<String, String> params
                 = context.getExternalContext().getRequestParameterMap();
-        String id = params.get("seriesId");
+        String id = params.get("seriesid");
 
-        return "seriesEdit.xhtml/?id=" + id + ";faces-redirect=true";
+        return "seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
     }
 
     public String goToActorEditSite() {
@@ -175,7 +175,7 @@ public class SeriesEdit implements Serializable {
 
     public void addExistingActorToSeries() {
         LOG.info("addExistingActorToSeries");
-        if(actorId == "" || actorId == null){
+        if (actorId == "" || actorId == null) {
             LOG.info("addExistingActorToSeries. actorId is \"\" or null");
         }
         Actor actor = searchActorById(actorListNotInSeries, actorId);
@@ -259,9 +259,9 @@ public class SeriesEdit implements Serializable {
     }
 
     public void setIdOfSeries(String idOfSeries) {
-        LOG.info("setIdOfSeries");
+        LOG.info("setIdOfSeries. Id is " + idOfSeries );
         this.idOfSeries = idOfSeries;
-        loadDatabaseData();
+//        loadDatabaseData();
 
     }
 
@@ -289,7 +289,7 @@ public class SeriesEdit implements Serializable {
         LOG.info("deleteSeasion");
         LOG.info("akt season" + season.toString());
         for (Season s : series.getSeasons()) {
-              LOG.info("in for, season" + season.toString());
+            LOG.info("in for, season" + season.toString());
             if (s.equals(season)) {
                 series.getSeasons().remove(season);
                 return;
@@ -315,11 +315,11 @@ public class SeriesEdit implements Serializable {
     public void addNewEpisode() {
         LOG.info("addNewEpisode");
         //        newEpisode.setSeason(selectedSeason);
-        
+
         List<Season> seasons = series.getSeasons();
         for (Season season : seasons) {
-            if (season.equals(selectedSeason)){
-                if(null == season.getEpisodes()){
+            if (season.equals(selectedSeason)) {
+                if (null == season.getEpisodes()) {
                     LOG.info("addNewEpisode. Season.getEpisodes() was null ");
                     season.setEpisodes(new ArrayList<Episode>());
                 }
@@ -439,12 +439,12 @@ public class SeriesEdit implements Serializable {
     public void setNewEpisode(Episode newEpisode) {
         this.newEpisode = newEpisode;
     }
-    
-    public Sex getMale(){
+
+    public Sex getMale() {
         return Sex.MALE;
     }
-    
-    public Sex getFemale(){
+
+    public Sex getFemale() {
         return Sex.FEMALE;
     }
 
@@ -455,13 +455,10 @@ public class SeriesEdit implements Serializable {
     public void setActiveIndexToTabView(Integer activeIndexToTabView) {
         this.activeIndexToTabView = activeIndexToTabView;
     }
-    
-     public void onTabChange(TabChangeEvent event) 
-    {   
+
+    public void onTabChange(TabChangeEvent event) {
         TabView tabView = (TabView) event.getComponent();
         activeIndexToTabView = tabView.getChildren().indexOf(event.getTab());
     }
-    
-    
 
 }

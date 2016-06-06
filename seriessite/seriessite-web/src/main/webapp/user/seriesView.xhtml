@@ -66,53 +66,70 @@ and open the template in the editor.
                         background: yellow !important;
                     }
                 </style>
-                    <div style="background-image: url('#{request.contextPath}/resources/backgrounds/seriesview.jpg'); background-repeat: no-repeat; background-size: cover" class="img-responsive">
-                <div class="row">
+                <div style="background-image: url('#{request.contextPath}/resources/backgrounds/seriesview.jpg'); background-repeat: no-repeat; background-size: cover" class="img-responsive">
+                    <div class="row">
 
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 
-                        <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
-                                        class="img-responsive" style="margin: 0 auto"/>
+                            <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
+                                            class="img-responsive" style="margin: 0 auto"/>
 
-                    </div>
+                        </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align: center">
-                        <h:outputText value="#{seriesView.title}" class="title"/> 
-                        <br/>
-                        <h:panelGrid columns="1">
-                            <h:panelGrid columns="2" style="margin: 0 auto">
-                                <p:outputLabel for="ryear" value="Release date:" class="jumboheader"/>    
-
-                                <h:outputText id="ryear" value="#{seriesView.series.yearOfRelease}" class="jumbotext">
-                                    <f:convertDateTime pattern="yyyy"/>
-                                </h:outputText>  
-
-                                <p:outputLabel value="Seasons:" class="jumboheader"/>    
-
-                                <h:outputText value="#{seriesView.seasonNumber}" class="jumbotext"/>    
-
-                                <p:outputLabel for="episodes" value="Episodes:" class="jumboheader"/>    
-
-                                <h:outputText id="episodes" value="#{seriesView.episodeNumber}" class="jumbotext"/> 
-                            </h:panelGrid>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align: center">
+                            <h:outputText value="#{seriesView.title}" class="title"/> 
                             <br/>
-                            <h:outputText value="#{seriesView.series.description}" class="jumbotext"/>
-                        </h:panelGrid>
-                    </div>
+                            <h:panelGrid columns="1">
+                                <h:panelGrid columns="2" style="margin: 0 auto">
+                                    <p:outputLabel for="ryear" value="Release date:" class="jumboheader"/>    
 
-                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-                        <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: deepskyblue"/>
-                        <BR/>
-                        <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: darkorange">
-                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
-                        </p:commandButton>
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog> 
+                                    <h:outputText id="ryear" value="#{seriesView.series.yearOfRelease}" class="jumbotext">
+                                        <f:convertDateTime pattern="yyyy"/>
+                                    </h:outputText>  
+
+                                    <p:outputLabel value="Seasons:" class="jumboheader"/>    
+
+                                    <h:outputText value="#{seriesView.seasonNumber}" class="jumbotext"/>    
+
+                                    <p:outputLabel for="episodes" value="Episodes:" class="jumboheader"/>    
+
+                                    <h:outputText id="episodes" value="#{seriesView.episodeNumber}" class="jumbotext"/> 
+                                </h:panelGrid>
+                                <br/>
+                                <h:outputText value="#{seriesView.series.description}" class="jumbotext"/>
+                            </h:panelGrid>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+    <!--                        <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" 
+                                              class="admin_button img-responsive" style="background-color: deepskyblue"/>-->
+
+                            <!--Egyik megoldás-->
+                            <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" 
+                                              class="admin_button img-responsive" style="background-color: deepskyblue" 
+                                              action="#{seriesView.goToSeriesEditSite}"/>
+
+
+
+                            <!--Másik megoldás-->
+<!--                            <p:link outcome="#{seriesEdit.goToSeriesEditSite}" value="Edit2" >
+                                <f:param name="seriesid" value="#{seriesView.series.id}" />
+                            </p:link> -->
+
+
+
+
+                            <BR/>
+                            <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" class="admin_button img-responsive" style="background-color: darkorange">
+                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog> 
+                        </div>
                     </div>
                 </div>
-                        </div>
                 <div class="row" style="background: white;">
                     <div class="col-12">
                         <p:outputLabel for="season" style="margin-left: 12.5%; font-size: 25px; font-weight: bold" value="Seasons:"/>

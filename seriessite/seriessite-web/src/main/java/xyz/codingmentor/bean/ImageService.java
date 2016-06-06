@@ -23,21 +23,28 @@ public class ImageService {
 
     private StreamedContent image;
 
-    public StreamedContent getImage() throws IOException {
+    public StreamedContent getImage() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             return new DefaultStreamedContent();
         } else {
             String path = context.getExternalContext().getRequestParameterMap().get("path");
-            if (path.equals("user.jpg") || path == null) {
-                ClassLoader classLoader = getClass().getClassLoader();
-                File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
-                image = new DefaultStreamedContent(new FileInputStream(noPicture));
-            } else {
-                image = new DefaultStreamedContent(new FileInputStream(path));
+            try {
+                if (path.equals("user.jpg") || path == null) {
+                    ClassLoader classLoader = getClass().getClassLoader();
+                    File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
+                    image = new DefaultStreamedContent(new FileInputStream(noPicture));
+                } else {
+
+                    image = new DefaultStreamedContent(new FileInputStream(path));
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ImageService.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return image;
+
         }
+        return image;
     }
+
 }
