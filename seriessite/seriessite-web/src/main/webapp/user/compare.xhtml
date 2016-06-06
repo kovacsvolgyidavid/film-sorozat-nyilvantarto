@@ -126,7 +126,7 @@
                         <p:tabView value="#{compare.series1.seasons}" var="season" 
                                    style="border: transparent; background: transparent; height: 100%">
                             <p:tab title="#{compare.series1.seasons.indexOf(season)+1}">
-                                <p:dataTable value="#{season.episodes}" var="episode" 
+                                <p:dataTable value="#{season.episodes}" var="episode" scrollable="true" scrollHeight="240"
                                              style="text-align: center; width: 100%">
                                     <p:column headerText="*" style="width: 5%">
                                         #{season.episodes.indexOf(episode)+1}
@@ -147,7 +147,7 @@
                         <p:tabView value="#{compare.series2.seasons}" var="season" 
                                    style="border: transparent; background: transparent; height: 100%">
                             <p:tab title="#{compare.series2.seasons.indexOf(season)+1}">
-                                <p:dataTable value="#{season.episodes}" var="episode" 
+                                <p:dataTable value="#{season.episodes}" var="episode" scrollable="true" scrollHeight="240" 
                                              style="text-align: center; width: 100%">
                                     <p:column headerText="*" style="width: 5%">
                                         #{season.episodes.indexOf(episode)+1}
