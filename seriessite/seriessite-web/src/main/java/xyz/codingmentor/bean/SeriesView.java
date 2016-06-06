@@ -38,6 +38,10 @@ public class SeriesView implements Serializable {
     private EntityFacade entityFacade;
     private User user;
     private Long seriesId;
+    
+    private static final Logger LOG = Logger.getLogger(SeriesView.class.getName());
+    
+    
 
     @PostConstruct
     public void init() {

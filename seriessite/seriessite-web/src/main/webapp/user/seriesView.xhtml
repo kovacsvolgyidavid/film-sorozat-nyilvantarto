@@ -107,7 +107,13 @@ and open the template in the editor.
                             <!--Egyik megoldás-->
                             <p:commandButton  value="Edit" rendered="#{facesContext.externalContext.isUserInRole('Admin')}" 
                                               class="admin_button img-responsive" style="background-color: deepskyblue" 
-                                              action="#{seriesView.goToSeriesEditSite}"/>
+                                              action="#{seriesEdit.goToSeriesEditSite}"
+                                              >
+
+                                <f:param name="seriesid" value="#{seriesView.series.id}"/>
+                            </p:commandButton>
+                            
+                                              <!--action="#{seriesView.goToSeriesEditSite}"/>-->
 
 
 

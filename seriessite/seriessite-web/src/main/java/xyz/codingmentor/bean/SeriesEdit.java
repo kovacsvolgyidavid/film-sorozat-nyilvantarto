@@ -111,13 +111,14 @@ public class SeriesEdit implements Serializable {
     }
 
     public String goToSeriesEditSite() {
+        LOG.info("goToSeriesEditSite");
         FacesContext context = FacesContext.getCurrentInstance();
 
         Map<String, String> params
                 = context.getExternalContext().getRequestParameterMap();
         String id = params.get("seriesid");
 
-        return "seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
+        return "/admin/seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
     }
 
     public String goToActorEditSite() {
