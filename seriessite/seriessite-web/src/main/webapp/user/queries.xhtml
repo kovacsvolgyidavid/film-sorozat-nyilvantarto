@@ -37,32 +37,9 @@
                         </p:panelGrid> 
                     </p:tab>
                     
-                    <p:tab title="Series by Director" id="SeriesByDirectorTab">
-                        <h1 style="text-align: center;">Series</h1>
-                        <h2 style="text-align: center">by Director whose original name equals to their stage name</h2><br/>
-                        <br/><br/>
-                        <div style="text-align: center">
-                            <p:commandButton value="Search" action="#{queries.seriesByDirectorOriginalNameEqualsName()}" 
-                                             process="SeriesByDirectorTab" update="form"/>
-                        </div>
-
-                        <br/><br/>
-                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
-                            <p:outputLabel value="Result: "/>
-                            <p:outputPanel style="border: #080808 solid thin">
-                                <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, " >
-                                        <f:param name="seriesid" value="#{s.id}" />
-                                    </p:link>
-                                    <br/>
-                                </ui:repeat>
-                            </p:outputPanel>
-                        </p:panelGrid>
-                    </p:tab>
-
                     <p:tab title="Series by Number of Episodes" id="SeriesByNumberOfEpisodesTab">
                         <h1 style="text-align: center;">Series</h1>
-                        <h2 style="text-align: center">with more episode </h2><br/><br/>
+                        <h2 style="text-align: center">with more episode</h2><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Number of episodes: " />
                             <p:inputText id="noe" value="#{queries.numberOfEpisodes}"
@@ -77,6 +54,50 @@
                             <p:commandButton value="Search" action="#{queries.seriesWithMoreEpisode()}" 
                                              process="SeriesByNumberOfEpisodesTab" update="form"/>
                         </p:panelGrid>
+                        <br/><br/>
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
+                            <p:outputLabel value="Result: "/>
+                            <p:outputPanel style="border: #080808 solid thin">
+                                <ui:repeat var="s" value="#{queries.series}">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
+                                        <f:param name="seriesid" value="#{s.id}" />
+                                    </p:link>
+                                    <br/>
+                                </ui:repeat>
+                            </p:outputPanel>
+                        </p:panelGrid>
+                    </p:tab>
+
+                    <p:tab title="Users by Comments" id="UsersByComments">
+                        <h1 style="text-align: center;">Users</h1>
+                        <h2 style="text-align: center">with the most comments</h2><br/><br/><br/>
+                            
+                        <div style="text-align: center">
+                            <p:commandButton value="Search" action="#{queries.userByMostComment()}" 
+                                             process="UsersByComments" update="form"/>
+                        </div>
+                        <br/><br/>
+                        <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
+                            <p:outputLabel value="Result: "/>
+                            <p:outputPanel style="border: #080808 solid thin">
+                                <ui:repeat var="uwmc" value="#{queries.usersWithMostComments}">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{uwmc}">
+                                        <f:param name="seriesid" value="#{s.id}" />
+                                    </p:link>
+                                    <br/>
+                                </ui:repeat>
+                            </p:outputPanel>
+                        </p:panelGrid>
+                    </p:tab>
+                    
+                    <p:tab title="Series by Director" id="SeriesByDirectorTab">
+                        <h1 style="text-align: center;">Series</h1>
+                        <h2 style="text-align: center">by Director whose original name equals to their stage name</h2><br/><br/><br/>
+                        
+                        <div style="text-align: center">
+                            <p:commandButton value="Search" action="#{queries.seriesByDirectorOriginalNameEqualsName()}" 
+                                             process="SeriesByDirectorTab" update="form"/>
+                        </div>
                         <br/><br/>
                         <p:panelGrid columns="1" style="margin: 0 auto; width: 40%; text-align: center;" styleClass="ui-noborder">
                             <p:outputLabel value="Result: "/>

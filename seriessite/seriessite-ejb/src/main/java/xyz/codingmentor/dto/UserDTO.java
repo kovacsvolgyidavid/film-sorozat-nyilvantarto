@@ -11,8 +11,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import xyz.codingmentor.constraint.PasswordConstraint;
 import xyz.codingmentor.entity.User;
 
 /**
@@ -24,7 +24,7 @@ public class UserDTO {
     private User user;
 
     @Size(min = 1, message = "This field has to be filled.")
-    @PasswordConstraint(message = "Wrong password format.")
+    @Pattern(regexp="^((?=.*\\d)(?=.*\\p{Ll})(?=.*\\p{Lu}).{6,20})$", message="Wrong password format.")
     private String password;
 
     public User makeUser() {

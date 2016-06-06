@@ -23,7 +23,7 @@ import javax.persistence.NamedQuery;
     
     
     @NamedQuery(name = "actorsFromSeriesAfterGivenDate",
-            query = "SELECT a FROM Actor a JOIN a.series s WHERE s.yearOfRelease > :date "
+            query = "SELECT DISTINCT a FROM Actor a JOIN a.series s WHERE s.yearOfRelease > :date "
     ),
     
     @NamedQuery(name = "seriesByDirectorOriginalNameEqualsName",
@@ -35,9 +35,12 @@ import javax.persistence.NamedQuery;
     ),
         
     @NamedQuery(name = "seriesCommentedAfterGivenDate",
-            query = "Select s FROM Series s JOIN s.comments c WHERE c.dateOfComment > :date"
-    )        
+            query = "Select DISTINCT s FROM Series s JOIN s.comments c WHERE c.dateOfComment > :date"
+    ),       
 
+    @NamedQuery(name = "userByMostComment",
+            query = "Select u.username, size(u.comments) FROM User u WHERE size(u.comments) = (SELECT MAX(size(u2.comments)) FROM User u2)"
+    ) 
 })
 public class Actor extends Person implements Serializable {
 

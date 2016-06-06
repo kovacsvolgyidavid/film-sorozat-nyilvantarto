@@ -76,7 +76,8 @@ public class Profile implements Serializable {
     }
     
     public void savePassword() {
-        entityFacade.update(user);
+        userDTO.setUser(user);
+        entityFacade.update(userDTO.makeUser());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The password has been changed."));
         RequestContext.getCurrentInstance().update("form:tabView:passwordTab");
     }

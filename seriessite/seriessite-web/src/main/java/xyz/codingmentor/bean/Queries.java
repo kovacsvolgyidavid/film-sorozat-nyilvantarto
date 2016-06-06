@@ -1,6 +1,7 @@
 package xyz.codingmentor.bean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class Queries {
     private int numberOfEpisodes;
     private List<Actor> actors;
     private List<Series> series;
+    private List<String> usersWithMostComments;
 
     @Inject
     private ActorFacade actorFacade;
@@ -38,6 +40,7 @@ public class Queries {
     public void init() {
         actors = new ArrayList<>();
         series = new ArrayList<>();
+        usersWithMostComments = new ArrayList<>();    
     }
 
     public String goToSeriesPage() {
@@ -76,6 +79,17 @@ public class Queries {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, NO_SUCH_SERIES, ERROR));
         }
     }
+    
+     public void userByMostComment() {
+        List <Object[]> userCommentObjects = seriesFacade.userByMostComment();
+        if (userCommentObjects.isEmpty())
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No one commented yet.", ERROR));
+        else{
+            for(Object[] uco : userCommentObjects){
+                usersWithMostComments.add(uco[0] + " (" + uco[1] + ")");
+            }
+        }         
+    }   
 
     public void onTabChange() {
         actors.clear();
@@ -113,5 +127,13 @@ public class Queries {
 
     public void setSeries(List<Series> series) {
         this.series = series;
+    }
+
+    public List<String> getUsersWithMostComments() {
+        return usersWithMostComments;
+    }
+
+    public void setUsersWithMostComments(List<String> usersWithMostComments) {
+        this.usersWithMostComments = usersWithMostComments;
     }
 }

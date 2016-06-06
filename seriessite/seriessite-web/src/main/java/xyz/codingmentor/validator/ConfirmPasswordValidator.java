@@ -20,7 +20,7 @@ public class ConfirmPasswordValidator implements Validator {
         }
 
         if (!password.equals(confirm)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Passwords have to be equal."));          
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Passwords have to be the same."));          
         }
     }
 }

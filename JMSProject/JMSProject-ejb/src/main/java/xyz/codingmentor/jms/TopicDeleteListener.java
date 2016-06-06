@@ -11,9 +11,10 @@ import xyz.codingmentor.collective.dtio.ProductDTO;
 
 @MessageDriven(mappedName = "jms/TopicDelete")
 public class TopicDeleteListener implements MessageListener{
+    private static final Logger LOGGER = Logger.getLogger(TopicDeleteListener.class.getName());
+    
     @Inject
-    TopicService topicService;
-    private static final Logger LOGGER = Logger.getLogger(TopicDeleteListener.class.getName()); 
+    private TopicService topicService;
        
     @Override
     public void onMessage(Message message) {
@@ -26,7 +27,7 @@ public class TopicDeleteListener implements MessageListener{
                         "Price: " + productDTO.getPrice() + "\n" +
                         "Type: " + productDTO.getType());
             } catch (JMSException ex) {
-                Logger.getLogger(TopicDeleteListener.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         }
     } 

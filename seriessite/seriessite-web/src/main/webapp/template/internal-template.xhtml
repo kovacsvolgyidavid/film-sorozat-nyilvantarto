@@ -38,7 +38,7 @@
                                                class="glyphicon glyphicon-leaf" immediate="true" 
                                                rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/></li>
                             <p class="navbar-text glyphicon glyphicon-heart" style="font-size: medium;"> 
-                                Today's visitors: #{usermanagement.visitorCounter.visitor}</p> 
+                                Today's visitors: #{usermanagement.visitorCounter.visitorNumber}</p> 
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><p:commandLink value=" Logout" action="#{usermanagement.logout()}" ajax="false" style="height:50px;" 

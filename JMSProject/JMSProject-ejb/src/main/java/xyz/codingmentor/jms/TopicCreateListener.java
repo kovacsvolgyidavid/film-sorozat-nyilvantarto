@@ -11,12 +11,11 @@ import xyz.codingmentor.collective.dtio.ProductDTO;
 
 @MessageDriven(mappedName = "jms/TopicCreate")
 public class TopicCreateListener implements MessageListener {
-
     private static final Logger LOGGER = Logger.getLogger(TopicCreateListener.class.getName());
-
+    
     @Inject
-    TopicService topicService;
-
+    private TopicService topicService;
+    
     @Override
     public void onMessage(Message message) {
 
@@ -35,7 +34,7 @@ public class TopicCreateListener implements MessageListener {
             }
 
         } catch (JMSException ex) {
-            Logger.getLogger(TopicDeleteListener.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 }
