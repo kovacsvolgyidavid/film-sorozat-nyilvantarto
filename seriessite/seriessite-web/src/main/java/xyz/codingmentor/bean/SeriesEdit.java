@@ -88,7 +88,7 @@ public class SeriesEdit implements Serializable {
         if (SystemUtils.IS_OS_LINUX) {
             LOG.info("I am Linux");
             String homeDirectoryNameInUbuntu = System.getProperty("user.home");
-            PATH = "/home/" + homeDirectoryNameInUbuntu + "/series/";
+            PATH = homeDirectoryNameInUbuntu + "/series/";
             LOG.info("Path: " + PATH.toString());
 
         }
@@ -104,7 +104,7 @@ public class SeriesEdit implements Serializable {
             LOG.info("loadDatabaseData 2");
             Long id = (Long) Long.parseLong(idOfSeries);
 
-            Long idOfSeries2 = id; //Long.parseLong(idOfSeries);
+            Long idOfSeries2 = id;
 
             LOG.info("idd: " + idOfSeries2);
 
@@ -121,20 +121,14 @@ public class SeriesEdit implements Serializable {
                 = context.getExternalContext().getRequestParameterMap();
         String id = params.get("seriesid");
 
-        return "/admin/seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
+        return "/admin/seriesEdit.xhtml/?seriesid=" + id + "&faces-redirect=true";
     }
 
     public String goToActorEditSite() {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        Map<String, String> params
-                = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String id = params.get("actorId");
-//        LOG.info("Here go to actor side. ActorID: " + id);
-
-//        1 is Actor edit it
         return "actorEdit.xhtml/?id=" + id + ";faces-redirect=true";
-//        return "actorEdit.xhtml/?id="+1+",faces-redirect=true";
     }
 
     public Series getSeries() {
@@ -344,19 +338,15 @@ public class SeriesEdit implements Serializable {
         createDirectory();
 
         try {
-//            String fullFileName = uploadedFile.getFileName();
             Path file = Paths.get(PATH + nameOfImage);
             LOG.info("saveImageToDirectory " + file.toString());
             LOG.info("saveImageToDirectory " + file.getFileName().toString());
-
             InputStream inputstream = uploadedFile.getInputstream();
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-
         } catch (IOException ex) {
             LOG.info("saveImageToDirectory Exception" + ex.toString());
 
         }
-
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
     }
 
@@ -368,7 +358,7 @@ public class SeriesEdit implements Serializable {
             try {
                 directory.mkdirs();
             } catch (SecurityException se) {
-                //handle it
+                Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, se);
             }
         }
     }
@@ -408,7 +398,6 @@ public class SeriesEdit implements Serializable {
                 }
             }
             if (uploadedFile == null) {
-//                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource("/series/noimages.png").getFile());
                 LOG.info("getImage " + noPicture.toString());
@@ -417,10 +406,8 @@ public class SeriesEdit implements Serializable {
                 image = new DefaultStreamedContent(uploadedFile.getInputstream());
             }
         } catch (Exception ex) {
-//            LOG.info("Not found image. Exceptin in getImage function");
-//            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return image;
     }
 

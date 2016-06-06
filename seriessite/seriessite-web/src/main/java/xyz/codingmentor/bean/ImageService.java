@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -23,15 +21,14 @@ public class ImageService {
 
     private StreamedContent image;
 
-    public StreamedContent getImage() {
+    public StreamedContent getImage() throws FileNotFoundException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             return new DefaultStreamedContent();
         } else {
             String path = context.getExternalContext().getRequestParameterMap().get("path");
-            try {
-                if (path.equals("user.jpg") || path == null) {
+            if (path.equals("user.jpg") || path.equals("")) {
                     ClassLoader classLoader = getClass().getClassLoader();
                     File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
                     image = new DefaultStreamedContent(new FileInputStream(noPicture));
@@ -39,9 +36,6 @@ public class ImageService {
 
                     image = new DefaultStreamedContent(new FileInputStream(path));
                 }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(ImageService.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
         }
         return image;

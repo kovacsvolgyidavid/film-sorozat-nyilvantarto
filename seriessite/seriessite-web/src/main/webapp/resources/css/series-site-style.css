@@ -33,18 +33,10 @@ body {
     }
 }
 
-.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
-    padding:0px 0px 0px 0px; height: 100%
-}
-
 .ui-fileupload-content {
     display: none;
 }
 .ui-fileupload-buttonbar.ui-widget-header {
     background-color: transparent;
     border: 0 none;
-}
-
-.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td,.ui-datatable tfoot th{
-    padding:0px 0px 0px 0px; height: 100%
 }

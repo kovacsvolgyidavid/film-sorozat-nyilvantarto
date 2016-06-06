@@ -42,19 +42,12 @@ public class ActorFacade implements Serializable{
         return actor.getSingleResult();
     }
 
-    
     public List<Series> findSeriesInWichActorDontPlay(Long actorId) {
 
         TypedQuery<Series> findAllSeries = em.createNamedQuery("Series.findAll", Series.class);
         List<Series> seriesAll = findAllSeries.getResultList();
-//        printActorSeriessss(findActorInDataBase);
-
-
-//        List<Series> series = findSeriesByActorId(actorId);
         Actor findActorById = findActorById(actorId);
         List<Series> series = findActorById.getSeries();
-
-        // Remove all elements in firstList from secondList
         seriesAll.removeAll(series);
 
         return seriesAll;

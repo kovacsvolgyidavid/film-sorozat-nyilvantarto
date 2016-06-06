@@ -43,16 +43,14 @@ public class ActorEdit implements Serializable {
     private StreamedContent image;
     private Actor actor;
     private String selectedSeriesId;
-//    private Series series;
     private static final Logger LOG = Logger.getLogger(ActorEdit.class.getName());
-//    private List<Series> seriesList;
     private List<Series> seriesInWichActorDontPlay;
 
     @PostConstruct
     public void init() {
         actor = new Actor();
         seriesInWichActorDontPlay = new ArrayList<>();
-//        seriesList = new ArrayList<>();
+
 
         Long idOfActor = 1L;
         actor = actorFacade.findActorById(idOfActor);
@@ -89,18 +87,12 @@ public class ActorEdit implements Serializable {
         actor.getSeries().add(series);
         seriesInWichActorDontPlay.remove(series);
         
-         printActorSeries(actor);
-         
-//        actorFacade.addSeriesToActor(series.getId(), actor.getId());
+         printActorSeries(actor);        
     }
 
     public void removeSeriesFromActor(Series series) {
-//        LOG.info("removeActorFromSeries");
-
         actor.getSeries().remove(series);
         seriesInWichActorDontPlay.add(series);
-//        actorFacade.deleteSeriesFromActor(Long.parseLong(selectedSeriesId), actor.getId());
-
     }
 
     public void saveButtonAction(ActionEvent actionEvent) {

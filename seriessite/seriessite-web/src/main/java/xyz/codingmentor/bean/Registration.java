@@ -1,6 +1,5 @@
 package xyz.codingmentor.bean;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,75 +15,71 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import xyz.codingmentor.dto.UserDTO;
-import xyz.codingmentor.entity.Actor;
-import xyz.codingmentor.entity.Movie;
-import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.entity.User;
 import xyz.codingmentor.enums.Groups;
 import xyz.codingmentor.enums.Sex;
-import xyz.codingmentor.query.DatabaseQuery;
 import xyz.codingmentor.service.EntityFacade;
-import xyz.codingmentor.service.SeriesFacade;
 
 @Named
 @SessionScoped
 public class Registration implements Serializable {
-    @Inject
-    private SeriesFacade seriesFacade;
 
     @Inject
     private EntityFacade entityFacade;
 
-    @Inject
-    private DatabaseQuery databaseQuery;
-
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
-    private final static Enum[] SEXES = new Enum[2];
+    private Enum[] sexes;
     private UserDTO dtoUser;
-
+    private String connfirmPassword;
+    
     @PostConstruct
     public void init() {
-        SEXES[0] = Sex.MALE;
-        SEXES[1] = Sex.FEMALE;
+        sexes = Sex.class.getEnumConstants();
         dtoUser = new UserDTO();
     }
 
-    public String signIn() {
-        if (entityFacade.read(User.class, dtoUser.getUser().getUsername()) != null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This uername is already taken!", "Error!"));           
+    public String registrate() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        
+        if (uploadedFile == null) {
+            dtoUser.getUser().setPathOfPhoto("user.jpg");
         } else {
-            if (uploadedFile == null) {
-                dtoUser.getUser().setPathOfPhoto("user.jpg");
-            } else {
-                uploadPicture();
-            }
-            dtoUser.getUser().setGroups(Groups.ADMIN);
-            dtoUser.getUser().setMoviePerPage(50);
-            entityFacade.create(dtoUser.makeUser());
-            dtoUser.setUser(new User());
-            uploadedFile = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The registration was successful."));
-            return "/login.xhtml";
+            uploadPicture();
         }
-        return "";
+
+        dtoUser.getUser().setGroups(Groups.USER);
+        dtoUser.getUser().setMoviePerPage(50);
+        entityFacade.create(dtoUser.makeUser());
+        dtoUser.setUser(new User());
+        uploadedFile = null;
+        facesContext.addMessage(null, new FacesMessage("The registration was successful."));
+        facesContext.getExternalContext().getFlash().setKeepMessages(true);
+        return "/login.xhtml?faces-redirect=true";
+    }
+    
+    public String redirectRegistration() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        session.invalidate();
+        return "/registration.xhtml?faces-redirect=true";
     }
 
     public void uploadPicture() {
         createDirectory();
         try {
             InputStream inputstream = uploadedFile.getInputstream();
-            String fullFileName = uploadedFile.getFileName();
-            Path file = Paths.get(PATH + fullFileName);
+            String extension = FilenameUtils.getExtension(uploadedFile.getFileName());
+            Path file = Paths.get(PATH + dtoUser.getUser().getUsername() + "." + extension);
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
             dtoUser.getUser().setPathOfPhoto(file.toString());
         } catch (IOException ex) {
@@ -98,7 +93,7 @@ public class Registration implements Serializable {
             try {
                 directory.mkdirs();
             } catch (SecurityException se) {
-                //handle it
+                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, se);
             }
         }
     }
@@ -112,7 +107,7 @@ public class Registration implements Serializable {
         }
     }
 
-    public void resetPicture(AjaxBehaviorEvent event) {
+    public void resetPicture() {
         uploadedFile = null;
     }
 
@@ -127,7 +122,6 @@ public class Registration implements Serializable {
     public StreamedContent getImage() {
         try {
             if (uploadedFile == null) {
-                //image = new DefaultStreamedContent(new FileInputStream(PATH + "user.jpg"));
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource("/user.jpg").getFile());
                 image = new DefaultStreamedContent(new FileInputStream(noPicture));
@@ -151,7 +145,7 @@ public class Registration implements Serializable {
     }
 
     public Enum[] getSexes() {
-        return SEXES;
+        return sexes;
     }
 
     public EntityFacade getEntityFacade() {
@@ -162,14 +156,6 @@ public class Registration implements Serializable {
         this.entityFacade = entityFacade;
     }
 
-    public DatabaseQuery getDatabaseQuery() {
-        return databaseQuery;
-    }
-
-    public void setDatabaseQuery(DatabaseQuery databaseQuery) {
-        this.databaseQuery = databaseQuery;
-    }
-
     public UserDTO getDtoUser() {
         return dtoUser;
     }
@@ -177,4 +163,12 @@ public class Registration implements Serializable {
     public void setDtoUser(UserDTO dtoUser) {
         this.dtoUser = dtoUser;
     }
+
+    public String getConnfirmPassword() {
+        return connfirmPassword;
+    }
+
+    public void setConnfirmPassword(String connfirmPassword) {
+        this.connfirmPassword = connfirmPassword;
+    }       
 }
