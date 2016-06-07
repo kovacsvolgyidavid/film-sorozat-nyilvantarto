@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package xyz.codingmentor.datamodel;
 
 import java.lang.reflect.Field;
@@ -15,7 +11,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import xyz.codingmentor.bean.FieldService;
 import xyz.codingmentor.entity.Director;
-import xyz.codingmentor.entity.Series;
 
 /**
  *
