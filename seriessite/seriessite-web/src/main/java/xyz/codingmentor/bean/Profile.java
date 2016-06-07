@@ -32,41 +32,46 @@ import xyz.codingmentor.service.EntityFacade;
 @Named
 @SessionScoped
 public class Profile implements Serializable {
-
     @Inject
     private EntityFacade entityFacade;
-
     private static final String PATH = "/path/resources/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private User user;
     private UserDTO userDTO;
     private Enum[] sexes;
-
-    private boolean editMyProfile;
+    private String username; 
+    private boolean editingMyProfile;
+    private boolean editingAllowed;
 
     @PostConstruct
     public void init() {
         sexes = Sex.class.getEnumConstants();
         userDTO = new UserDTO();
         userDTO.setUser(new User());
-        editMyProfile = true;
+        editingMyProfile = true;
     }
 
-    public String getMyProfile() {
-        editMyProfile = true;
-        user = entityFacade.read(User.class, Usermanagement.getUsername());
+    public String goToProfilePage() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String username = params.get("username");
-        return "/user/profile?username=" + username + ";faces-redirect=true";
+        String un = params.get("username");
+        return "/user/profile?username=" + un + "&faces-redirect=true";
     }
-
-    public String getUserProfile(User user) {
-        editMyProfile = false;
-        uploadedFile = null;
-        this.user = user;
-        return "/user/profile.xhtml?username=" + user.getUsername() + ";faces-redirect=true";
+    
+    public void loadUserFromDatabase(boolean admin){
+        user = entityFacade.read(User.class, username);
+        
+        if(username.equals(Usermanagement.getUsername())){
+           editingAllowed = true;
+           editingMyProfile = true;
+        } else if(admin){
+           editingAllowed = true;
+           editingMyProfile = false;
+        } else {
+           editingAllowed = false;
+           editingMyProfile = false;
+        }   
     }
 
     public void saveUserData() {
@@ -76,7 +81,9 @@ public class Profile implements Serializable {
     }
     
     public void savePassword() {
-        entityFacade.update(user);
+        userDTO.setUser(user);
+        entityFacade.update(userDTO.makeUser());
+        user = userDTO.getUser();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The password has been changed."));
         RequestContext.getCurrentInstance().update("form:tabView:passwordTab");
     }
@@ -178,11 +185,29 @@ public class Profile implements Serializable {
         return sexes;
     }
 
-    public boolean isEditMyProfile() {
-        return editMyProfile;
+    public boolean isEditingMyProfile() {
+        return editingMyProfile;
     }
 
-    public void setEditMyProfile(boolean editMyProfile) {
-        this.editMyProfile = editMyProfile;
+    public void setEditingMyProfile(boolean editingMyProfile) {
+        this.editingMyProfile = editingMyProfile;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isEditingAllowed() {
+        return editingAllowed;
+    }
+
+    public void setEditingAllowed(boolean editingAllowed) {
+        this.editingAllowed = editingAllowed;
+    }
+    
+    
 }

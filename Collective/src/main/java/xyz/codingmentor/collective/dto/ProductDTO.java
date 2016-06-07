@@ -1,4 +1,4 @@
-package xyz.codingmentor.collective.dtio;
+package xyz.codingmentor.collective.dto;
 
 import java.io.Serializable;
 import javax.validation.constraints.Max;

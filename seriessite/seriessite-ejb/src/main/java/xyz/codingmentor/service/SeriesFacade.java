@@ -15,6 +15,7 @@ import javax.persistence.TypedQuery;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.entity.Movie;
 import xyz.codingmentor.entity.Series;
+import xyz.codingmentor.entity.User;
 
 @Stateless
 public class SeriesFacade {
@@ -31,7 +32,6 @@ public class SeriesFacade {
         TypedQuery<Series> ser = em.createNamedQuery("Series.findSeriesById", Series.class);
         ser.setParameter("id", seriesId);
         return ser.getSingleResult();
-
     }
 
     public List<Actor> findActorsInSeries(Long seriesId) {
@@ -70,30 +70,14 @@ public class SeriesFacade {
         return actorsAll;
     }
 
-
     public void saveSeries(Series series) {
         em.merge(series);
     }
-    
+
     public void updateSeries(Series series) {
         em.merge(series);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public List<Series> seriesByDirectorOriginalNameEqualsName() {
         Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");
         return q.getResultList();
@@ -107,7 +91,6 @@ public class SeriesFacade {
 
     public List<Series> seriesCommentedAfterGivenDate(Date date) {
         Query q = em.createNamedQuery("seriesCommentedAfterGivenDate");
-
         q.setParameter("date", date, TemporalType.DATE);
         return q.getResultList();
     }

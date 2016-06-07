@@ -21,8 +21,8 @@ public class Usermanagement implements Serializable {
     VisitorCounter visitorCounter;
 
     @PostConstruct
-    public void increaseVisitors() {
-        visitorCounter.setVisitor(visitorCounter.getVisitor() + 1);
+    public void increaseVisitorNumberByOne() {
+        visitorCounter.increaseVisitorNumberByOne();
     }
 
     public VisitorCounter getVisitorCounter() {

@@ -5,7 +5,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import xyz.codingmentor.collective.dtio.ProductDTO;
+import xyz.codingmentor.collective.dto.ProductDTO;
 import xyz.codingmentor.collective.enums.Type;
 import xyz.codingmentor.jms.TopicService;
 

@@ -15,29 +15,36 @@ import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.service.ActorFacade;
 import xyz.codingmentor.service.SeriesFacade;
+import xyz.codingmentor.service.UserService;
 
 @Named
 @RequestScoped
 public class Queries {
     private static final String NO_SUCH_SERIES = "There is no such series.";
     private static final String ERROR = "Error!";
+    private static final Logger LOG = Logger.getLogger(Queries.class.getName());
     
     private Date date;
     private int numberOfEpisodes;
     private List<Actor> actors;
     private List<Series> series;
+    private List<String> usersWithMostComments;
 
     @Inject
     private ActorFacade actorFacade;
 
     @Inject
     private SeriesFacade seriesFacade;
-    private static final Logger LOG = Logger.getLogger(Queries.class.getName());
+    
+    @Inject
+    private UserService userService;
+    
 
     @PostConstruct
     public void init() {
         actors = new ArrayList<>();
         series = new ArrayList<>();
+        usersWithMostComments = new ArrayList<>();    
     }
 
     public String goToSeriesPage() {
@@ -76,11 +83,27 @@ public class Queries {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, NO_SUCH_SERIES, ERROR));
         }
     }
+    
+     public void userByMostComment() {
+        List <Object[]> userCommentObjects = userService.userByMostComment();
+        if (userCommentObjects.isEmpty())
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No one commented yet.", ERROR));
+        else{
+            for(Object[] uco : userCommentObjects){
+                usersWithMostComments.add(uco[0] + " (" + uco[1] + ")");
+            }
+        }         
+    }   
 
     public void onTabChange() {
         actors.clear();
         series.clear();
+        usersWithMostComments.clear();
         numberOfEpisodes = 0;
+    }
+    
+    public String getUsername(String usenameWithNumberOfComments){
+        return usenameWithNumberOfComments.substring(0, usenameWithNumberOfComments.indexOf(" "));
     }
 
     public Date getDate() {
@@ -113,5 +136,13 @@ public class Queries {
 
     public void setSeries(List<Series> series) {
         this.series = series;
+    }
+
+    public List<String> getUsersWithMostComments() {
+        return usersWithMostComments;
+    }
+
+    public void setUsersWithMostComments(List<String> usersWithMostComments) {
+        this.usersWithMostComments = usersWithMostComments;
     }
 }
