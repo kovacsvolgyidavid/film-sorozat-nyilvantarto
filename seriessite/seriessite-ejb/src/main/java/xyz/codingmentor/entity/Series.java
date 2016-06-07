@@ -2,9 +2,6 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
-import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -95,7 +92,15 @@ public class Series extends Movie implements Serializable {
         return super.getId(); //To change body of generated methods, choose Tools | Templates.
     }
 
-  
+    public List<Director> getSeriesdirectors() {
+        return seriesdirectors;
+    }
+
+    public void setSeriesdirectors(List<Director> seriesdirectors) {
+        this.seriesdirectors = seriesdirectors;
+    }
+
+    
 
     
 }

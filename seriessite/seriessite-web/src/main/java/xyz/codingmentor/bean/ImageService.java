@@ -30,16 +30,15 @@ public class ImageService {
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
-        }
-        else {
+        } else {
             // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
             String path = context.getExternalContext().getRequestParameterMap().get("path");
-            image = new DefaultStreamedContent(new FileInputStream(path));
-            if(image!=null){
+
+            if (path != null) {
+                image = new DefaultStreamedContent(new FileInputStream(path));
                 return image;
-            }
-            else{
-                return new DefaultStreamedContent(new FileInputStream("/noimages.png"));
+            } else {
+                return new DefaultStreamedContent(new FileInputStream("noimages.png"));
             }
         }
     }

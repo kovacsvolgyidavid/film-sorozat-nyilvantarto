@@ -4,9 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -35,70 +33,73 @@
 
 
 
-                <p:dataTable var="movie" value="#{movies.movies}" paginator="true" rows="#{series_User.actualUser.moviePerPage}"
+                <p:dataTable var="movie" value="#{homePageService.lazyModelMovie}" paginator="true" rows="#{homePageService.actualUser.moviePerPage}"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="10,50,100" id="moviesTable" lazy="true">
-                    <p:column headerText="Search and Sort By Id" sortBy="#{movie.id}" filterBy="#{movie.id}">
-                    <h:panelGrid id="moviesblock" columns="4">
-
-
-                        <h:panelGroup>
-                            <p:graphicImage id="movie" value="#{imageService.image}" width="230" height="180" cache="false" >
-                                    <f:param name="path" value="#{movie.pathOfPhoto}"/>
-                                </p:graphicImage>
-                        </h:panelGroup>
-
-
-
-                        <h:panelGroup>
-                            <h:outputText value="#{movie.title}"
-                                          style="font-size: xx-large; text-decoration: underline #00a8ea" />
-
-                            <p:dataList value="#{movie.movieactors}" var="actor">
-                                <f:facet name="header">
-                                    Actors
-                                </f:facet>
-                                #{actor.name}
-                            </p:dataList>
-
-                            <p>
-                                <p:outputLabel value="Release: "/>
-                                <p:outputLabel value="#{movie.yearOfRelease.year+1900}" style="font-style: italic" />
-                            </p>
-                          
-                        </h:panelGroup>
-
-
-                        <h:panelGroup>
-                            <p:dataList value="#{movie.directors}" var="director">
-                                <f:facet name="header">
-                                    Series
-                                </f:facet>
-                                #{director.name}
-                            </p:dataList>
-                            
-                        </h:panelGroup>
-
-                        <h:panelGroup>
-                            <p:commandButton 
-                                ajax ="false"
-                                rendered="#{request.isUserInRole('Admin')}"
-                                action="/admin/actorEdit.xhtml?faces-redirect=true"
-                                id="editIcon" icon="ui-icon-pencil"
-                                title="Edit" />
-
-
-                            <p:commandButton 
-                                ajax="false" 
-                                action="#{actors.deleteActor(actor)}" 
-                                id="deleteIcon" icon="ui-icon-trash"  
-                                rendered="#{request.isUserInRole('Admin')}"
-                                title="Delete"
-                                update="cont"/>
-                        </h:panelGroup>
-
-                    </h:panelGrid>
-                        </p:column>
+                    <p:column headerText="Search and Sort By Title" sortBy="#{movie.title}" filterBy="#{movie.title}">
+                        <table>
+                            <tr>
+                                <p:toolbar id="toolbar">
+                                    <f:facet name="left">
+                                        <p:commandButton 
+                                            ajax ="false"
+                                            rendered="#{request.isUserInRole('Admin')}"
+                                            action="/admin/actorsEdit.xhtml?faces-redirect=true"
+                                            id="editIcon" icon="ui-icon-pencil"
+                                            title="Edit" />
+                                        <p:commandButton 
+                                            ajax="false" 
+                                            action="#{homePageService.deleteMovie(movie)}" 
+                                            id="deleteIcon" icon="ui-icon-trash"  
+                                            rendered="#{request.isUserInRole('Admin')}"
+                                            title="Delete"
+                                            update="cont"/>
+                                    </f:facet>
+                                </p:toolbar>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center">
+                                    <h:outputText value="#{movie.title}"
+                                                  style="font-size: xx-large; text-decoration: underline #00a8ea" />
+                                    <p>
+                                        <p:graphicImage id="movieimage" value="#{imageService.image}" width="230" height="180" cache="false" >
+                                            <f:param name="path" value="#{movie.pathOfPhoto}"/>
+                                        </p:graphicImage>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table-bordered" width="100%">
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: top">
+                                                <p:dataList value="#{movie.movieactors}" var="actor" style="width: auto">
+                                                    <f:facet name="header">
+                                                        Actors
+                                                    </f:facet>
+                                                    #{actor.name}
+                                                </p:dataList>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: top">
+                                                <p:dataList value="#{movie.directors}" var="director">
+                                                    <f:facet name="header">
+                                                        Directors
+                                                    </f:facet>
+                                                    #{director.name}
+                                                </p:dataList>
+                                            </td> 
+                                            <td style="text-align: center">
+                                                <p>
+                                                    <p:outputLabel value="Release: "/>
+                                                    <p:outputLabel value="#{movie.yearOfRelease}" style="font-style: italic" />
+                                                </p> 
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:column>
                 </p:dataTable>
             </ui:define>
         </ui:composition>

@@ -28,7 +28,7 @@ public class Movie implements Serializable {
     private Long id;
 
     @NotNull
-    private String title;
+    protected String title;
 
     @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
@@ -98,12 +98,6 @@ public class Movie implements Serializable {
     public void setMovieactors(List<Actor> movieactors) {
         this.movieactors = movieactors;
     }
-
-  
-
-   
-
-
     public List<Comment> getComments() {
         return comments;
     }
