@@ -2,10 +2,7 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
-import java.util.Objects;
 import java.util.logging.Logger;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

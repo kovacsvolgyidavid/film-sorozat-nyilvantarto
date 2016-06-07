@@ -51,9 +51,9 @@ public class Queries {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String id = params.get("seriesid");  
-        String s    = "seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
+        String s    = "seriesEdit.xhtml/?seriesid=" + id + "&faces-redirect=true";
         LOG.info(s);
-        return "seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
+        return "/admin/seriesEdit.xhtml/?seriesid=" + id + "&faces-redirect=true";
     }
 
     public void actorsFromSeriesAfterGivenDate() {

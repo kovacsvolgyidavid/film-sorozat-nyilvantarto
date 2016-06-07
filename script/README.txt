@@ -1,4 +1,5 @@
-1)The GlassFish bin folder must copy the ../glassfish folder
+1)The GlassFish bin folder must copy the ../glassfish folder 
+(IMPORTANT: rename glassfish's folder to glassfish4)
 Example:  film-sorozat-nyilvantarto/glassfish/glassfish4/bin
 
 2)Verify that the Glassfish doesn't run anywhere

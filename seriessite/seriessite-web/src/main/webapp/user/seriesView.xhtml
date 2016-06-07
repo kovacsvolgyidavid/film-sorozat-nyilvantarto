@@ -23,11 +23,11 @@
                 <link rel="stylesheet" href="#{request.contextPath}/resources/css/series-view-style.css"/>
                 <div style="background-image: url('#{request.contextPath}/resources/backgrounds/seriesview.jpg'); background-repeat: no-repeat; background-size: cover" class="img-responsive">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                             <p:graphicImage id="gi" value="#{seriesView.image}" width="345" height="270" cache="false"
                                             class="img-responsive" style="margin: 0 auto"/>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align: center">
+                        <div class="col-lg-6 col-md-6 col-lg-offset-1 col-md-offset-1 col-sm-6 col-xs-12" style="text-align: center">
                             <h:outputText value="#{seriesView.title}" class="title"/> 
                             <br/>
                             <h:panelGrid columns="1">
@@ -51,17 +51,18 @@
                             </h:panelGrid>
                         </div>
 
-                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-lg-offset-1 col-md-offset-1 col-sm-6 col-xs-12">
                             <p:commandButton  value="Edit" action="#{seriesEdit.goToSeriesEditSite()}"
                                               rendered="#{facesContext.externalContext.isUserInRole('Admin')}" 
                                               class="admin_button img-responsive" style="background-color: deepskyblue">
-                                <f:param name="seriesId" value="#{seriesView.series.id}"/>
+                                <f:param name="seriesid" value="#{seriesView.series.id}"/>
                             </p:commandButton>
                             <BR/>
                             <p:commandButton value="Delete" action="#{seriesView.deleteSeries()}" 
                                              rendered="#{facesContext.externalContext.isUserInRole('Admin')}" 
                                              class="admin_button img-responsive" style="background-color: darkorange">
-                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{seriesView.series.title}?"
+                                           icon="ui-icon-alert" />
                             </p:commandButton>
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -70,12 +71,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" style="background: white;">
-                    <div class="col-12">          
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">          
                         <p:outputLabel for="season" style="margin-left: 12.5%; font-size: 25px; font-weight: bold" value="Seasons:"/>
-                        <p:tabView id="season" value="#{seriesView.series.seasons}" var="season" class="season">
+                        <p:tabView id="season" value="#{seriesView.series.seasons}" var="season" class="season" dynamic="true">
                             <p:tab title="#{seriesView.series.seasons.indexOf(season)+1}">
-                                <p:dataTable value="#{season.episodes}" var="episode" 
+                                <p:dataTable value="#{season.episodes}" var="episode" scrollable="true" scrollHeight="342"
                                              style="text-align: center; width: 100%" tableStyleClass="tables">
                                     <p:column headerText="Nu." style="width: 5%">
                                         #{season.episodes.indexOf(episode)+1}
@@ -101,7 +102,8 @@
                                 Actors
                             </f:facet>
                             <f:facet name="loader">
-                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"/>
+                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"
+                                                 rendered="#{seriesView.series.actors.size()>3}"/>
                             </f:facet>
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:graphicImage value="#{imageService.image}" height="72" width="55" cache="false">
@@ -121,7 +123,8 @@
                                 Directors
                             </f:facet>
                             <f:facet name="loader">
-                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"/>
+                                <p:commandButton type="button" value="More" icon="ui-icon-circle-triangle-s"
+                                                 rendered="#{seriesView.series.directors.size()>3}"/>
                             </f:facet>
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                 <p:graphicImage value="#{imageService.image}" height="72" width="55" cache="false">

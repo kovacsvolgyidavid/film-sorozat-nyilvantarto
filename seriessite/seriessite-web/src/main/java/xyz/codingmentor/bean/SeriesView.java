@@ -38,10 +38,18 @@ public class SeriesView implements Serializable {
     private EntityFacade entityFacade;
     private User user;
     private Long seriesId;
+    
+    private static final Logger LOG = Logger.getLogger(SeriesView.class.getName());
+    
+    
 
     @PostConstruct
     public void init() {
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
+    }
+
+    public String goToSeriesEditSite() {
+        return "/admin/seriesEdit.xhtml/?seriesid=" + series.getId() + ";faces-redirect=true";
     }
 
     public String getTitle() {

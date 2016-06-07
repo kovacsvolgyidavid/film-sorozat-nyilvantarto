@@ -10,7 +10,8 @@
 
     <f:metadata>
         <f:viewParam name="seriesid" value="#{seriesEdit.idOfSeries}" />
-        <!--<f:event type="postAddToView" listener="#{seriesEdit.loadDatabaseData}" />-->
+        <f:viewAction action="#{seriesEdit.loadDatabaseData()}"/>
+        <!--https://jsflive.wordpress.com/2013/03/22/jsf22-view-actions/-->
     </f:metadata>
 
     <h:head>
@@ -105,9 +106,9 @@
                     <div class="ui-grid-col-4">
                         <!--Picture-->
                         <h:panelGrid columns="2" cellspacing="0">
-                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"/>
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{seriesEdit.imageUpload}" update="gi" auto="true"  />
                             <p:commandButton value="Reset">
-                                <p:ajax listener="#{seriesEdit.resetPicture(event)}" update="gi"/>
+                                <p:ajax listener="#{seriesEdit.resetUploadedFile(event)}" update="gi"/>
                             </p:commandButton>  
                         </h:panelGrid> 
                         <p:graphicImage id="gi" value="#{seriesEdit.image}" width="230" height="180" cache="false"/>
