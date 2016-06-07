@@ -103,6 +103,7 @@ public class Series extends Movie implements Serializable {
         return super.getId();
     }
 
+<<<<<<< HEAD
     public List<Director> getSeriesdirectors() {
         return seriesdirectors;
     }
@@ -111,4 +112,9 @@ public class Series extends Movie implements Serializable {
         this.seriesdirectors = seriesdirectors;
     }
 
+    
+
+    
+=======
+>>>>>>> development
 }

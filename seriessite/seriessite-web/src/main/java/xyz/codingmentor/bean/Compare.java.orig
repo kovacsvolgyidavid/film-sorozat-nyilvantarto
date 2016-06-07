@@ -95,13 +95,22 @@ public class Compare implements Serializable {
         if (comparingSeries.isEmpty()) {
             comparingSeries.add(serie);
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
-
+<<<<<<< HEAD
+            context.addMessage(null, new FacesMessage
+            ("Comparing " + serie.getTitle() + " to... Please select another item!"));
+          
         }
         else if (comparingSeries.size() == 1) {
             Series firstSeriesToCompare = comparingSeries.get(0);
             comparingSeries.clear();
             return goToCompare(firstSeriesToCompare,serie);
+=======
+            context.addMessage(null, new FacesMessage("Comparing " + serie.getTitle() + " to... Please select another item!"));
+
+        } else if (comparingSeries.size() == 1) {
+            comparingSeries.add(serie);
+            return goToCompare(comparingSeries.get(0), comparingSeries.get(1));
+>>>>>>> development
         }
         return "series-user.xhtml?faces-redirect=true";
     }

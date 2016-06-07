@@ -33,76 +33,82 @@
 
 
 
-                <p:dataTable var="director" value="#{directors.directors}" paginator="true" rows="#{series_User.actualUser.moviePerPage}"
+                <p:dataTable var="director" value="#{homePageService.lazyModelDirector}" paginator="true" rows="#{homePageService.actualUser.moviePerPage}"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="10,50,100" id="directorsTable" lazy="true">
-                    <p:column headerText="Search and Sort By Id" sortBy="#{director.id}" filterBy="#{director.id}">
-                        <h:panelGrid id="directorsblock" columns="4">
+                    <p:column headerText="Search and Sort By Name" sortBy="#{director.name}" filterBy="#{director.name}">
+                        <table>
+                            <tr>
+                                <p:toolbar id="toolbar">
+                                    <f:facet name="left">
+                                        <p:commandButton 
+                                            ajax ="false"
+                                            rendered="#{request.isUserInRole('Admin')}"
+                                            action="/admin/seriesEdit.xhtml?faces-redirect=true"
+                                            id="editIcon" icon="ui-icon-pencil"
+                                            title="Edit" />
 
 
-                            <h:panelGroup>
-                                <p:graphicImage id="directorimage" value="#{imageService.image}" width="230" height="180" cache="false" >
-                                    <f:param name="path" value="#{director.pathOfPhoto}"/>
-                                </p:graphicImage>
-                            </h:panelGroup>
-
-
-
-                            <h:panelGroup>
-                                <h:outputText value="#{director.name}"
-                                              style="font-size: xx-large; text-decoration: underline #00a8ea" />
-
-                                <p:dataList value="#{director.movies}" var="movie">
-                                    <f:facet name="header">
-                                        Movies
+                                        <p:commandButton 
+                                            ajax="false" 
+                                            action="#{homePageService.deleteDirector(director)}" 
+                                            id="deleteIcon" icon="ui-icon-trash"  
+                                            rendered="#{request.isUserInRole('Admin')}"
+                                            title="Delete"
+                                            update="cont"/>
                                     </f:facet>
-                                    #{movie.title}
-                                </p:dataList>
+                                </p:toolbar>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center">
+                                    <h:outputText value="#{director.name}"
+                                                  style="font-size: xx-large; text-decoration: underline #00a8ea" />
+                                    <p>
+                                        <p:graphicImage id="directorimage" value="#{imageService.image}" width="230" height="180" cache="false" >
+                                            <f:param name="path" value="#{director.pathOfPhoto}"/>
+                                        </p:graphicImage>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table-bordered" width="100%">
 
-                                <p>
-                                    <p:outputLabel value="Real Name: "/>
-                                    <p:outputLabel value="#{director.originalName}" style="font-style: italic"/> 
-                                </p>
-                                <p>
+                                        <tr>
 
-                                    <p:outputLabel value="Birth: "/>
-                                    <p:outputLabel value="#{director.dateOfBirth.year+1900}" style="font-style: italic" />
-                                </p>
+                                            <td style="text-align: center; vertical-align: top">
+                                                <p:dataList value="#{director.movies}" var="movie" style="width: auto">
+                                                    <f:facet name="header">
+                                                        Movies
+                                                    </f:facet>
+                                                    #{movie.title}
+                                                </p:dataList>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: top">
+                                                <p:dataList value="#{director.series}" var="serie">
+                                                    <f:facet name="header">
+                                                        Series
+                                                    </f:facet>
+                                                    #{serie.title}
+                                                </p:dataList>
+                                            </td> 
+                                            <td style="text-align: center">
+                                                <p>
+                                                    <p:outputLabel value="Real Name: "/>
+                                                    <p:outputLabel value="#{director.originalName}" style="font-style: italic"/> 
+                                                </p>
+                                                <p>
 
-                            </h:panelGroup>
+                                                    <p:outputLabel value="Birth: "/>
+                                                    <p:outputLabel value="#{director.dateOfBirth.year+1900}" style="font-style: italic" />
+                                                </p>
+                                            </td>
+                                        </tr>
 
-
-                            <h:panelGroup>
-
-
-                                <p:dataList value="#{director.series}" var="serie">
-                                    <f:facet name="header">
-                                        Series
-                                    </f:facet>
-                                    #{serie.title}
-                                </p:dataList>
-
-                            </h:panelGroup>
-
-                            <h:panelGroup>
-                                <p:commandButton 
-                                    ajax ="false"
-                                    rendered="#{request.isUserInRole('Admin')}"
-                                    action="/admin/directorEdit.xhtml?faces-redirect=true"
-                                    id="editIcon" icon="ui-icon-pencil"
-                                    title="Edit" />
-
-
-                                <p:commandButton 
-                                    ajax="false" 
-                                    action="#{directors.deleteDirector(director)}" 
-                                    id="deleteIcon" icon="ui-icon-trash"  
-                                    rendered="#{request.isUserInRole('Admin')}"
-                                    title="Delete"
-                                    update="cont"/>
-                            </h:panelGroup>
-
-                        </h:panelGrid>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </p:column>
                 </p:dataTable>
             </ui:define>
