@@ -3,13 +3,9 @@ package xyz.codingmentor.entity;
 import xyz.codingmentor.enums.Groups;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import javax.persistence.CascadeType;
-import java.util.Set;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,7 +30,6 @@ import xyz.codingmentor.enums.Sex;
 @NamedQuery(name = "findUserByUsername",
         query = "SELECT u FROM User u WHERE u.username = :username")
 public class User implements Serializable {
-
     @Id
     @Size(min = 1, message = "This field has to be filled.")
     @UsernameConstraint(message = "Wrong username format.")
@@ -65,7 +60,7 @@ public class User implements Serializable {
     @Column(name = "PATH_OF_PHOTO")
     private String pathOfPhoto;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Comment> comments;
     
     @OneToMany(cascade = CascadeType.ALL)

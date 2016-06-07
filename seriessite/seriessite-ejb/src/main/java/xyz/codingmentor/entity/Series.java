@@ -2,6 +2,10 @@ package xyz.codingmentor.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
+import java.util.logging.Logger;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -33,7 +37,9 @@ public class Series extends Movie implements Serializable {
     @Column(length = 1000)
     private String description;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    private static final Logger LOG = Logger.getLogger(Series.class.getName());
+    
+    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE } )
     @JoinTable(name = "SERIES_ACTOR", 
             joinColumns = @JoinColumn(name = "SERIES_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
@@ -42,6 +48,9 @@ public class Series extends Movie implements Serializable {
     @ManyToMany
     private List<Director> seriesdirectors;
 
+    public Series() {
+        //it is bean
+    }
 
     
     public List<Actor> getActors() {
@@ -61,13 +70,8 @@ public class Series extends Movie implements Serializable {
         this.seasons = seasons;
     }
 
-    public Series() {
-        //it is bean
-    }
-
     @Override
     public String toString() {
-//        return "Series{" + "seasons=" + seasons + '}';
         return getId() + "    " + getTitle();
     }
   
@@ -79,17 +83,18 @@ public class Series extends Movie implements Serializable {
 
     @Override
     public void setDescription(String description) {
+        LOG.info("setDescription");
         this.description = description;
     }
 
     @Override
     public String getTitle() {
-        return super.getTitle(); //To change body of generated methods, choose Tools | Templates.
+        return super.getTitle();
     }
 
     @Override
     public Long getId() {
-        return super.getId(); //To change body of generated methods, choose Tools | Templates.
+        return super.getId();
     }
 
     public List<Director> getSeriesdirectors() {

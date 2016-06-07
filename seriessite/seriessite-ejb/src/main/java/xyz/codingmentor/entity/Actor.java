@@ -16,7 +16,27 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name = "Actor.findActorById",
             query = "SELECT a FROM Actor a WHERE a.id = :id"),
     @NamedQuery(name = "Actor.findSeriesByActorId",
-            query = "SELECT a.series FROM Actor a WHERE a.id = :id")
+            query = "SELECT a.series FROM Actor a WHERE a.id = :id"),
+    @NamedQuery(name = "actorsFromSeriesAfterDate",
+            query = "SELECT s FROM Series s WHERE s.yearOfRelease < :date"),
+    
+    
+    
+    @NamedQuery(name = "actorsFromSeriesAfterGivenDate",
+            query = "SELECT a FROM Actor a JOIN a.series s WHERE s.yearOfRelease > :date "
+    ),
+    
+    @NamedQuery(name = "seriesByDirectorOriginalNameEqualsName",
+            query = "SELECT DISTINCT s FROM  Series s JOIN s.directors d WHERE d.originalName LIKE d.name "
+    ),
+        
+    @NamedQuery(name = "seriesWithMoreEpisode",
+            query = "Select s FROM Series s WHERE(Select Count(e) from Episode e, Season sn WHERE s.id = sn.series.id  AND sn.id = e.season.id) > :number"
+    ),
+        
+    @NamedQuery(name = "seriesCommentedAfterGivenDate",
+            query = "Select s FROM Series s JOIN s.comments c WHERE c.dateOfComment > :date"
+    )        
 
 })
 public class Actor extends Person implements Serializable {
@@ -27,7 +47,7 @@ public class Actor extends Person implements Serializable {
     @Column(name = "OFFICIAL_WEBSITE")
     private String officialWebsite;
 
-    @ManyToMany(cascade=CascadeType.MERGE, mappedBy = "actors")
+    @ManyToMany(mappedBy = "actors")
     private List<Series> series;
     
   
@@ -63,6 +83,13 @@ public class Actor extends Person implements Serializable {
     public void setSeries(List<Series> series) {
         this.series = series;
     }
+
+    @Override
+    public String toString() {
+        return  "Person{" + "id=" + getId() + ", name=" + getName() + ", sex=" + getSex() + ", dateOfBirth=" + getDateOfBirth() + ", pathOfPhoto=" + getPathOfPhoto() + '}' +
+"Id: "+ getId() + " Actor{" + "placeOfBirth=" + placeOfBirth + ", officialWebsite=" + officialWebsite + ", series=" + series + '}';
+    }
+
 
     public List<Movie> getMovies() {
         return movies;

@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Series Site</title>
-
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -17,7 +17,7 @@
     </h:head>
     <h:body>
         <h:form id="form" style="height: 100%;">
-            <p:growl id="grow" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+            <p:growl id="growl" sticky="false" rendered="#{not facesContext.validationFailed}"/>
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -30,12 +30,13 @@
                     </div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
-                            <li><p:commandLink value=" Home" action="/user/series-user.xhtml" style="height:50px;" 
+                            <li><p:commandLink value=" Home" action="/user/series-user.xhtml?faces-redirect=true" style="height:50px;" 
                                                class="glyphicon glyphicon-home" immediate="true"/></li>
-<!--                            <li><p:commandLink value=" Message" action="/admin/message.xhtml" style="height:50px;" 
-                                               class="glyphicon glyphicon-leaf" immediate="true"/></li>-->
-
-
+                            <li><p:commandLink value=" Queries" action="/user/queries.xhtml?faces-redirect=true" style="height:50px;" 
+                                               class="glyphicon glyphicon-question-sign" immediate="true"/></li>
+                            <li><p:commandLink value=" Messages" action="/messagemanagement.xhtml?faces-redirect=true" style="height:50px;" 
+                                               class="glyphicon glyphicon-leaf" immediate="true" 
+                                               rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/></li>
                             <p class="navbar-text glyphicon glyphicon-heart" style="font-size: medium;"> 
                                 Today's visitors: #{usermanagement.visitorCounter.visitor}</p> 
                         </ul>
@@ -44,15 +45,17 @@
                                                immediate="true" class="glyphicon glyphicon-log-out"/></li>
 
                             <li><p:commandLink value=" #{usermanagement.actualUser}" action="#{profile.getMyProfile()}" style="height:50px;" 
-                                               immediate="true" class="glyphicon glyphicon-user"/></li>
+                                               immediate="true" class="glyphicon glyphicon-user">
+                                    <f:param name="username" value="#{usermanagement.actualUser}" />
+                                </p:commandLink></li>
 
                             <li><p:commandLink value=" Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px;" 
-                                               immediate="true" class="glyphicon glyphicon-search"/></li>
+                                               immediate="true" class="glyphicon glyphicon-search"
+                                               rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/></li>
                         </ul>
                     </div>
                 </div>
             </nav>
-
             <div class="container-s container-m">
                 <ui:insert name="content">
                     Content

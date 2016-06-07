@@ -2,7 +2,6 @@ package xyz.codingmentor.bean;
 
 import java.io.FileInputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,7 +24,7 @@ import xyz.codingmentor.service.EntityFacade;
 
 /**
  *
- * @author keni
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
  */
 @Named
 @SessionScoped
@@ -39,21 +38,18 @@ public class SeriesView implements Serializable {
     private EntityFacade entityFacade;
     private User user;
     private Long seriesId;
+    
+    private static final Logger LOG = Logger.getLogger(SeriesView.class.getName());
+    
+    
 
     @PostConstruct
     public void init() {
         this.user = entityFacade.read(User.class, Usermanagement.getUsername());
-        this.series=new Series();
-        series.setActors(new ArrayList<Actor>());
-        series.setDirectors(new ArrayList<Director>());
-        series.setComments(new ArrayList<Comment>());
-        List<Season> seasons=new ArrayList<Season>();
-        Season season=new Season();
-        season.setEpisodes(new ArrayList<Episode>());
-        season.getEpisodes().add(new Episode());
-        seasons.add(season);
-        series.setSeasons(seasons);
-        
+    }
+
+    public String goToSeriesEditSite() {
+        return "/admin/seriesEdit.xhtml/?seriesid=" + series.getId() + ";faces-redirect=true";
     }
 
     public String getTitle() {
@@ -134,7 +130,8 @@ public class SeriesView implements Serializable {
         addComment.setUser(user);
         addComment.setShow(series);
         series.getComments().add(addComment);
-        entityFacade.create(addComment); //TODO
+        entityFacade.create(addComment);
+        entityFacade.update(series);
         comment = "";
     }
 
@@ -152,9 +149,8 @@ public class SeriesView implements Serializable {
 
     public String goToSeriesViewSite() {
         FacesContext context = FacesContext.getCurrentInstance();
-        // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
         String id = context.getExternalContext().getRequestParameterMap().get("seriesId");
-        return "/user/seriesView.xhtml?seriesId="+id+";faces-redirect=true";
+        return "/user/seriesView.xhtml?seriesId=" + id + ";faces-redirect=true";
     }
 
     public StreamedContent getUserImage(User user) {
@@ -200,10 +196,6 @@ public class SeriesView implements Serializable {
     public String goToSeriesView(Long id) {
         this.series = entityFacade.read(series.getClass(), id);
         return "/user/seriesView.xhtml;faces-redirect=true";
-    }
-
-    public Series returnSeries() {
-        return entityFacade.read(Series.class, 1L);
     }
 
 }

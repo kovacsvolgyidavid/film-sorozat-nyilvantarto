@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.dto;
 
 import java.io.UnsupportedEncodingException;
@@ -17,7 +12,7 @@ import xyz.codingmentor.entity.User;
 
 /**
  *
- * @author keni
+ * @author Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
  */
 public class UserDTO {
 
@@ -26,8 +21,8 @@ public class UserDTO {
     @Size(min = 1, message = "This field has to be filled.")
     @PasswordConstraint(message = "Wrong password format.")
     private String password;
-    
-     public User makeUser() {
+
+    public User makeUser() {
         String outcome;
         outcome = this.hashPassword(password);
         user.setPassword(outcome);
@@ -47,6 +42,7 @@ public class UserDTO {
         }
         return hashedPassword;
     }
+
     public UserDTO() {
         user = new User();
     }
@@ -72,5 +68,4 @@ public class UserDTO {
         this.password = password;
     }
 
-    
 }

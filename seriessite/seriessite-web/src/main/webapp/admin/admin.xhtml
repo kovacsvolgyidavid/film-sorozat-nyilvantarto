@@ -5,17 +5,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Admin</title>
-        <style>
-
-        </style>
-    </h:head>
     <h:body>
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
-                <br/><h1 style="text-align: center">Users</h1><br/>
-                <p:dataTable id="table" var="user" value="#{admin.users}" editMode="cell" widgetVar="userTable" style="margin: 0 auto; width: 90%; padding: 0px" resizableColumns="true"
+                <br/><h1 style="text-align: center">Users</h1><br/><br/>
+                <p:dataTable id="table" var="user" value="#{admin.users}" editMode="cell" widgetVar="userTable" style="margin: 0 auto; width: 80%; text-align: center" resizableColumns="true"
                              filteredValue="#{admin.filteredUsers}" rows="20" paginator="true" rowsPerPageTemplate="10, 20, 50, 100"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
@@ -40,10 +34,11 @@
                         <h:outputText value="#{user.name}" />
                     </p:column>
 
-                    <p:column headerText="Sex" filterMatchMode="exact" filterBy="#{user.sex}" sortBy="#{user.sex}">
+                    <p:column headerText="Sex" filterMatchMode="exact" filterBy="#{user.sex}" sortBy="#{user.sex}"
+                              style="padding-bottom: 7px; padding-top: 7px;">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('userTable').filter()" >
-                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Select" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{admin.sexes}" />
                             </p:selectOneMenu>
                         </f:facet>  
@@ -51,36 +46,37 @@
                         <h:outputText value="#{user.sex}" />
                     </p:column>
 
-                    <p:column headerText="Rank"  filterMatchMode="exact" filterBy="#{user.groups}" sortBy="#{user.groups}">
+                    <p:column headerText="Rank"  filterMatchMode="exact" filterBy="#{user.groups}" sortBy="#{user.groups}"
+                              style="padding: 0px 0px 0px 0px;">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('userTable').filter()" >
                                 <p:ajax listener="#{admin.resetFilteredUsers}"/>
-                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Select" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{admin.ranks}" />
                             </p:selectOneMenu>
                         </f:facet>                    
 
                         <h:selectOneMenu value="#{user.groups}" style="width:100%; height: 100%;" disabled="#{usermanagement.actualUser eq user.username}">
                             <p:ajax listener="#{admin.rankValueChangeMethod(user)}"/>
-                            <f:selectItems value="#{admin.ranks}" var="r" itemLabel="#{r}" itemValue="#{r}" />
+                            <f:selectItems value="#{admin.ranks}" var="rank" itemLabel="#{rank}" itemValue="#{rank}" />
                         </h:selectOneMenu>
                     </p:column>  
 
-                    <p:column>
-                        <f:facet name="header">Edit</f:facet>
-                        <p:commandButton value="Edit" style="width:100%; height: 100%; border-width: 0px; background-color: deepskyblue"
-                                         action="#{profile.getUserProfile(user)}"/>   
+                    <p:column headerText="Edit" style="padding: 0px 0px 0px 0px;">
+                        <p:commandButton style="width:100%; height: 100%; border-width: 0px;"
+                                         icon="ui-icon-pencil" action="#{profile.getUserProfile(user)}">   
+                            <f:param name="username" value="#{user.username}" />
+                        </p:commandButton>
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">Delete</f:facet>
-                        <p:commandButton value="Delete" style="width:100%; height: 100%; border-width: 0px; background-color: darkorange"
+                    <p:column headerText="Delete" style="padding: 0px 0px 0px 0px;">
+                        <p:commandButton style="width:100%; height: 100%; border-width: 0px;" icon="ui-icon-trash"
                                          action="#{admin.deleteUser(user)}" update="form" disabled="#{usermanagement.actualUser eq user.username}">
                             <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                         </p:commandButton>
                     </p:column>                
                 </p:dataTable>
-
+                
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />

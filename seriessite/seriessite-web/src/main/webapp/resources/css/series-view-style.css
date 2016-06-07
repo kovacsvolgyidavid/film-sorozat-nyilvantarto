@@ -1,0 +1,44 @@
+/* 
+    Created on : 2016.06.05., 15:20:47
+    Author     : Dávid Kovácsvölgyi <kovacsvolgyi.david@gmail.com>
+*/
+.row{
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 30px;
+    padding-top:30px;
+    padding-bottom:30px;
+    margin-bottom:30px;
+    color: inherit;
+}
+.title{
+    font-size: 40px;
+    color: white;}
+.jumbotext{
+    margin-left: 20px;
+    color: white;
+}
+.jumboheader{
+    float: right;
+    color: white;                          
+}
+textarea {
+color: red;
+}
+.admin_button{
+    width: 100%; 
+    height: 100%; 
+    border-width: 0px;
+    text-align: center;
+}
+.actor-director{
+    height: 100%
+}
+.season{
+    border: transparent; 
+    width: 75%; 
+    margin: 0 auto;
+}
+.tables{
+    background: yellow !important;
+}

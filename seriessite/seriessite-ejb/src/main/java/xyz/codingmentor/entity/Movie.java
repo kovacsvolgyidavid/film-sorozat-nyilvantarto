@@ -37,7 +37,7 @@ public class Movie implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date yearOfRelease;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE })
     @JoinTable(name = "MOVIE_DIRECTOR",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
             inverseJoinColumns = @JoinColumn(name = "DIRECTOR_ID"))
@@ -49,7 +49,7 @@ public class Movie implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> movieactors;
 
-    @OneToMany(mappedBy = "show", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "show", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments;
 
     private String description;

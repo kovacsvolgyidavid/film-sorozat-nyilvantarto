@@ -43,61 +43,18 @@ public class ActorEdit implements Serializable {
     private StreamedContent image;
     private Actor actor;
     private String selectedSeriesId;
-//    private Series series;
     private static final Logger LOG = Logger.getLogger(ActorEdit.class.getName());
-//    private List<Series> seriesList;
     private List<Series> seriesInWichActorDontPlay;
 
     @PostConstruct
     public void init() {
         actor = new Actor();
         seriesInWichActorDontPlay = new ArrayList<>();
-//        seriesList = new ArrayList<>();
+
 
         Long idOfActor = 1L;
         actor = actorFacade.findActorById(idOfActor);
-//        LOG.info("in init()00 size: " + seriesList.size());
-//        seriesList = actorFacade.findSeriesByActorId(idOfActor);
-//        LOG.info("in inti()11 size: " + seriesList.size());
-//        LOG.info("in init()-0-0 size: " + actor.getSeries().size());
-//        actor.getSeries().size();
-//        LOG.info(String.valueOf(actor.getSeries().size()));
-//
-//        LOG.info(actor.getSeries().toString());
-//
-//        List<Series> seriesAll = actorFacade.findAllSeries();
-//        LOG.info(String.valueOf(seriesAll.size()));
-////        LOG.info("in init()00 size: " + seriesAll.size());
-//        LOG.info(seriesAll.toString());
-//
-//        int flag = 0;
-//        for (Series ser1 : seriesAll) {
-////            if( ! actor.getSeries().contains(ser) ){
-////                seriesInWichActorDontPlay.add(ser);
-////            }
-//            
-//            for (Series ser2 : actor.getSeries()) {
-//                if (ser1.getId() != ser2.getId()) {
-//                    flag = 1;
-//                }
-//            }
-//            if (flag == 1) {
-//                seriesInWichActorDontPlay.add(ser1);
-//                flag = 0;
-//            }
-//        LOG.info("----------");
-//        
-//
-//        }
 
-//        seriesAll.removeAll(actor.getSeries());
-//        LOG.info("in init()11 size: " + seriesInWichActorDontPlay.size());
-//          seriesInWichActorDontPlay = seriesAll;
-          seriesInWichActorDontPlay = actorFacade.findSeriesInWichActorDontPlay(idOfActor);
-//        LOG.info(seriesAll.toString());
-
-//        LOG.info("in init()22 size: " + actor.getSeries().size());
-//        LOG.info(actor.getSeries().toString());
     }
 
     public String goToSeriesEditSite() {
@@ -109,80 +66,7 @@ public class ActorEdit implements Serializable {
         return "seriesEdit.xhtml/?id=" + id + ";faces-redirect=true";
     }
 
-    public void saveImageToDirectory(String nameOfImage) {
-        createDirectory();
-
-        try {
-            InputStream inputstream = uploadedFile.getInputstream();
-//            String fullFileName = uploadedFile.getFileName();
-            Path file = Paths.get(PATH + nameOfImage);
-
-            Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException ex) {
-            Logger.getLogger(ActorEdit.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(uploadedFile.getFileName() + " is successfully uploaded."));
-    }
-
-    public void createDirectory() {
-        File directory = new File(PATH);
-
-        if (!directory.exists()) {
-            try {
-                directory.mkdirs();
-            } catch (SecurityException se) {
-                //handle it
-            }
-        }
-    }
-
-    public void imageUpload(FileUploadEvent event) {
-        uploadedFile = event.getFile();
-
-        try {
-            image = new DefaultStreamedContent(uploadedFile.getInputstream());
-        } catch (IOException ex) {
-            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void setUploadedFile(UploadedFile uploadedFile) {
-        this.uploadedFile = uploadedFile;
-    }
-
-    public StreamedContent getImage() {
-        LOG.info("in getImage function");
-        try {
-            if (uploadedFile == null) {
-//                LOG.info("in function StreamConent. The uploadedFile  is null " + PATH + "noimages.png");
-                ClassLoader classLoader = getClass().getClassLoader();
-                File noPicture = new File(classLoader.getResource(PATH + "noimages.png").getFile());
-//                LOG.info("after image load");
-                image = new DefaultStreamedContent(new FileInputStream(noPicture));
-            } else {
-                LOG.info(this.getClass().getCanonicalName() + "else ag in getImage function");
-                image = new DefaultStreamedContent(uploadedFile.getInputstream());
-            }
-        } catch (Exception ex) {
-            LOG.info("Not found image. Exceptin in getImage function");
-        }
-
-        return image;
-    }
-
-    public void resetPicture(AjaxBehaviorEvent event) {
-        uploadedFile = null;
-    }
-
-    public UploadedFile getUploadedFile() {
-        return uploadedFile;
-    }
-
-    public void setImage(StreamedContent image) {
-        this.image = image;
-    }
+    
 
     private Series searchSeriesById(List<Series> l, String seriesId) {
         Long id = Long.parseLong(seriesId);
@@ -203,18 +87,12 @@ public class ActorEdit implements Serializable {
         actor.getSeries().add(series);
         seriesInWichActorDontPlay.remove(series);
         
-         printActorSeries(actor);
-         
-//        actorFacade.addSeriesToActor(series.getId(), actor.getId());
+         printActorSeries(actor);        
     }
 
     public void removeSeriesFromActor(Series series) {
-//        LOG.info("removeActorFromSeries");
-
         actor.getSeries().remove(series);
         seriesInWichActorDontPlay.add(series);
-//        actorFacade.deleteSeriesFromActor(Long.parseLong(selectedSeriesId), actor.getId());
-
     }
 
     public void saveButtonAction(ActionEvent actionEvent) {
@@ -233,7 +111,7 @@ public class ActorEdit implements Serializable {
     public void saveActor() {
         LOG.info("In saveActor ");
         printActorSeries(actor);
-        actorFacade.saveActor(actor);
+        actorFacade.create(actor);
     }
 
     public ActorFacade getActorFacade() {
@@ -260,13 +138,6 @@ public class ActorEdit implements Serializable {
         this.selectedSeriesId = selectedSeriesId;
     }
 
-//    public List<Series> getSeriesList() {
-//        return seriesList;
-//    }
-//
-//    public void setSeriesList(List<Series> seriesList) {
-//        this.seriesList = seriesList;
-//    }
     public List<Series> getSeriesInWichActorDontPlay() {
         return seriesInWichActorDontPlay;
     }

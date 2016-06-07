@@ -4,82 +4,112 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
-    <h:head>
-        <title>Profile</title>
-    </h:head>
     <h:body> 
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
                 <p:tabView id="tabView" style="border: none">
-
-                    <p:ajax event="tabChange" listener="#{profile.onTabChange}" update="form"/>
+                    <p:ajax event="tabChange" listener="#{profile.onTabChange}" update="form" resetValues="true"/>
                     <p:tab title="Profile" id="profileTab">
+                        <p:growl id="profile_growl" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+                        <p:tooltip for="name" showDelay="0" style="background-color: black; color: #00a8ea">
+                            <h:outputText value="Examples:"/><br/>
+                            <h:outputText value="&#160;-Andras Kiss"/><br/>
+                            <h:outputText value="&#160;-Hanna Andrea Kovacs"/><br/>
+                            <h:outputText value="&#160;-Zsolt Fazekas-Nagy"/>
+                        </p:tooltip>
+
+                        <p:tooltip for="upload gi" showDelay="0" style="background-color: black; color: #00a8ea">
+                            <h:outputText value="Acceptable file formats:"/><br/>
+                            <h:outputText value="&#160;-jpg"/><br/>
+                            <h:outputText value="&#160;-jpeg"/><br/>
+                            <h:outputText value="&#160;-png"/>
+                        </p:tooltip> 
+
                         <h1 style="text-align: center">Profile</h1><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Name: "/>
                             <p:inputText id="name" value="#{profile.user.name}"
-                                         title="Examples: &#13; -Andras Kiss &#13; -Hanna Andrea Kovacs  &#13; -Zsolt Fazekas-Nagy"
                                          validatorMessage="Wrong name format.">
-                                <f:validateRegex pattern="^([\p{Lu}]{1}[\p{Ll}]{1,30}[- ]{0,1}|[\p{Lu}]{1}[- \']{1}[\p{Lu}]{0,1}[\p{Ll}]{1,30}[- ]{0,1}|[\p{Ll}]{1,2}[ -\']{1}[\p{Lu}]{1}[\p{Ll}]{1,30}){2,5}$" />
+                                <f:ajax event="blur" execute="name" render="m_name" />                                
                             </p:inputText>
                             <h:panelGroup/>
-                            <p:message for="name" />
+                            <p:message id="m_name" for="name" />
 
                             <p:outputLabel value="Date of Birth: " />
                             <p:calendar id="date" value="#{profile.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                        required="true" requiredMessage="This field has to be filled." title="Format: dd/MM/yyyy" />
+                                        required="true" requiredMessage="This field has to be filled."/>
                             <h:panelGroup/>
                             <p:message for="date" />
 
                             <p:outputLabel value="Sex:" />
                             <p:selectOneRadio id="sex" value="#{profile.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
-                                <f:selectItem itemLabel="Male" itemValue="#{profile.sexes[0]}" />
-                                <f:selectItem itemLabel="Female" itemValue="#{profile.sexes[1]}" />
+                                <f:selectItems value="#{profile.sexes}" var="sex" itemLabel="#{sex}" itemValue="#{sex}" />
                             </p:selectOneRadio>
                             <h:panelGroup/>
                             <p:message for="sex" />
 
                             <h:panelGroup/>
-                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"/>
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"
+                                          allowTypes="/(\.|\/)(jpe?g|png)$/"/>
 
                             <p:outputLabel value="Picture: "/>
-                            <p:graphicImage id="gi" value="#{profile.image}" width="230" height="180" cache="false"/>
+                            <p:graphicImage id="gi" value="#{profile.image}" width="205" height="155" cache="false"/>
                             <h:panelGroup/>
 
                             <h:panelGroup/>
                             <h:panelGroup/>
-                            <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="form"/>
-                        </p:panelGrid>
+                            <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="m_name profile_growl"/>
+                        </p:panelGrid>                       
                     </p:tab>
                     <p:tab title="Password" id="passwordTab">
+                        <p:growl id="password_growl" sticky="false" rendered="#{not facesContext.validationFailed}"/>
+                        <p:tooltip for="password" showDelay="0" style="background-color: black; color: #00a8ea">
+                            <h:outputText value="Identify yourself."/>
+                        </p:tooltip>                        
+
+                        <p:tooltip for="newpassword" showDelay="0" style="background-color: black; color: #00a8ea">
+                            <h:outputText value="The password has to contain at least:"/><br/>
+                            <h:outputText value="&#160;-one number"/><br/>
+                            <h:outputText value="&#160;-one lowercase"/><br/>
+                            <h:outputText value="&#160;-one uppercase"/><br/>
+                            <h:outputText value="The length of the password: 6-20 caracters."/>
+                        </p:tooltip>
+
                         <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
-                            <h:outputLabel for="oldPassword" value="Old password: *" />
-                            <p:password id="oldPassword" value="#{profile.oldPassword}" required="true" requiredMessage="This field has to be filled."/>
-                            <h:panelGroup/>
-                            <p:message for="oldPassword" />
+                            <h:outputLabel value="My Password: *" rendered="#{!profile.editMyProfile}"/>
+                            <h:outputLabel value="Password: *" rendered="#{profile.editMyProfile}"/>
 
-                            <h:outputLabel for="pwd1" value="Password: *" />
-                            <p:password id="pwd1" value="#{profile.userDTO.password}" match="pwd2" label="Password"
-                                        required="true" requiredMessage="This field has to be filled." validatorMessage="Password should match with Confirm Password."
-                                        title="The password has to contain at least: &#13; -one number &#13; -one lowercase &#13; -one uppercase &#13; The length of the password: 6-20 caracters.">
-                                <f:validateRegex pattern="^((?=.*\d)(?=.*\p{Ll})(?=.*\p{Lu}).{6,20})$"/>
+                            <p:password id="password" required="true" requiredMessage="This field has to be filled.">
+                                <f:validator validatorId="currentPasswordValidator" />
+                                <f:ajax event="blur" execute="password" render="m_password" />
                             </p:password>
                             <h:panelGroup/>
-                            <p:message for="pwd1" />
+                            <p:message id="m_password" for="password"/>                           
 
-                            <h:outputLabel for="pwd2" value="Confirm Password: *" />
-                            <p:password id="pwd2" value="#{profile.userDTO.password}" label="Confirm Password"
-                                        required="true" requiredMessage="This field has to be filled."/>
+                            <p:outputLabel value="New Password: *" />
+                            <p:password id="newpassword" value="#{profile.userDTO.password}"
+                                        required="true" requiredMessage="This field has to be filled.">
+                                <f:validator validatorId="confirmPasswordValidator" />
+                                <f:attribute name="confirm" value="#{confirmPassword.submittedValue}" />
+                                <f:ajax event="blur" execute="newpassword confirm" render="m_newpassword" />
+                            </p:password>
                             <h:panelGroup/>
-                            <p:message for="pwd2" />
+                            <p:message id="m_newpassword" for="newpassword" />
+
+                            <p:outputLabel value="Confirm New Password: *" />
+                            <p:password id="confirm" binding="#{confirmPassword}"
+                                        required="true" requiredMessage="This field has to be filled.">
+                                <f:ajax event="blur" execute="newpassword confirm" render="m_newpassword m_confirm" />
+                            </p:password>
+                            <h:panelGroup/>
+                            <p:message id="m_confirm" for="confirm" />                            
 
                             <h:panelGroup/>
-                            <p:commandButton value="Save" action="#{profile.saveUserPassword()}" process="passwordTab" update="form"/>
+                            <p:commandButton value="Save" action="#{profile.savePassword()}" process="passwordTab" 
+                                             update="m_password m_newpassword m_confirm password_growl"/>
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Favourites">
