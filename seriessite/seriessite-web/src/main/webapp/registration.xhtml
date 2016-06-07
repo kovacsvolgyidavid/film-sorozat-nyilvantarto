@@ -93,7 +93,7 @@
 
                         <h:panelGroup/>
                         <h:panelGrid columns="2" cellspacing="0">
-                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi messages" auto="true"
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi" auto="true"
                                           allowTypes="/(\.|\/)(jpe?g|png)$/"/>
                             <p:commandButton value="Reset">
                                 <p:ajax listener="#{registration.resetPicture}" update="gi"/>
