@@ -39,10 +39,10 @@
                         <f:selectItems value="#{topicSubscription.types}" var="type" itemLabel="#{type}" itemValue="#{type}" />
                     </p:selectOneMenu>
                     <h:panelGroup/>
-                    <p:commandButton value="Create" action="#{topicSubscription.subscribeForTopicCreate()}"/><br/>
+                    <p:commandButton value="Subscribe" action="#{topicSubscription.subscribeForTopicCreate()}"/><br/>
                 </h:panelGrid>
                     
-                <p:commandButton value="Delete" action="#{topicSubscription.subscribeForTopicDelete()}" immediate="true"/>
+                <p:commandButton value="Subscribe" action="#{topicSubscription.subscribeForTopicDelete()}" immediate="true"/>
                 
             </h:panelGrid>
 
@@ -50,21 +50,21 @@
         <style>
             
             .outercolumn1{
-                background-color: lightskyblue;
+                background-color: #48CFAD;
                 padding-left: 30px;
                 padding-right: 30px;    
             }
             .outercolumn2{
-                background-color: yellow;
+                background-color: #37BC9B;
                 padding-left: 30px;
                 padding-right: 30px;
             }
             
             .innercolumn1{
-                background-color: lightskyblue;  
+                background-color: #48CFAD;  
             }
             .innercolumn2{
-                background-color: lightskyblue;
+                background-color: #48CFAD;
             }
         </style>  
     </h:body>

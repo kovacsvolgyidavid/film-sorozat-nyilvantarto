@@ -10,8 +10,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import xyz.codingmentor.constraint.NameConstraint;
 import xyz.codingmentor.enums.Sex;
 
 @MappedSuperclass
@@ -22,7 +22,9 @@ public class Person implements Serializable {
     private Long id;
 
     @Size(min = 1, message = "This field has to be filled.")
-    @NameConstraint(message = "Wrong name format.")
+    @Pattern(regexp = "^([\\p{Lu}]{1}[\\p{Ll}]{1,30}[- ]{0,1}|"
+            + "[\\p{Lu}]{1}[- \\']{1}[\\p{Lu}]{0,1}[\\p{Ll}]{1,30}[- ]{0,1}|[\\p{Ll}]{1,2}"
+            + "[ -\\']{1}[\\p{Lu}]{1}[\\p{Ll}]{1,30}){2,5}$", message = "Wrong name format.")
     private String name;
 
     private Sex sex;
@@ -83,6 +85,5 @@ public class Person implements Serializable {
     public String toString() {
         return "Person{" + "id=" + id + ", name=" + name + ", sex=" + sex + ", dateOfBirth=" + dateOfBirth + ", pathOfPhoto=" + pathOfPhoto + '}';
     }
-    
-    
+
 }
