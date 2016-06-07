@@ -5,6 +5,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <f:metadata>
+        <f:viewParam name="username" value="#{profile.username}" />
+        <f:viewAction action="#{profile.loadUserFromDatabase(facesContext.externalContext.isUserInRole('Admin'))}"/>
+    </f:metadata>
+    
     <h:body> 
         <ui:composition template="/template/internal-template.xhtml">
             <ui:define name="content">
@@ -19,7 +25,8 @@
                             <h:outputText value="&#160;-Zsolt Fazekas-Nagy"/>
                         </p:tooltip>
 
-                        <p:tooltip for="upload gi" showDelay="0" style="background-color: black; color: #00a8ea">
+                        <p:tooltip for="upload gi" showDelay="0" style="background-color: black; color: #00a8ea"
+                                   rendered="#{profile.editingMyProfile or profile.editingAllowed}">
                             <h:outputText value="Acceptable file formats:"/><br/>
                             <h:outputText value="&#160;-jpg"/><br/>
                             <h:outputText value="&#160;-jpeg"/><br/>
@@ -29,41 +36,48 @@
                         <h1 style="text-align: center">Profile</h1><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Name: "/>
-                            <p:inputText id="name" value="#{profile.user.name}"
+                            <p:inputText id="name" value="#{profile.user.name}" rendered="#{profile.editingMyProfile or profile.editingAllowed}"
                                          validatorMessage="Wrong name format.">
                                 <f:ajax event="blur" execute="name" render="m_name" />                                
                             </p:inputText>
+                            <p:outputLabel value="#{profile.user.name}" rendered="#{!profile.editingMyProfile and !profile.editingAllowed}"/>
                             <h:panelGroup/>
                             <p:message id="m_name" for="name" />
 
                             <p:outputLabel value="Date of Birth: " />
                             <p:calendar id="date" value="#{profile.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                         navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100"
-                                        required="true" requiredMessage="This field has to be filled."/>
+                                        required="true" requiredMessage="This field has to be filled." 
+                                        rendered="#{profile.editingMyProfile or profile.editingAllowed}"/>
+                            <p:outputLabel value="#{profile.user.dateOfBirth}" rendered="#{!profile.editingMyProfile and !profile.editingAllowed}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:outputLabel>
                             <h:panelGroup/>
                             <p:message for="date" />
 
                             <p:outputLabel value="Sex:" />
-                            <p:selectOneRadio id="sex" value="#{profile.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
+                            <p:selectOneRadio id="sex" value="#{profile.user.sex}" required="true" requiredMessage="One radio button has to be chosen."
+                                              rendered="#{profile.editingMyProfile or profile.editingAllowed}">
                                 <f:selectItems value="#{profile.sexes}" var="sex" itemLabel="#{sex}" itemValue="#{sex}" />
                             </p:selectOneRadio>
+                            <p:outputLabel value="#{profile.user.sex}" rendered="#{!profile.editingMyProfile and !profile.editingAllowed}"/>
                             <h:panelGroup/>
                             <p:message for="sex" />
 
-                            <h:panelGroup/>
+                            <h:panelGroup rendered="#{profile.editingMyProfile or profile.editingAllowed}"/>
                             <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{profile.handleFileUpload}" update="gi" auto="true"
-                                          allowTypes="/(\.|\/)(jpe?g|png)$/"/>
+                                          allowTypes="/(\.|\/)(jpe?g|png)$/" rendered="#{profile.editingMyProfile or profile.editingAllowed}"/>
 
                             <p:outputLabel value="Picture: "/>
                             <p:graphicImage id="gi" value="#{profile.image}" width="205" height="155" cache="false"/>
                             <h:panelGroup/>
 
-                            <h:panelGroup/>
-                            <h:panelGroup/>
-                            <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="m_name profile_growl"/>
+                            
+                            <p:commandButton value="Save" action="#{profile.saveUserData()}" process="profileTab" update="m_name profile_growl"
+                                             rendered="#{profile.editingMyProfile or profile.editingAllowed}"/>
                         </p:panelGrid>                       
                     </p:tab>
-                    <p:tab title="Password" id="passwordTab">
+                    <p:tab title="Password" id="passwordTab" rendered="#{profile.editingMyProfile or profile.editingAllowed}">
                         <p:growl id="password_growl" sticky="false" rendered="#{not facesContext.validationFailed}"/>
                         <p:tooltip for="password" showDelay="0" style="background-color: black; color: #00a8ea">
                             <h:outputText value="Identify yourself."/>
@@ -79,8 +93,8 @@
 
                         <h1 style="text-align: center; padding-top: 10%">Change Password</h1><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
-                            <h:outputLabel value="My Password: *" rendered="#{!profile.editMyProfile}"/>
-                            <h:outputLabel value="Password: *" rendered="#{profile.editMyProfile}"/>
+                            <h:outputLabel value="My Password: *" rendered="#{!profile.editingMyProfile}"/>
+                            <h:outputLabel value="Password: *" rendered="#{profile.editingMyProfile}"/>
 
                             <p:password id="password" required="true" requiredMessage="This field has to be filled.">
                                 <f:validator validatorId="currentPasswordValidator" />
