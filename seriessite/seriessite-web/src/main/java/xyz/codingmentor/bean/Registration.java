@@ -36,7 +36,7 @@ public class Registration implements Serializable {
     @Inject
     private EntityFacade entityFacade;
 
-    private static final String PATH = "/path/resources/";
+    private static final String PATH = "/path/resources/users/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private Enum[] sexes;
@@ -75,7 +75,6 @@ public class Registration implements Serializable {
     }
 
     public void uploadPicture() {
-        createDirectory();
         try {
             InputStream inputstream = uploadedFile.getInputstream();
             String extension = FilenameUtils.getExtension(uploadedFile.getFileName());
@@ -84,17 +83,6 @@ public class Registration implements Serializable {
             userDTO.getUser().setPathOfPhoto(file.toString());
         } catch (IOException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void createDirectory() {
-        File directory = new File(PATH);
-        if (!directory.exists()) {
-            try {
-                directory.mkdirs();
-            } catch (SecurityException se) {
-                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, se);
-            }
         }
     }
 

@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -34,7 +35,7 @@ import xyz.codingmentor.service.EntityFacade;
 public class Profile implements Serializable {
     @Inject
     private EntityFacade entityFacade;
-    private static final String PATH = "/path/resources/";
+    private static final String PATH = "/path/resources/users/";
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private User user;
@@ -105,29 +106,15 @@ public class Profile implements Serializable {
     }
 
     public void uploadPicture() {
-        createDirectory();
         if (uploadedFile != null) {
             try {
                 InputStream inputstream = uploadedFile.getInputstream();
-                String fullFileName = uploadedFile.getFileName();
-
-                Path file = Paths.get(PATH + fullFileName);
+                String extension = FilenameUtils.getExtension(uploadedFile.getFileName());
+                Path file = Paths.get(PATH + user.getUsername() + "." + extension);
                 Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
                 user.setPathOfPhoto(file.toString());
             } catch (IOException ex) {
                 Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    public void createDirectory() {
-        File directory = new File(PATH);
-
-        if (!directory.exists()) {
-            try {
-                directory.mkdirs();
-            } catch (SecurityException se) {
-                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, se);
             }
         }
     }
@@ -207,7 +194,5 @@ public class Profile implements Serializable {
 
     public void setEditingAllowed(boolean editingAllowed) {
         this.editingAllowed = editingAllowed;
-    }
-    
-    
+    }  
 }
