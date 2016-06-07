@@ -1,9 +1,14 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package xyz.codingmentor.datamodel;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +21,10 @@ import xyz.codingmentor.entity.Series;
  *
  * @author Vendel
  */
-public class LazySeriesDataModel extends LazyDataModel<Series> {
-
-   private List<Series> datasource;
+public class LazyFavouritesDataModel extends LazyDataModel<Series> {
+    private List<Series> datasource;
      
-    public LazySeriesDataModel(List<Series> datasource) {
+    public LazyFavouritesDataModel(List<Series> datasource) {
         this.datasource = datasource;
        
     }

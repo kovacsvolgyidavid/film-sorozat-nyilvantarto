@@ -42,6 +42,7 @@ public class  HomePageService implements Serializable {
     private List<Director> directors;
     private final String blockStyle = "margin: 0 auto";
     private LazyDataModel<Series> lazyModelSeries;
+    private LazyDataModel<Series> lazyModelFavourites;
     private LazyDataModel<Movie> lazyModelMovie;
     private LazyDataModel<Actor> lazyModelActor;
     private LazyDataModel<Director> lazyModelDirector;
@@ -57,13 +58,24 @@ public class  HomePageService implements Serializable {
         directors = entityFacade.findAll(Director.class);
         movies = entityFacade.findAll(Movie.class);
         series = entityFacade.findAll(Series.class);
-        lazyModelSeries= new LazySeriesDataModel(series,actualUser.getFavourites());
+        lazyModelSeries= new LazySeriesDataModel(series);
+        lazyModelFavourites= new LazySeriesDataModel(actualUser.getFavourites());
         lazyModelMovie= new LazyMovieDataModel(movies);
         lazyModelActor= new LazyActorDataModel(actors);
         lazyModelDirector= new LazyDirectorDataModel(directors);
         //Separate movies from series..todo
     }
 
+    public LazyDataModel<Series> getLazyModelFavourites() {
+        return lazyModelFavourites;
+    }
+
+    public void setLazyModelFavourites(LazyDataModel<Series> lazyModelFavourites) {
+        this.lazyModelFavourites = lazyModelFavourites;
+    }
+
+    
+    
     public LazyDataModel<Series> getLazyModelSeries() {
         return lazyModelSeries;
     }

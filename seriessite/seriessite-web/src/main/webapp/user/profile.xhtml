@@ -128,7 +128,7 @@
                     </p:tab>
                     <p:tab title="Favourites">
                         <h1 style="text-align: center">Favourites</h1><br/>
-                        <p:dataTable var="serie" value="#{homePageService.lazyModelSeries}" paginator="true" rows="#{homePageService.actualUser.moviePerPage}"
+                        <p:dataTable var="serie" value="#{homePageService.lazyModelFavourites}" paginator="true" rows="#{homePageService.actualUser.moviePerPage}"
                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                      rowsPerPageTemplate="10,50,100" id="seriesTable" lazy="true">
                             <p:column headerText="Search and Sort By Title" sortBy="#{serie.title}" filterBy="#{serie.title}">
@@ -157,25 +157,6 @@
                                                 <span class="ui-separator">
                                                     <span class="ui-icon ui-icon-grip-dotted-vertical" />
                                                 </span>
-
-                                                <p:commandLink
-                                                    rendered="#{!homePageService.actualUser.favourites.contains(serie)}"
-                                                    action="#{homePageService.changeFavourites(serie)}"
-                                                    update="toolbar"
-                                                    >
-                                                    <p:graphicImage id="favouriteEmpty" value="#{imageService.image}" cache="false">
-                                                        <f:param name="path" value="/path/resources/favourites_star.jpg"/>
-                                                    </p:graphicImage>
-                                                </p:commandLink>
-                                                <p:commandLink 
-                                                    rendered="#{homePageService.actualUser.favourites.contains(serie)}"
-                                                    action="#{homePageService.changeFavourites(serie)}"
-                                                    update="toolbar"
-                                                    >
-                                                    <p:graphicImage id="favouriteFilled" value="#{imageService.image}" cache="false">
-                                                        <f:param name="path" value="/path/resources/favourites_star_black.jpg"/>
-                                                    </p:graphicImage>
-                                                </p:commandLink>
                                             </f:facet>
 
                                             <f:facet name="right">
