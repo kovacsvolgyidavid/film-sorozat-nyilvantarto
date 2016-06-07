@@ -37,9 +37,9 @@
                         </p:panelGrid> 
                     </p:tab>
                     
-                    <p:tab title="Series by Number of Episodes" id="SeriesByNumberOfEpisodesTab">
+                    <p:tab title="Series by Episodes" id="SeriesByNumberOfEpisodesTab">
                         <h1 style="text-align: center;">Series</h1>
-                        <h2 style="text-align: center">with more episode</h2><br/><br/>
+                        <h2 style="text-align: center">with more episodes</h2><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
                             <p:outputLabel value="Number of episodes: " />
                             <p:inputText id="noe" value="#{queries.numberOfEpisodes}"
@@ -81,8 +81,8 @@
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="uwmc" value="#{queries.usersWithMostComments}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{uwmc}">
-                                        <f:param name="seriesid" value="#{s.id}" />
+                                    <p:link outcome="#{profile.goToProfilePage()}" value="#{uwmc}">
+                                        <f:param name="username" value="#{queries.getUsername(uwmc)}" />
                                     </p:link>
                                     <br/>
                                 </ui:repeat>
@@ -90,7 +90,7 @@
                         </p:panelGrid>
                     </p:tab>
                     
-                    <p:tab title="Series by Director" id="SeriesByDirectorTab">
+                    <p:tab title="Series by Directors" id="SeriesByDirectorTab">
                         <h1 style="text-align: center;">Series</h1>
                         <h2 style="text-align: center">by Director whose original name equals to their stage name</h2><br/><br/><br/>
                         
@@ -112,7 +112,7 @@
                         </p:panelGrid>
                     </p:tab>
 
-                    <p:tab title="Series by Comment Date" id="SeriesByCommentDate">
+                    <p:tab title="Series by Comments" id="SeriesByCommentDate">
                         <h1 style="text-align: center;">Series</h1>
                         <h2 style="text-align: center">commented after the given date</h2><br/><br/>
                         <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">
@@ -131,7 +131,7 @@
                             <p:outputLabel value="Result: "/>
                             <p:outputPanel style="border: #080808 solid thin">
                                 <ui:repeat var="s" value="#{queries.series}">
-                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}, ">
+                                    <p:link outcome="#{queries.goToSeriesPage()}" value="#{s.title}">
                                         <f:param name="seriesid" value="#{s.id}" />
                                     </p:link>
                                     <br/>

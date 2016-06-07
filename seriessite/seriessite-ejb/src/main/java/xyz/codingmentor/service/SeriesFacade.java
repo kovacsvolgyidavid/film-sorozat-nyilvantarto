@@ -70,30 +70,14 @@ public class SeriesFacade {
         return actorsAll;
     }
 
-
     public void saveSeries(Series series) {
         em.merge(series);
     }
-    
+
     public void updateSeries(Series series) {
         em.merge(series);
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public List<Series> seriesByDirectorOriginalNameEqualsName() {
         Query q = em.createNamedQuery("seriesByDirectorOriginalNameEqualsName");
         return q.getResultList();
@@ -107,24 +91,7 @@ public class SeriesFacade {
 
     public List<Series> seriesCommentedAfterGivenDate(Date date) {
         Query q = em.createNamedQuery("seriesCommentedAfterGivenDate");
-
         q.setParameter("date", date, TemporalType.DATE);
         return q.getResultList();
-    }
-    
-    public List<Object[]> userByMostComment() {
-        TypedQuery <Object[]> q = em.createNamedQuery("userByMostComment", Object[].class);
-//        List<Object[]> result = 
-            return q.getResultList();
-        
-//        if(!result.isEmpty())
-//            return result;
-        
-        //Object[] result = q.getResultList().get(0);
-        
-//        System.out.println(result[0]);
-//        System.out.println(result[1]);
-        
-                  
     }
 }

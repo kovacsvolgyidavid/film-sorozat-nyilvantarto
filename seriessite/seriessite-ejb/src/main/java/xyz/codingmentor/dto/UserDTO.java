@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package xyz.codingmentor.dto;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import xyz.codingmentor.entity.User;
+import xyz.codingmentor.service.UserService;
 
 /**
  *
@@ -29,23 +19,9 @@ public class UserDTO {
 
     public User makeUser() {
         String outcome;
-        outcome = this.hashPassword(password);
+        outcome = UserService.hashPassword(password);
         user.setPassword(outcome);
         return this.user;
-    }
-
-    public String hashPassword(String password) {
-        String hashedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if needed
-            byte[] digest = md.digest();
-            BigInteger bigInt = new BigInteger(1, digest);
-            hashedPassword = bigInt.toString(16);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            Logger.getLogger(UserDTO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return hashedPassword;
     }
 
     public UserDTO() {
@@ -72,5 +48,4 @@ public class UserDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

@@ -117,7 +117,7 @@ public class SeriesEdit implements Serializable {
                 = context.getExternalContext().getRequestParameterMap();
         String id = params.get("seriesId");
 
-        return "seriesEdit.xhtml/?id=" + id + ";faces-redirect=true";
+        return "/admin/seriesEdit.xhtml/?seriesid=" + id + ";faces-redirect=true";
     }
 
     public String goToActorEditSite() {

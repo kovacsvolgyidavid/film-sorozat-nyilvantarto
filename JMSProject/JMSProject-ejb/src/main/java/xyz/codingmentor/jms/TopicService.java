@@ -8,7 +8,7 @@ import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.Topic;
-import xyz.codingmentor.collective.dtio.ProductDTO;
+import xyz.codingmentor.collective.dto.ProductDTO;
 
 @Singleton
 public class TopicService {

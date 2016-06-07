@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SecondaryTable;
@@ -26,12 +27,18 @@ import xyz.codingmentor.enums.Sex;
 @Entity
 @Table(name = "USERS")
 @SecondaryTable(name = "groups")
-@NamedQuery(name = "findUserByUsername",
-        query = "SELECT u FROM User u WHERE u.username = :username")
+@NamedQueries({
+    @NamedQuery(name = "findUserByUsername",
+            query = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "userByMostComment",
+            query = "Select u.username, size(u.comments) FROM User u WHERE size(u.comments) = (SELECT MAX(size(u2.comments)) FROM User u2)"
+    )
+})
 public class User implements Serializable {
+
     @Id
     @Size(min = 1, message = "This field has to be filled.")
-    @Pattern(regexp="^[\\p{Ll}0-9_-]{3,15}$", message="Wrong username format.")
+    @Pattern(regexp = "^[\\p{Ll}0-9_-]{3,15}$", message = "Wrong username format.")
     private String username;
 
     @Column(name = "password")
@@ -45,11 +52,11 @@ public class User implements Serializable {
     private Groups groups;
 
     @Size(min = 1, message = "This field has to be filled.")
-    @Pattern(regexp="^([\\p{Lu}]{1}[\\p{Ll}]{1,30}[- ]{0,1}|"
+    @Pattern(regexp = "^([\\p{Lu}]{1}[\\p{Ll}]{1,30}[- ]{0,1}|"
             + "[\\p{Lu}]{1}[- \\']{1}[\\p{Lu}]{0,1}[\\p{Ll}]{1,30}[- ]{0,1}|[\\p{Ll}]{1,2}"
-            + "[ -\\']{1}[\\p{Lu}]{1}[\\p{Ll}]{1,30}){2,5}$", message="Wrong name format.")
+            + "[ -\\']{1}[\\p{Lu}]{1}[\\p{Ll}]{1,30}){2,5}$", message = "Wrong name format.")
     private String name;
-    
+
     @NotNull(message = "One radio button has to be chosen.")
     private Sex sex;
 
@@ -63,11 +70,11 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Comment> comments;
-    
+
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="USER_FAVOURITES", 
-          joinColumns=@JoinColumn(name="USER_ID"),
-          inverseJoinColumns=@JoinColumn(name="SERIE_ID"))
+    @JoinTable(name = "USER_FAVOURITES",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "SERIE_ID"))
     private List<Series> favourites;
 
     public User() {
@@ -81,7 +88,7 @@ public class User implements Serializable {
     public void setFavourites(List<Series> favourites) {
         this.favourites = favourites;
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -161,5 +168,5 @@ public class User implements Serializable {
     public void setPathOfPhoto(String pathOfPhoto) {
         this.pathOfPhoto = pathOfPhoto;
     }
-    
+
 }

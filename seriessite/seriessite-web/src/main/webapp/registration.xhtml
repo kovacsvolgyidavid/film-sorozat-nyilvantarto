@@ -43,7 +43,7 @@
                     <br/><h1 style="text-align: center">Registration</h1><br/>
                     <p:panelGrid columns="2" style="margin: 0 auto;" styleClass="ui-noborder">                   
                         <p:outputLabel value="Name: *"/>
-                        <p:inputText id="name" value="#{registration.dtoUser.user.name}" required="true" requiredMessage="This field has to be filled."
+                        <p:inputText id="name" value="#{registration.userDTO.user.name}" required="true" requiredMessage="This field has to be filled."
                                      validatorMessage="Wrong name format.">
                             <f:ajax event="blur" execute="name" render="name m_name" />
                         </p:inputText>
@@ -51,7 +51,7 @@
                         <p:message id="m_name" for="name" />
 
                         <p:outputLabel value="Username: *" />
-                        <p:inputText id="username" value="#{registration.dtoUser.user.username}" required="true" requiredMessage="This field has to be filled.">
+                        <p:inputText id="username" value="#{registration.userDTO.user.username}" required="true" requiredMessage="This field has to be filled.">
                             <f:validator validatorId="existingUsernameValidator" />
                             <f:ajax event="blur" execute="username" render="username m_username" />
                         </p:inputText>
@@ -59,7 +59,7 @@
                         <p:message id="m_username" for="username"/>
 
                         <p:outputLabel value="Password: *" />
-                        <p:password id="password" value="#{registration.dtoUser.password}" redisplay="true"
+                        <p:password id="password" value="#{registration.userDTO.password}" redisplay="true"
                                     required="true" requiredMessage="This field has to be filled.">
                             <f:validator validatorId="confirmPasswordValidator" />
                             <f:attribute name="confirm" value="#{confirmPassword.submittedValue}" />
@@ -77,7 +77,7 @@
                         <p:message id="m_confirm" for="confirm" />
 
                         <p:outputLabel value="Date of Birth: *" />
-                        <p:calendar id="date" value="#{registration.dtoUser.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
+                        <p:calendar id="date" value="#{registration.userDTO.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 
                                     navigator="true" mindate="01/01/1920" maxdate="31/12/2010" yearRange="c-100:c+100" 
                                     required="true" requiredMessage="This field has to be filled.">
                         </p:calendar>    
@@ -85,7 +85,7 @@
                         <p:message id="m_date" for="date" />
 
                         <p:outputLabel value="Sex: *" />
-                        <p:selectOneRadio id="sex" value="#{registration.dtoUser.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
+                        <p:selectOneRadio id="sex" value="#{registration.userDTO.user.sex}" required="true" requiredMessage="One radio button has to be chosen.">
                             <f:selectItems value="#{registration.sexes}" var="sex" itemLabel="#{sex}" itemValue="#{sex}" />
                         </p:selectOneRadio>
                         <h:panelGroup/>
@@ -93,7 +93,7 @@
 
                         <h:panelGroup/>
                         <h:panelGrid columns="2" cellspacing="0">
-                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi" auto="true"
+                            <p:fileUpload id="upload" mode="advanced" skinSimple="true" fileUploadListener="#{registration.handleFileUpload}" update="gi messages" auto="true"
                                           allowTypes="/(\.|\/)(jpe?g|png)$/"/>
                             <p:commandButton value="Reset">
                                 <p:ajax listener="#{registration.resetPicture}" update="gi"/>

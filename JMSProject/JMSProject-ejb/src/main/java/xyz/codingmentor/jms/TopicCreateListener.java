@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import xyz.codingmentor.collective.dtio.ProductDTO;
+import xyz.codingmentor.collective.dto.ProductDTO;
 
 @MessageDriven(mappedName = "jms/TopicCreate")
 public class TopicCreateListener implements MessageListener {
@@ -24,13 +24,12 @@ public class TopicCreateListener implements MessageListener {
             if (topicService.isReadTopicCreate() && 
                     productDTO.getPrice() < topicService.getExpectedProductDTO().getPrice() &&
                     productDTO.getType().equals(topicService.getExpectedProductDTO().getType())) {
-
                 topicService.addProductDTO(productDTO);
-
-                LOGGER.info("====================================\n"
-                        + "One product has been created:\n"
-                        + "Price: " + productDTO.getPrice() + "\n"
-                        + "Type: " + productDTO.getType());
+                LOGGER.info("====================================");
+                LOGGER.info("One product has been created:");
+                LOGGER.info("Price: " + productDTO.getPrice());
+                LOGGER.info("Type: " + productDTO.getType());
+                LOGGER.info("====================================");
             }
 
         } catch (JMSException ex) {

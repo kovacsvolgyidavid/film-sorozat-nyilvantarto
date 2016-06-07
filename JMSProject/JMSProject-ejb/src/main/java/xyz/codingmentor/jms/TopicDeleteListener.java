@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import xyz.codingmentor.collective.dtio.ProductDTO;
+import xyz.codingmentor.collective.dto.ProductDTO;
 
 @MessageDriven(mappedName = "jms/TopicDelete")
 public class TopicDeleteListener implements MessageListener{
@@ -22,10 +22,10 @@ public class TopicDeleteListener implements MessageListener{
             try {
                 ProductDTO productDTO = message.getBody(ProductDTO.class);
                 topicService.addProductDTO(productDTO);
-
-                LOGGER.info("One product has been deleted:\n" +
-                        "Price: " + productDTO.getPrice() + "\n" +
-                        "Type: " + productDTO.getType());
+                LOGGER.info("One product has been deleted:");
+                LOGGER.info("Price: " + productDTO.getPrice());
+                LOGGER.info("Type: " + productDTO.getType());
+                LOGGER.info("====================================");
             } catch (JMSException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }

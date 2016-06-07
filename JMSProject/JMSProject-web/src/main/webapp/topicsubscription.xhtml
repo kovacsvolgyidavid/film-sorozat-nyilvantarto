@@ -16,8 +16,8 @@
                 <p:separator style="height: 4px; visibility: hidden"/>
                 <p:separator style="height: 4px; visibility: hidden"/>
                 
-                <p:outputLabel style="font-size: 30px" value="Entity Creation"/>
-                <p:outputLabel style="font-size: 30px" value="Entity Deletion"/>
+                <p:outputLabel style="font-size: 30px" value="Product Creation"/>
+                <p:outputLabel style="font-size: 30px" value="Product Deletion"/>
                 
                 <p:outputLabel style="font-size: 20px;" value="(with constraints)"/>
                 <h:panelGroup/>
@@ -26,7 +26,7 @@
                 <h:panelGroup/>
                 
                 <h:panelGrid columns="2" style="margin: 0 auto; text-align: left;" styleClass="ui-noborder" columnClasses="innercolumn1, innercolumn2">
-                    <p:outputLabel value="Maximum price: "/>
+                    <p:outputLabel value="Maximum price ($): "/>
                     <p:inputText id="price" value="#{topicSubscription.productDTO.price}" required="true" requiredMessage="This field has to be filled."
                                  converterMessage="Format: integer between 0-10000000.">
                         <p:ajax event="blur" update="price priceMessage" />       

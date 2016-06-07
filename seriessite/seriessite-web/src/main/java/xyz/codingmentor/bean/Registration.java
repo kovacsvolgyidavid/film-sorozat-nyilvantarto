@@ -40,28 +40,28 @@ public class Registration implements Serializable {
     private UploadedFile uploadedFile;
     private StreamedContent image;
     private Enum[] sexes;
-    private UserDTO dtoUser;
+    private UserDTO userDTO;
     private String connfirmPassword;
     
     @PostConstruct
     public void init() {
         sexes = Sex.class.getEnumConstants();
-        dtoUser = new UserDTO();
+        userDTO = new UserDTO();
     }
 
     public String registrate() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         
         if (uploadedFile == null) {
-            dtoUser.getUser().setPathOfPhoto("user.jpg");
+            userDTO.getUser().setPathOfPhoto("user.jpg");
         } else {
             uploadPicture();
         }
 
-        dtoUser.getUser().setGroups(Groups.USER);
-        dtoUser.getUser().setMoviePerPage(50);
-        entityFacade.create(dtoUser.makeUser());
-        dtoUser.setUser(new User());
+        userDTO.getUser().setGroups(Groups.USER);
+        userDTO.getUser().setMoviePerPage(50);
+        entityFacade.create(userDTO.makeUser());
+        userDTO.setUser(new User());
         uploadedFile = null;
         facesContext.addMessage(null, new FacesMessage("The registration was successful."));
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
@@ -79,9 +79,9 @@ public class Registration implements Serializable {
         try {
             InputStream inputstream = uploadedFile.getInputstream();
             String extension = FilenameUtils.getExtension(uploadedFile.getFileName());
-            Path file = Paths.get(PATH + dtoUser.getUser().getUsername() + "." + extension);
+            Path file = Paths.get(PATH + userDTO.getUser().getUsername() + "." + extension);
             Files.copy(inputstream, file, StandardCopyOption.REPLACE_EXISTING);
-            dtoUser.getUser().setPathOfPhoto(file.toString());
+            userDTO.getUser().setPathOfPhoto(file.toString());
         } catch (IOException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,12 +156,12 @@ public class Registration implements Serializable {
         this.entityFacade = entityFacade;
     }
 
-    public UserDTO getDtoUser() {
-        return dtoUser;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setDtoUser(UserDTO dtoUser) {
-        this.dtoUser = dtoUser;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     public String getConnfirmPassword() {

@@ -27,24 +27,33 @@ import javax.persistence.CascadeType;
     @NamedQuery(name = "Series.findDirectorsBySeriesId",
             query = "SELECT s.directors FROM Series s WHERE s.id = :id"),
     @NamedQuery(name = "Series.findAll",
-            query = "SELECT s FROM Series s")
+            query = "SELECT s FROM Series s"),
+    @NamedQuery(name = "seriesByDirectorOriginalNameEqualsName",
+            query = "SELECT DISTINCT s FROM  Series s JOIN s.directors d WHERE d.originalName LIKE d.name "
+    ),
+    @NamedQuery(name = "seriesWithMoreEpisode",
+            query = "Select s FROM Series s WHERE(Select Count(e) from Episode e, Season sn WHERE s.id = sn.series.id  AND sn.id = e.season.id) > :number"
+    ),
+    @NamedQuery(name = "seriesCommentedAfterGivenDate",
+            query = "Select DISTINCT s FROM Series s JOIN s.comments c WHERE c.dateOfComment > :date"
+    ),
 })
 public class Series extends Movie implements Serializable {
-    
-    @OneToMany(mappedBy = "series",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "series", cascade = CascadeType.ALL)
     private List<Season> seasons;
 
     @Column(length = 1000)
     private String description;
 
     private static final Logger LOG = Logger.getLogger(Series.class.getName());
-    
-    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE } )
-    @JoinTable(name = "SERIES_ACTOR", 
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "SERIES_ACTOR",
             joinColumns = @JoinColumn(name = "SERIES_ID"),
             inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> actors;
-    
+
     @ManyToMany
     private List<Director> seriesdirectors;
 
@@ -52,11 +61,9 @@ public class Series extends Movie implements Serializable {
         //it is bean
     }
 
-    
     public List<Actor> getActors() {
         return actors;
     }
-
 
     public void setActors(List<Actor> actors) {
         this.actors = actors;
@@ -74,7 +81,6 @@ public class Series extends Movie implements Serializable {
     public String toString() {
         return getId() + "    " + getTitle();
     }
-  
 
     @Override
     public String getDescription() {
@@ -97,7 +103,4 @@ public class Series extends Movie implements Serializable {
         return super.getId();
     }
 
-  
-
-    
 }

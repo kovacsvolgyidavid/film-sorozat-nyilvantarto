@@ -44,7 +44,7 @@
                             <li><p:commandLink value=" Logout" action="#{usermanagement.logout()}" ajax="false" style="height:50px;" 
                                                immediate="true" class="glyphicon glyphicon-log-out"/></li>
 
-                            <li><p:commandLink value=" #{usermanagement.actualUser}" action="#{profile.getMyProfile()}" style="height:50px;" 
+                            <li><p:commandLink value=" #{usermanagement.actualUser}" action="#{profile.goToProfilePage()}" style="height:50px;" 
                                                immediate="true" class="glyphicon glyphicon-user">
                                     <f:param name="username" value="#{usermanagement.actualUser}" />
                                 </p:commandLink></li>

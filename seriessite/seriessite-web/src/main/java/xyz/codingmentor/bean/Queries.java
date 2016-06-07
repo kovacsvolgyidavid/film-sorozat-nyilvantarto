@@ -1,7 +1,6 @@
 package xyz.codingmentor.bean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +15,14 @@ import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.entity.Series;
 import xyz.codingmentor.service.ActorFacade;
 import xyz.codingmentor.service.SeriesFacade;
+import xyz.codingmentor.service.UserService;
 
 @Named
 @RequestScoped
 public class Queries {
     private static final String NO_SUCH_SERIES = "There is no such series.";
     private static final String ERROR = "Error!";
+    private static final Logger LOG = Logger.getLogger(Queries.class.getName());
     
     private Date date;
     private int numberOfEpisodes;
@@ -34,7 +35,10 @@ public class Queries {
 
     @Inject
     private SeriesFacade seriesFacade;
-    private static final Logger LOG = Logger.getLogger(Queries.class.getName());
+    
+    @Inject
+    private UserService userService;
+    
 
     @PostConstruct
     public void init() {
@@ -81,7 +85,7 @@ public class Queries {
     }
     
      public void userByMostComment() {
-        List <Object[]> userCommentObjects = seriesFacade.userByMostComment();
+        List <Object[]> userCommentObjects = userService.userByMostComment();
         if (userCommentObjects.isEmpty())
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No one commented yet.", ERROR));
         else{
@@ -94,7 +98,12 @@ public class Queries {
     public void onTabChange() {
         actors.clear();
         series.clear();
+        usersWithMostComments.clear();
         numberOfEpisodes = 0;
+    }
+    
+    public String getUsername(String usenameWithNumberOfComments){
+        return usenameWithNumberOfComments.substring(0, usenameWithNumberOfComments.indexOf(" "));
     }
 
     public Date getDate() {
