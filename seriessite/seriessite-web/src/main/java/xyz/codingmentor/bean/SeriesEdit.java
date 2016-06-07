@@ -1,10 +1,12 @@
 package xyz.codingmentor.bean;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -32,9 +34,11 @@ import javax.annotation.PostConstruct;
 import xyz.codingmentor.entity.Actor;
 import xyz.codingmentor.service.SeriesFacade;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
 import org.apache.commons.lang3.SystemUtils;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
@@ -75,8 +79,6 @@ public class SeriesEdit implements Serializable {
     @PostConstruct
     public void init() {
         LOG.info("init() function");
-//        series = new Series();
-//        actorListNotInSeries = new ArrayList<>();
 
         newActor = new Actor();
         newSeason = new Season();
@@ -92,14 +94,17 @@ public class SeriesEdit implements Serializable {
             LOG.info("Path: " + PATH.toString());
 
         }
-
         activeIndexToTabView = 0;
-//        loadDatabaseData();
     }
 
-//    public void loadDatabaseData(ComponentSystemEvent event) {
     public void loadDatabaseData() {
+//        http://www.codebulb.ch/2015/05/restful-jsf-with-post-redirect-get-part-4.html
         LOG.info("loadDatabaseData 1");
+
+        if (series != null) {
+            return;
+        }
+
         if (idOfSeries != null) {
             LOG.info("loadDatabaseData 2");
             Long id = (Long) Long.parseLong(idOfSeries);
@@ -111,6 +116,7 @@ public class SeriesEdit implements Serializable {
             series = seriesFacade.findSeriesById(idOfSeries2);
             actorListNotInSeries = seriesFacade.getActorListNotInSeries(idOfSeries2);
         }
+        return;
     }
 
     public String goToSeriesEditSite() {
@@ -366,12 +372,6 @@ public class SeriesEdit implements Serializable {
     public void imageUpload(FileUploadEvent event) {
         LOG.info("imageUpload");
         uploadedFile = event.getFile();
-
-        try {
-            image = new DefaultStreamedContent(uploadedFile.getInputstream());
-        } catch (IOException ex) {
-            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void setUploadedFile(UploadedFile uploadedFile) {
@@ -381,46 +381,67 @@ public class SeriesEdit implements Serializable {
 
     public StreamedContent getImage() {
         LOG.info("getImage function");
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            LOG.info("generate right URL");
+            //http://stackoverflow.com/questions/8207325/display-dynamic-image-from-database-with-pgraphicimage-and-streamedcontent
+            return new DefaultStreamedContent();
+        }
         try {
-            if (!series.getPathOfPhoto().equals("")) {
-                LOG.info("Series has path of photo:" + series.getPathOfPhoto() + ".");
-                BufferedImage img = null;
-                try {
-                    img = ImageIO.read(new File(PATH + series.getTitle() + series.getId()));
-
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    ImageIO.write(img, "jpg", os);
-                    InputStream is = new ByteArrayInputStream(os.toByteArray());
-                    image = new DefaultStreamedContent(is, PATH + series.getTitle() + series.getId() + ".jpg");
-
-                } catch (IOException e) {
-                    LOG.info("getImage Exceptin3");
-                }
+            if (uploadedFile != null) {
+                return new DefaultStreamedContent(uploadedFile.getInputstream());
             }
-            if (uploadedFile == null) {
+            if (!series.getPathOfPhoto().equals("")) {
+                LOG.info("Series has path of photo:   " + series.getPathOfPhoto() + " ");
+
+                File file = new File(PATH + series.getPathOfPhoto());
+                LOG.info("FilePath: " + file.getAbsolutePath());
+
+                FileInputStream fis;
+
+                fis = new FileInputStream(file);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                StreamedContent content = new DefaultStreamedContent(bis);
+                return content;
+
+            } else {
                 ClassLoader classLoader = getClass().getClassLoader();
                 File noPicture = new File(classLoader.getResource("/series/noimages.png").getFile());
-                LOG.info("getImage " + noPicture.toString());
-                image = new DefaultStreamedContent(new FileInputStream(noPicture));
-            } else {
-                image = new DefaultStreamedContent(uploadedFile.getInputstream());
+                LOG.info("getImage noPicture:   " + noPicture.toString());
+                return new DefaultStreamedContent(new FileInputStream(noPicture));
             }
-        } catch (Exception ex) {
-            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            LOG.info("File not found exception");
+            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ex) {
+            LOG.info("IOException by file load");
+            Logger.getLogger(SeriesEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return image;
-    }
-
-    public void resetPicture(AjaxBehaviorEvent event) {
-        uploadedFile = null;
-    }
-
-    public UploadedFile getUploadedFile() {
-        return uploadedFile;
+        return null;
     }
 
     public void setImage(StreamedContent image) {
         this.image = image;
+    }
+
+    public Season getSelectedSeason() {
+        return selectedSeason;
+    }
+
+    public void setSelectedSeason(Season selectedSeason) {
+        this.selectedSeason = selectedSeason;
+    }
+
+    public void resetUploadedFile(AjaxBehaviorEvent event) {
+        uploadedFile = null;
+    }
+
+    public UploadedFile getUploadedFile() {
+
+        return uploadedFile;
     }
 
     public Episode getNewEpisode() {
