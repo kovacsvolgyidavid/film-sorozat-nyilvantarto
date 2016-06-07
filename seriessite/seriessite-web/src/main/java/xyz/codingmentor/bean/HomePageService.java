@@ -57,7 +57,7 @@ public class  HomePageService implements Serializable {
         directors = entityFacade.findAll(Director.class);
         movies = entityFacade.findAll(Movie.class);
         series = entityFacade.findAll(Series.class);
-        lazyModelSeries= new LazySeriesDataModel(series);
+        lazyModelSeries= new LazySeriesDataModel(series,actualUser.getFavourites());
         lazyModelMovie= new LazyMovieDataModel(movies);
         lazyModelActor= new LazyActorDataModel(actors);
         lazyModelDirector= new LazyDirectorDataModel(directors);

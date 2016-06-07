@@ -19,9 +19,11 @@ import xyz.codingmentor.entity.Series;
 public class LazySeriesDataModel extends LazyDataModel<Series> {
 
    private List<Series> datasource;
+   private List<Series> favourites;
      
-    public LazySeriesDataModel(List<Series> datasource) {
+    public LazySeriesDataModel(List<Series> datasource,List<Series> favourites) {
         this.datasource = datasource;
+        this.favourites=favourites;
     }
      
     @Override
