@@ -12,9 +12,9 @@ public class ConfirmPasswordValidator implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        String password = (String) component.getAttributes().get("confirm");
-        String confirm = (String) value;
-
+        String password = (String) value;
+        String confirm = (String) component.getAttributes().get("confirm");
+        
         if (password == null || confirm == null) {
             return;
         }
