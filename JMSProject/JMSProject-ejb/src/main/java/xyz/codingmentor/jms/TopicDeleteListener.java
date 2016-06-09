@@ -22,7 +22,7 @@ public class TopicDeleteListener implements MessageListener{
                 ProductDTO productDTO = message.getBody(ProductDTO.class);
                 topicService.addProductDTO(productDTO);
                 LOGGER.info("====================================");
-                LOGGER.info("One product has been created:");
+                LOGGER.info("One product has been deleted:");
                 LOGGER.info("Price: " + productDTO.getPrice());
                 LOGGER.info("Type: " + productDTO.getType());
                 LOGGER.info("====================================");
