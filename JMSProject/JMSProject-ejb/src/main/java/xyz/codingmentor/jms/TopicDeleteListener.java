@@ -11,8 +11,7 @@ import xyz.codingmentor.collective.dto.ProductDTO;
 
 @MessageDriven(mappedName = "jms/TopicDelete")
 public class TopicDeleteListener implements MessageListener{
-    private static final Logger LOGGER = Logger.getLogger(TopicDeleteListener.class.getName());
-    
+    private static final Logger LOGGER = Logger.getLogger(TopicDeleteListener.class.getName());   
     @Inject
     private TopicService topicService;
        
@@ -22,7 +21,8 @@ public class TopicDeleteListener implements MessageListener{
             try {
                 ProductDTO productDTO = message.getBody(ProductDTO.class);
                 topicService.addProductDTO(productDTO);
-                LOGGER.info("One product has been deleted:");
+                LOGGER.info("====================================");
+                LOGGER.info("One product has been created:");
                 LOGGER.info("Price: " + productDTO.getPrice());
                 LOGGER.info("Type: " + productDTO.getType());
                 LOGGER.info("====================================");

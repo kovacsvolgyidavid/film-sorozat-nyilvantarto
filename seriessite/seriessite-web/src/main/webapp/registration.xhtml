@@ -58,23 +58,26 @@
                         <h:panelGroup/>
                         <p:message id="m_username" for="username"/>
 
-                        <p:outputLabel value="Password: *" />
-                        <p:password id="password" value="#{registration.userDTO.password}" redisplay="true"
+                        <p:outputLabel value="Password: *"/>
+                        <p:password id="password" value="#{registration.userDTO.password}" 
+                                    redisplay="true"
                                     required="true" requiredMessage="This field has to be filled.">
-                            <f:validator validatorId="confirmPasswordValidator" />
-                            <f:attribute name="confirm" value="#{confirmPassword.submittedValue}" />
-                            <f:ajax event="blur" execute="password confirm" render="password m_password" />
+                            <f:validator validatorId="confirmPasswordValidator"/>
+                            <f:attribute name="confirm" value="#{confirmPassword.submittedValue}"/>
+                            <f:ajax event="blur" execute="password confirm" 
+                                    render="password m_password"/>
                         </p:password>
                         <h:panelGroup/>
                         <p:message id="m_password" for="password"/>
 
-                        <p:outputLabel value="Confirm Password: *" />
+                        <p:outputLabel value="Confirm Password: *"/>
                         <p:password id="confirm" binding="#{confirmPassword}" redisplay="true"
                                     required="true" requiredMessage="This field has to be filled.">
-                            <f:ajax event="blur" execute="password confirm" render="password confirm m_password m_confirm" />
+                            <f:ajax event="blur" execute="password confirm" 
+                                    render="password confirm m_password m_confirm"/>
                         </p:password>
                         <h:panelGroup/>
-                        <p:message id="m_confirm" for="confirm" />
+                        <p:message id="m_confirm" for="confirm"/>
 
                         <p:outputLabel value="Date of Birth: *" />
                         <p:calendar id="date" value="#{registration.userDTO.user.dateOfBirth}" pattern="dd/MM/yyyy" readonlyInput="true" 

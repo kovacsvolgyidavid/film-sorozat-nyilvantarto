@@ -31,8 +31,11 @@ public class Admin implements Serializable {
     public void init() {
         sexes = Sex.class.getEnumConstants();
         ranks = Groups.class.getEnumConstants();
-        
+    }
+    
+    public String goToAdminPage() {
         users = entityFacade.findAll(User.class);
+        return "/admin/admin.xhtml?faces-redirect=true";
     }
 
     public void deleteUser(User user) {
