@@ -9,18 +9,18 @@ import javax.faces.validator.ValidatorException;
 
 @FacesValidator("confirmPasswordValidator")
 public class ConfirmPasswordValidator implements Validator {
-
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+    public void validate(FacesContext context, UIComponent component, 
+            Object value) throws ValidatorException {
         String password = (String) value;
-        String confirm = (String) component.getAttributes().get("confirm");
-        
+        String confirm = (String) component.getAttributes().get("confirm");        
         if (password == null || confirm == null) {
             return;
         }
-
         if (!password.equals(confirm)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Passwords have to be the same."));          
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                            "Error!", "Passwords have to be the same."));          
         }
     }
 }

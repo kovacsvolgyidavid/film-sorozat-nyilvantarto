@@ -49,7 +49,7 @@
                                     <f:param name="username" value="#{usermanagement.actualUser}" />
                                 </p:commandLink></li>
 
-                            <li><p:commandLink value=" Admin" action="/admin/admin.xhtml?faces-redirect=true" style="height:50px;" 
+                            <li><p:commandLink value=" Admin" action="#{admin.goToAdminPage()}" style="height:50px;" 
                                                immediate="true" class="glyphicon glyphicon-search"
                                                rendered="#{facesContext.externalContext.isUserInRole('Admin')}"/></li>
                         </ul>
